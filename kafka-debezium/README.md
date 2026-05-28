@@ -32,17 +32,21 @@ principal es de recursos y necesidad de Debezium:
 
 ## Uso
 
-Primero deten el stack Kafka moderno si esta activo:
+Desde la raiz del repositorio, primero elimina los contenedores del stack Kafka
+moderno si esta activo:
 
 ```powershell
 docker compose -f kafka/compose.yml down
 ```
 
-Luego levanta el stack Debezium desde la raiz del repositorio:
+Luego levanta el stack Debezium:
 
 ```powershell
 docker compose -f kafka-debezium/compose.yml up -d
 ```
+
+El comando `down` elimina contenedores y red del compose activo cuando ya no
+estan en uso, pero no borra las imagenes Docker.
 
 Para volver al Kafka moderno:
 
@@ -50,6 +54,27 @@ Para volver al Kafka moderno:
 docker compose -f kafka-debezium/compose.yml down
 docker compose -f kafka/compose.yml up -d
 ```
+
+## Liberar espacio
+
+Si quieres eliminar las imagenes legacy de Debezium despues de usarlas, primero
+baja el stack:
+
+```powershell
+docker compose -f kafka-debezium/compose.yml down
+```
+
+Opcionalmente, elimina solo las imagenes Debezium:
+
+```powershell
+docker image rm debezium/zookeeper:2.7.3.Final
+docker image rm debezium/kafka:2.7.3.Final
+docker image rm debezium/connect:2.7.3.Final
+```
+
+No elimines `provectuslabs/kafka-ui:latest` ni
+`danielqsj/kafka-exporter:v1.9.0`, porque tambien se usan en el stack Kafka
+moderno.
 
 ## Nota
 

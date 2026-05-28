@@ -64,20 +64,19 @@ misma red `lambdalab-kafka-net`. Tecnicamente podrian correr en paralelo si se
 cambian puertos, nombres internos, alias y red Docker, pero para el curso se
 recomienda ejecutar solo uno a la vez por equipos limitados y claridad operativa.
 
-Para trabajar con streaming, primero levanta Kafka:
+Para trabajar con streaming, primero levanta un stack Kafka desde la raiz del
+repositorio.
+
+Kafka moderno:
 
 ```powershell
-cd kafka
-docker compose up -d
-cd ..
+docker compose -f kafka/compose.yml up -d
 ```
 
-Si la sesion requiere CDC/Debezium, levanta el stack alternativo:
+Kafka con Debezium:
 
 ```powershell
-cd kafka-debezium
-docker compose up -d
-cd ..
+docker compose -f kafka-debezium/compose.yml up -d
 ```
 
 Esto crea la red compartida:
@@ -85,6 +84,46 @@ Esto crea la red compartida:
 ```text
 lambdalab-kafka-net
 ```
+
+### Cambiar de stack Kafka
+
+Los stacks `kafka/` y `kafka-debezium/` usan los mismos puertos, el mismo alias
+interno `kafka:9092` y la misma red. Para cambiar de uno a otro, elimina primero
+los contenedores del stack activo y luego levanta el otro. Las imagenes Docker
+no se eliminan con estos comandos.
+
+De Kafka moderno a Kafka Debezium:
+
+```powershell
+docker compose -f kafka/compose.yml down
+docker compose -f kafka-debezium/compose.yml up -d
+```
+
+De Kafka Debezium a Kafka moderno:
+
+```powershell
+docker compose -f kafka-debezium/compose.yml down
+docker compose -f kafka/compose.yml up -d
+```
+
+Si quieres liberar espacio despues de usar CDC, puedes eliminar solo las
+imagenes legacy de Debezium. Primero baja el stack:
+
+```powershell
+docker compose -f kafka-debezium/compose.yml down
+```
+
+Opcionalmente, elimina las imagenes Debezium:
+
+```powershell
+docker image rm debezium/zookeeper:2.7.3.Final
+docker image rm debezium/kafka:2.7.3.Final
+docker image rm debezium/connect:2.7.3.Final
+```
+
+No elimines `provectuslabs/kafka-ui:latest` ni
+`danielqsj/kafka-exporter:v1.9.0`, porque tambien se usan en el stack Kafka
+moderno.
 
 Luego Spark puede levantarse conectado a esa red:
 
