@@ -343,10 +343,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#arquitectura-del-proyecto" class="md-nav__link">
+  <a href="#arquitectura-del-laboratorio" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Arquitectura del proyecto
+        Arquitectura del laboratorio
       
     </span>
   </a>
@@ -358,6 +358,17 @@
     <span class="md-ellipsis">
       
         Flujo de trabajo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitectura-uber" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitectura Uber
       
     </span>
   </a>
@@ -918,10 +929,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#arquitectura-del-proyecto" class="md-nav__link">
+  <a href="#arquitectura-del-laboratorio" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Arquitectura del proyecto
+        Arquitectura del laboratorio
       
     </span>
   </a>
@@ -933,6 +944,17 @@
     <span class="md-ellipsis">
       
         Flujo de trabajo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitectura-uber" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitectura Uber
       
     </span>
   </a>
@@ -1023,7 +1045,7 @@ a la toma de decisiones.</p>
 <li>Sesion 15: Sustentacion final con demo end-to-end.</li>
 <li>Sesion 16: Evaluacion final.</li>
 </ul>
-<h2 id="arquitectura-del-proyecto">Arquitectura del proyecto<a class="headerlink" href="#arquitectura-del-proyecto" title="Permanent link">&para;</a></h2>
+<h2 id="arquitectura-del-laboratorio">Arquitectura del laboratorio<a class="headerlink" href="#arquitectura-del-laboratorio" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
     subgraph PySparkModule["pyspark"]
         direction TB
@@ -1096,6 +1118,14 @@ a la toma de decisiones.</p>
 <li>En los laboratorios de streaming, Spark consume eventos desde el broker y produce resultados para BI/ML.</li>
 <li>Los casos de uso publican y consumen eventos para simular flujos reales.</li>
 </ol>
+<h2 id="arquitectura-uber">Arquitectura Uber<a class="headerlink" href="#arquitectura-uber" title="Permanent link">&para;</a></h2>
+<p>Uber maneja millones de eventos por segundo en tiempo real usando Kafka como
+columna vertebral de su sistema de datos. La siguiente imagen muestra como
+organizan el almacenamiento por niveles (tiered storage) para procesar
+pedidos, pagos y ubicaciones a escala global. Esta arquitectura inspira los
+conceptos que veremos en el curso: streaming, particionamiento, tolerancia a
+fallos y procesamiento distribuido.</p>
+<p><img alt="Arquitectura Uber" src="https://lh7-us.googleusercontent.com/docsz/AD_4nXePSpSp72unfaVqK7tofbbbOpMaZLJ7qYJ2Es-Chg3CHBeZ9kcJDZ9ouvPRYs-CarI8bAqXs2459rJ0_QrsgBaUwqikE5fwYSianNkl1u6Ehbjz_yH6XuWJGn54P5kCaRSaBrCgeVPN4q2QC_RDu9ag1YgU?key=kis14CJAvWJjUiCdmN0jHg" /></p>
 
 
 
