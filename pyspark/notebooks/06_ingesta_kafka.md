@@ -1,10 +1,18 @@
-# Ingesta en tiempo real con Kafka
+# Ingesta de eventos empresariales en tiempo real
 
 ## Proposito de la sesion
 
-Implementar y validar un flujo basico de ingesta en tiempo real con Apache Kafka para un caso de e-commerce.
+Implementar y validar un flujo basico de ingesta de eventos empresariales en
+tiempo real. En el laboratorio se usa Kafka como broker principal, pero el
+patron tambien puede implementarse con otras tecnologias de mensajeria o event
+streaming.
 
-La practica conecta tres niveles de trabajo:
+La practica puede trabajarse con uno de dos casos empresariales:
+
+- **Caso MS:** microservicios que publican y consumen eventos de negocio.
+- **Caso replica-cdc:** cambios de una base OLTP capturados con Debezium y publicados en Kafka.
+
+En el caso MS, la practica conecta tres niveles de trabajo:
 
 - producer y consumer manuales dentro del broker Kafka;
 - producer y consumer en Python para pruebas rapidas;
@@ -13,6 +21,10 @@ La practica conecta tres niveles de trabajo:
 ## Resultado esperado
 
 Al finalizar, debes demostrar que Kafka recibe eventos en el topic `orden-eventos`, que los productores pueden publicar mensajes y que los consumidores pueden leerlos desde consola, Python o Spring Boot.
+
+Si el grupo trabaja el caso replica-cdc, el resultado equivalente es demostrar
+que los cambios de una tabla OLTP llegan a Kafka como eventos CDC y quedan
+disponibles para consumo posterior con Spark.
 
 El flujo de referencia es:
 

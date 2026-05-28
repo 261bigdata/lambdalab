@@ -50,10 +50,10 @@ nav:
       - 4. HDFS y formatos: unidad-1/04_hdfs_formatos.md
       - 5. Evaluacion U1: unidad-1/05_evaluacion_u1.md
   - U2 Streaming, operacion y ML a escala:
-      - 6. Ingesta en tiempo real con Kafka: unidad-2/06_ingesta_kafka.md
-      - 7. Streaming con Spark: unidad-2/07_spark_streaming.md
-      - 8. Observabilidad y costos: unidad-2/08_observabilidad_costos.md
-      - 9. ML distribuido con MLlib: unidad-2/09_ml_distribuido_regresion_mllib.md
-      - 10. Series de tiempo e inferencia: unidad-2/10_series_tiempo_inferencia_spark.md
-      - 11. Tuning y experimentacion distribuida: unidad-2/11_tuning_experimentacion_distribuida.md
+      - 6. Ingesta de eventos empresariales: unidad-2/06_ingesta_kafka.md
+      - 7. Ingesta de eventos IoT/sensores: unidad-2/07_ingesta_sensores.md
+      - 8. Procesamiento streaming con Spark: unidad-2/08_spark_streaming.md
+      - 9. Observabilidad y costos: unidad-2/09_observabilidad_costos.md
+      - 10. BI/ML distribuido con Spark: unidad-2/10_bi_ml_distribuido_spark.md
+      - 11. Series de tiempo e inferencia: unidad-2/11_series_tiempo_inferencia_spark.md
       - 12. Evaluacion U2: unidad-2/12_evaluacion_u2.md

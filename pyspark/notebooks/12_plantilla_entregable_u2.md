@@ -1,11 +1,10 @@
-# PLANTILLA - ENTREGABLE UNIDAD 2
+# Plantilla entregable U2
 
 ## Unidad 2: Sistema Big Data en tiempo real
 
-**Producto de la unidad:** Pipeline streaming en Spark para ML/BI a escala y en tiempo real.
-
-**Alcance de esta plantilla:** La Unidad 2 abarca únicamente las sesiones 6, 7 y 8.  
-Las sesiones 9, 10 y 11 se reservan para la Unidad 3.
+**Producto de la unidad:** pipeline streaming con multiples patrones de ingesta
+y Spark, observabilidad, estimacion de recursos/costos y modelo
+predictivo de analitica/ML entrenado y evaluado.
 
 ---
 
@@ -21,17 +20,23 @@ Las sesiones 9, 10 y 11 se reservan para la Unidad 3.
 
 ## Entregable esperado
 
-El estudiante/equipo debe presentar un pipeline streaming funcional basado en Kafka y Spark Structured Streaming, acompañado de evidencias técnicas, métricas operativas y una propuesta básica de observabilidad, costos y escalado.
+El estudiante/equipo debe presentar un pipeline streaming funcional basado en un
+sistema de mensajeria/event streaming y procesamiento con Spark, acompanado de
+evidencias tecnicas, metricas operativas, propuesta de observabilidad/costos y
+un modelo predictivo entrenado y evaluado para integrarse en la U3.
 
 ---
 
 ## Sesiones de la Unidad 2
 
-| Sesión | Tema | Contenido | Actividad práctica de sesión | Actividad de aprendizaje autónomo | Evidencia esperada |
-|---|---|---|---|---|---|
-| S6 | Kafka para ingesta en tiempo real | Apache Kafka: tópicos, productores, consumidores y patrones de ingesta en tiempo real. | Crear un tópico y ejecutar productor/consumidor. Definir el esquema de evento y el patrón de ingesta para el caso. | Documentar el contrato de evento: campos, tipos, ejemplos y estrategia de particionado del tópico. | Capturas o logs del tópico, productor, consumidor y ejemplo de mensaje. |
-| S7 | Procesamiento en Streaming con Spark | Spark Structured Streaming: micro-batch, ventanas, watermarking y semántica de entrega. | Implementar un stream con ventanas y watermarking. Medir comportamiento del pipeline: latencia y throughput. | Ajustar parámetros como trigger y watermark. Registrar efectos en latencia/throughput mediante una tabla comparativa. | Notebook, script o evidencia de ejecución del stream con resultados medidos. |
-| S8 | Observabilidad, costos y escalado | Métricas de operación, logging estructurado, alertas, estimación de recursos, costos y buenas prácticas de escalado. | Instrumentar el pipeline con métricas de latencia, throughput y errores. Definir alertas, umbrales y estimación de recursos/costos. | Proponer un tablero mínimo de operación y redactar una nota operativa con riesgos, backpressure y plan de escalado/optimización. | Métricas, logs, propuesta de dashboard, alertas, estimación de costos y plan operativo. |
+| Sesion | Tema | Actividad practica | Evidencia esperada |
+|---|---|---|---|
+| S6 | Ingesta de eventos empresariales en tiempo real | Publicar eventos de negocio desde microservicios o cambios CDC desde una base OLTP. | Topics, producer/consumer, contrato de evento y evidencias del caso elegido. |
+| S7 | Ingesta de eventos IoT/sensores en tiempo real | Publicar eventos de sensores desde simulador, Wokwi o bridge MQTT/HTTP. | Topic de sensores, mensajes publicados, consumer y contrato del evento sensor. |
+| S8 | Procesamiento streaming con Spark | Consumir eventos desde el broker con Spark, parsear JSON, validar esquema y transformar datos. | Notebook/script de streaming, checkpoint, salidas y validaciones. |
+| S9 | Observabilidad, costos y escalado | Medir latencia, throughput, lag, errores; proponer dashboard, alertas y recursos. | Metricas, logs, dashboard, alertas y estimacion de costos/escalado. |
+| S10 | BI/ML distribuido con Spark | Construir datasets analiticos, features, tablas mart o dataset de entrenamiento. | Salidas BI/ML en Parquet, features y/o tablas Gold/Mart. |
+| S11 | Series de tiempo e inferencia en streaming | Entrenar/evaluar modelo predictivo e implementar evidencia de inferencia batch o streaming. | Modelo, metricas, predicciones y evidencia de inferencia. |
 
 ---
 
@@ -39,32 +44,34 @@ El estudiante/equipo debe presentar un pipeline streaming funcional basado en Ka
 
 ### 1. Resumen ejecutivo
 
-Describir brevemente el objetivo del pipeline streaming, el problema abordado y el resultado obtenido.
+Describe el objetivo del pipeline streaming, el caso elegido y el resultado
+obtenido.
 
 ### 2. Arquitectura del pipeline
 
-Incluir una explicación de los componentes principales:
+Incluye:
 
-- Fuente de datos.
-- Kafka como sistema de ingesta.
-- Spark Structured Streaming como motor de procesamiento.
-- Salida del pipeline para BI, monitoreo o almacenamiento.
-- Supuestos técnicos de ejecución.
+- fuente de datos: MS, replica-cdc o sensores;
+- sistema de mensajeria/event streaming como capa de ingesta;
+- Spark como motor de procesamiento;
+- almacenamiento/salidas analiticas;
+- capa BI/ML;
+- observabilidad y supuestos de ejecucion.
 
-### 3. Ingesta en tiempo real con Kafka
+### 3. Ingesta de eventos en tiempo real
 
-Documentar:
+Documenta:
 
-- Nombre del tópico.
-- Número de particiones.
-- Estrategia de particionado.
-- Productor utilizado.
-- Consumidor utilizado.
-- Ejemplo de evento generado.
+- caso elegido en S6: MS o replica-cdc;
+- caso sensores en S7;
+- topics, colas o canales utilizados;
+- productores y consumidores;
+- estrategia de particionado;
+- ejemplos de eventos.
 
 #### Contrato de evento
 
-| Campo | Tipo de dato | Descripción | Ejemplo |
+| Campo | Tipo de dato | Descripcion | Ejemplo |
 |---|---|---|---|
 | | | | |
 | | | | |
@@ -72,99 +79,82 @@ Documentar:
 
 ### 4. Procesamiento en streaming con Spark
 
-Documentar:
+Documenta:
 
-- Fuente de lectura desde Kafka.
-- Transformaciones aplicadas.
-- Uso de ventanas.
-- Uso de watermarking.
-- Configuración de trigger.
-- Salida del stream.
+- lectura desde el broker/event stream;
+- parseo JSON;
+- validacion de esquema;
+- filtros y transformaciones;
+- ventanas o watermarking si aplica;
+- checkpoint;
+- salida del stream.
 
-#### Parámetros utilizados
+### 5. Observabilidad y rendimiento
 
-| Parámetro | Valor | Justificación |
-|---|---|---|
-| Trigger | | |
-| Watermark | | |
-| Ventana | | |
-| Output mode | | |
-| Checkpoint | | |
+Registra resultados de pruebas controladas.
 
-### 5. Métricas de rendimiento
+| Prueba | Fuente | Trigger | Throughput | Latencia | Lag/errores | Observaciones |
+|---|---|---|---|---|---|---|
+| 1 | | | | | | |
+| 2 | | | | | | |
+| 3 | | | | | | |
 
-Registrar resultados de pruebas controladas.
+### 6. Costos y escalado
 
-| Prueba | Trigger | Watermark | Throughput | Latencia | Observaciones |
-|---|---|---|---|---|---|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
+Estima:
 
-### 6. Observabilidad del pipeline
+- CPU;
+- memoria;
+- particiones, colas o canales del broker;
+- ejecutores Spark;
+- volumen de datos esperado;
+- almacenamiento;
+- riesgos de backpressure;
+- estrategia de escalado.
 
-Describir cómo se monitorea el pipeline.
+### 7. BI/ML distribuido con Spark
 
-Incluir:
+Documenta:
 
-- Métricas clave.
-- Logs generados.
-- Errores identificados.
-- Umbrales de alerta.
-- Propuesta de dashboard mínimo.
+- dataset analitico generado;
+- features construidas;
+- tablas Gold/Mart si aplica;
+- salidas en Parquet;
+- uso previsto para BI o ML.
 
-#### Dashboard mínimo propuesto
+### 8. Modelo predictivo e inferencia
 
-| Métrica | Descripción | Umbral sugerido | Frecuencia de revisión |
-|---|---|---|---|
-| Latencia | | | |
-| Throughput | | | |
-| Errores | | | |
-| Backpressure | | | |
+Incluye:
 
-### 7. Costos y escalado
+- objetivo del modelo;
+- variables/features;
+- algoritmo usado;
+- metricas de evaluacion;
+- predicciones generadas;
+- evidencia de inferencia batch o streaming;
+- artefactos/modelo listos para integrarse en U3.
 
-Estimar los recursos necesarios para operar el pipeline.
+### 9. Evidencias
 
-Considerar:
+Adjunta o referencia:
 
-- CPU.
-- Memoria.
-- Número de particiones Kafka.
-- Número de ejecutores Spark.
-- Volumen de datos esperado.
-- Riesgos de backpressure.
-- Estrategia de escalado.
+- capturas de ejecucion;
+- logs;
+- salidas de consola;
+- fragmentos de codigo;
+- notebooks/scripts usados;
+- metricas del pipeline;
+- metricas del modelo;
+- archivos Parquet o artefactos generados.
 
-#### Estimación de recursos
+### 10. Conclusiones
 
-| Recurso | Estimación | Justificación |
-|---|---|---|
-| CPU | | |
-| Memoria | | |
-| Particiones Kafka | | |
-| Ejecutores Spark | | |
-| Almacenamiento | | |
+Resume:
 
-### 8. Evidencias
-
-Adjuntar o referenciar evidencias como:
-
-- Capturas de ejecución.
-- Logs.
-- Salidas de consola.
-- Fragmentos de código.
-- Resultados de pruebas.
-- Tablas de métricas.
-
-### 9. Conclusiones
-
-Resumir:
-
-- Qué se logró implementar.
-- Qué limitaciones se encontraron.
-- Qué mejoras se proponen.
-- Cómo se podría preparar el pipeline para una siguiente etapa con ML distribuido.
+- que se logro implementar;
+- que limitaciones se encontraron;
+- que decisiones tecnicas se tomaron;
+- como se integrara el resultado en U3 mediante DataOps/DevOps.
 
 ---
 
@@ -172,20 +162,22 @@ Resumir:
 
 | Criterio | Cumple | Observaciones |
 |---|---|---|
-| Se creó y probó un tópico Kafka. | [ ] | |
-| Se ejecutó productor y consumidor. | [ ] | |
-| Se documentó el contrato de evento. | [ ] | |
-| Se implementó un pipeline con Spark Structured Streaming. | [ ] | |
-| Se usaron ventanas y watermarking. | [ ] | |
-| Se midió latencia y throughput. | [ ] | |
-| Se propuso una estrategia de observabilidad. | [ ] | |
-| Se definieron métricas, alertas y umbrales. | [ ] | |
-| Se estimaron costos o recursos de operación. | [ ] | |
-| Se propuso una estrategia de escalado. | [ ] | |
-| Se adjuntaron evidencias técnicas. | [ ] | |
+| Se implemento ingesta de eventos para caso MS o replica-cdc. | [ ] | |
+| Se implemento o documento ingesta de eventos para sensores. | [ ] | |
+| Se documentaron contratos de evento. | [ ] | |
+| Se implemento procesamiento streaming con Spark. | [ ] | |
+| Se midio latencia, throughput, lag o errores. | [ ] | |
+| Se propuso observabilidad con dashboard, metricas y alertas. | [ ] | |
+| Se estimaron recursos, costos y escalado. | [ ] | |
+| Se genero dataset BI/ML o tablas mart en Parquet. | [ ] | |
+| Se entreno y evaluo un modelo predictivo. | [ ] | |
+| Se evidencio inferencia batch o streaming. | [ ] | |
+| Se adjuntaron evidencias tecnicas reproducibles. | [ ] | |
 
 ---
 
 ## Producto final de Unidad 2
 
-Pipeline streaming Kafka + Spark con métricas de rendimiento, documentación operativa, propuesta de observabilidad y estimación básica de costos/escalado.
+Pipeline streaming con multiples fuentes de ingesta y Spark,
+observabilidad operativa, salidas BI/ML y modelo predictivo listo para integrarse
+y desplegarse en la U3.
