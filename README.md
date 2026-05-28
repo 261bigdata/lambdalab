@@ -30,7 +30,7 @@ docker compose -f pyspark/compose.yml up --build
 Luego abre:
 
 ```text
-http://localhost:4488
+http://localhost:8000/?token=sintoken
 ```
 
 Spark UI queda disponible en:
@@ -77,7 +77,7 @@ Servicios disponibles:
 
 | Modulo | Servicio | Host | Contenedor |
 |---|---|---:|---:|
-| `pyspark` | Jupyter | 4488 | 8888 |
+| `pyspark` | Jupyter | 8000 | 8888 |
 | `pyspark` | Spark UI | 4040 | 4040 |
 | `kafka` | Kafka externo | 49092 | 49092 |
 | `kafka` | Kafka Exporter | 49308 | 9308 |

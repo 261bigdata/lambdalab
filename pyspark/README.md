@@ -33,7 +33,7 @@ kafka:9092
 Luego abre Jupyter en:
 
 ```text
-http://localhost:4488
+http://localhost:8000/?token=sintoken
 ```
 
 Los notebooks quedan montados dentro del contenedor en:
