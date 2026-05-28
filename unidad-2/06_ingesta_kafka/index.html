@@ -16,7 +16,7 @@
         <link rel="prev" href="../../unidad-1/05_evaluacion_u1/">
       
       
-        <link rel="next" href="../07_spark_streaming/">
+        <link rel="next" href="../07_ingesta_sensores/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>6. Ingesta en tiempo real con Kafka - LambdaLab</title>
+        <title>6. Ingesta de eventos empresariales - LambdaLab</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ingesta-en-tiempo-real-con-kafka" class="md-skip">
+        <a href="#ingesta-de-eventos-empresariales-en-tiempo-real" class="md-skip">
           Saltar a contenido
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              6. Ingesta en tiempo real con Kafka
+              6. Ingesta de eventos empresariales
             
           </span>
         </div>
@@ -522,7 +522,7 @@
   <span class="md-ellipsis">
     
   
-    6. Ingesta en tiempo real con Kafka
+    6. Ingesta de eventos empresariales
   
 
     
@@ -540,7 +540,7 @@
   <span class="md-ellipsis">
     
   
-    6. Ingesta en tiempo real con Kafka
+    6. Ingesta de eventos empresariales
   
 
     
@@ -730,14 +730,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../07_spark_streaming/" class="md-nav__link">
+      <a href="../07_ingesta_sensores/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    7. Streaming con Spark
+    7. Ingesta de eventos IoT/sensores
   
 
     
@@ -758,14 +758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../08_observabilidad_costos/" class="md-nav__link">
+      <a href="../08_spark_streaming/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    8. Observabilidad y costos
+    8. Procesamiento streaming con Spark
   
 
     
@@ -786,14 +786,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../09_ml_distribuido_regresion_mllib/" class="md-nav__link">
+      <a href="../09_observabilidad_costos/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    9. ML distribuido con MLlib
+    9. Observabilidad y costos
   
 
     
@@ -814,14 +814,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../10_series_tiempo_inferencia_spark/" class="md-nav__link">
+      <a href="../10_bi_ml_distribuido_spark/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    10. Series de tiempo e inferencia
+    10. BI/ML distribuido con Spark
   
 
     
@@ -842,14 +842,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../11_tuning_experimentacion_distribuida/" class="md-nav__link">
+      <a href="../11_series_tiempo_inferencia_spark/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    11. Tuning y experimentacion distribuida
+    11. Series de tiempo e inferencia
   
 
     
@@ -1090,10 +1090,18 @@
 
 
 
-<h1 id="ingesta-en-tiempo-real-con-kafka">Ingesta en tiempo real con Kafka<a class="headerlink" href="#ingesta-en-tiempo-real-con-kafka" title="Permanent link">&para;</a></h1>
+<h1 id="ingesta-de-eventos-empresariales-en-tiempo-real">Ingesta de eventos empresariales en tiempo real<a class="headerlink" href="#ingesta-de-eventos-empresariales-en-tiempo-real" title="Permanent link">&para;</a></h1>
 <h2 id="proposito-de-la-sesion">Proposito de la sesion<a class="headerlink" href="#proposito-de-la-sesion" title="Permanent link">&para;</a></h2>
-<p>Implementar y validar un flujo basico de ingesta en tiempo real con Apache Kafka para un caso de e-commerce.</p>
-<p>La practica conecta tres niveles de trabajo:</p>
+<p>Implementar y validar un flujo basico de ingesta de eventos empresariales en
+tiempo real. En el laboratorio se usa Kafka como broker principal, pero el
+patron tambien puede implementarse con otras tecnologias de mensajeria o event
+streaming.</p>
+<p>La practica puede trabajarse con uno de dos casos empresariales:</p>
+<ul>
+<li><strong>Caso MS:</strong> microservicios que publican y consumen eventos de negocio.</li>
+<li><strong>Caso replica-cdc:</strong> cambios de una base OLTP capturados con Debezium y publicados en Kafka.</li>
+</ul>
+<p>En el caso MS, la practica conecta tres niveles de trabajo:</p>
 <ul>
 <li>producer y consumer manuales dentro del broker Kafka;</li>
 <li>producer y consumer en Python para pruebas rapidas;</li>
@@ -1101,6 +1109,9 @@
 </ul>
 <h2 id="resultado-esperado">Resultado esperado<a class="headerlink" href="#resultado-esperado" title="Permanent link">&para;</a></h2>
 <p>Al finalizar, debes demostrar que Kafka recibe eventos en el topic <code>orden-eventos</code>, que los productores pueden publicar mensajes y que los consumidores pueden leerlos desde consola, Python o Spring Boot.</p>
+<p>Si el grupo trabaja el caso replica-cdc, el resultado equivalente es demostrar
+que los cambios de una tabla OLTP llegan a Kafka como eventos CDC y quedan
+disponibles para consumo posterior con Spark.</p>
 <p>El flujo de referencia es:</p>
 <div class="highlight"><pre><span></span><code>ec-orden-ms -&gt; orden-eventos -&gt; ec-pago-ms -&gt; pago-eventos
 </code></pre></div>

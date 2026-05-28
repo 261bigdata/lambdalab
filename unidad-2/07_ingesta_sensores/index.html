@@ -13,26 +13,28 @@
       
       
       
+        <link rel="prev" href="../06_ingesta_kafka/">
       
-        <link rel="next" href="unidad-1/01_arquitecturas_big_data/">
+      
+        <link rel="next" href="../08_spark_streaming/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>LambdaLab</title>
+        <title>7. Ingesta de eventos IoT/sensores - LambdaLab</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#lambdalab" class="md-skip">
+        <a href="#ingesta-de-eventos-iotsensores-en-tiempo-real" class="md-skip">
           Saltar a contenido
         </a>
       
@@ -92,7 +94,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Cabecera">
-    <a href="." title="LambdaLab" class="md-header__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+    <a href="../.." title="LambdaLab" class="md-header__button md-logo" aria-label="LambdaLab" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Inicio
+              7. Ingesta de eventos IoT/sensores
             
           </span>
         </div>
@@ -204,7 +206,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="LambdaLab" class="md-nav__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+    <a href="../.." title="LambdaLab" class="md-nav__button md-logo" aria-label="LambdaLab" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -219,37 +221,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inicio
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -265,87 +240,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Tabla de contenidos
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#arquitectura-del-proyecto" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Arquitectura del proyecto
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#flujo-de-trabajo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Flujo de trabajo
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#unidades" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unidades
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Unidades">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#u1-arquitecturas-big-data-y-etl-distribuido" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        U1: Arquitecturas Big Data y ETL distribuido
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#u2-sistema-big-data-en-tiempo-real" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        U2: Sistema Big Data en tiempo real
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -411,7 +305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-1/01_arquitecturas_big_data/" class="md-nav__link">
+      <a href="../../unidad-1/01_arquitecturas_big_data/" class="md-nav__link">
         
   
   
@@ -439,7 +333,7 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-1/02_fundamentos_spark/" class="md-nav__link">
+      <a href="../../unidad-1/02_fundamentos_spark/" class="md-nav__link">
         
   
   
@@ -467,7 +361,7 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-1/03_etl_spark/" class="md-nav__link">
+      <a href="../../unidad-1/03_etl_spark/" class="md-nav__link">
         
   
   
@@ -495,7 +389,7 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-1/04_hdfs_formatos/" class="md-nav__link">
+      <a href="../../unidad-1/04_hdfs_formatos/" class="md-nav__link">
         
   
   
@@ -523,7 +417,7 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-1/05_evaluacion_u1/" class="md-nav__link">
+      <a href="../../unidad-1/05_evaluacion_u1/" class="md-nav__link">
         
   
   
@@ -555,8 +449,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -567,13 +463,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -594,7 +488,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -612,7 +506,7 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-2/06_ingesta_kafka/" class="md-nav__link">
+      <a href="../06_ingesta_kafka/" class="md-nav__link">
         
   
   
@@ -637,10 +531,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="unidad-2/07_ingesta_sensores/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Ingesta de eventos IoT/sensores
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -656,6 +577,114 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#proposito-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proposito de la sesion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resultado-esperado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resultado esperado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flujo-de-referencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo de referencia
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topic-sugerido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topic sugerido
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evento-sugerido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evento sugerido
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actividades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evidencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidencias
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relacion-con-las-siguientes-sesiones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relacion con las siguientes sesiones
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -668,7 +697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-2/08_spark_streaming/" class="md-nav__link">
+      <a href="../08_spark_streaming/" class="md-nav__link">
         
   
   
@@ -696,7 +725,7 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-2/09_observabilidad_costos/" class="md-nav__link">
+      <a href="../09_observabilidad_costos/" class="md-nav__link">
         
   
   
@@ -724,7 +753,7 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-2/10_bi_ml_distribuido_spark/" class="md-nav__link">
+      <a href="../10_bi_ml_distribuido_spark/" class="md-nav__link">
         
   
   
@@ -752,7 +781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-2/11_series_tiempo_inferencia_spark/" class="md-nav__link">
+      <a href="../11_series_tiempo_inferencia_spark/" class="md-nav__link">
         
   
   
@@ -780,7 +809,7 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-2/12_evaluacion_u2/" class="md-nav__link">
+      <a href="../12_evaluacion_u2/" class="md-nav__link">
         
   
   
@@ -835,10 +864,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#arquitectura-del-proyecto" class="md-nav__link">
+  <a href="#proposito-de-la-sesion" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Arquitectura del proyecto
+        Proposito de la sesion
       
     </span>
   </a>
@@ -846,10 +875,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#flujo-de-trabajo" class="md-nav__link">
+  <a href="#resultado-esperado" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Flujo de trabajo
+        Resultado esperado
       
     </span>
   </a>
@@ -857,41 +886,68 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#unidades" class="md-nav__link">
+  <a href="#flujo-de-referencia" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Unidades
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Unidades">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#u1-arquitecturas-big-data-y-etl-distribuido" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        U1: Arquitecturas Big Data y ETL distribuido
+        Flujo de referencia
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#u2-sistema-big-data-en-tiempo-real" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#topic-sugerido" class="md-nav__link">
     <span class="md-ellipsis">
       
-        U2: Sistema Big Data en tiempo real
+        Topic sugerido
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#evento-sugerido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evento sugerido
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actividades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evidencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidencias
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relacion-con-las-siguientes-sesiones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relacion con las siguientes sesiones
+      
+    </span>
+  </a>
   
 </li>
       
@@ -912,87 +968,58 @@
 
 
 
-<h1 id="lambdalab">LambdaLab<a class="headerlink" href="#lambdalab" title="Permanent link">&para;</a></h1>
-<p>Curso practico de Big Data con procesamiento distribuido, streaming, observabilidad y BI/ML distribuido.</p>
-<h2 id="arquitectura-del-proyecto">Arquitectura del proyecto<a class="headerlink" href="#arquitectura-del-proyecto" title="Permanent link">&para;</a></h2>
-<pre class="mermaid"><code>flowchart LR
-    subgraph PySparkModule["pyspark"]
-        direction TB
-        Notebooks["notebooks/*.ipynb"]
-        Jupyter["Jupyter&lt;br/&gt;localhost:4488"]
-        Spark["Spark / PySpark&lt;br/&gt;localhost:4040"]
-        Data["data/*.csv"]
-        Artifacts["artifacts/"]
-        Notebooks --&gt; Jupyter --&gt; Spark
-        Data --&gt; Spark --&gt; Artifacts
-    end
-
-    subgraph UseFast["uso-rapido"]
-        PyQuick["ec-orden-py&lt;br/&gt;publica / consume&lt;br/&gt;orden-eventos"]
-    end
-
-    subgraph UseMS["uso-ms-sb"]
-        direction TB
-        OrdenMS["ec-orden-ms&lt;br/&gt;API localhost:49021&lt;br/&gt;publica orden-eventos"]
-        OrdenDB["mysql ordenes&lt;br/&gt;localhost:49020"]
-        PagoMS["ec-pago-ms&lt;br/&gt;API localhost:49031&lt;br/&gt;consume orden-eventos&lt;br/&gt;publica pago-eventos"]
-        PagoDB["mysql pagos&lt;br/&gt;localhost:49030"]
-        OrdenMS --&gt; OrdenDB
-        PagoMS --&gt; PagoDB
-    end
-
-    subgraph UseIoT["uso-atmos"]
-        IoT["pendiente"]
-    end
-
-    subgraph UseCDC["uso-replica-cdc"]
-        CDC["pendiente&lt;br/&gt;MySQL -&gt; Debezium -&gt; Kafka -&gt; PostgreSQL RAW&lt;br/&gt;migracion / Spark BI-ML"]
-    end
-
-    subgraph KafkaModule["kafka"]
-        direction TB
-        subgraph KafkaStack[" "]
-            direction TB
-            Kafka["Apache Kafka&lt;br/&gt;kafka:9092&lt;br/&gt;localhost:49092"]
-            KafkaUI["Kafka UI&lt;br/&gt;localhost:48085"]
-            KafkaExporter["Kafka Exporter&lt;br/&gt;localhost:49308"]
-            Kafka --&gt; KafkaUI
-            Kafka --&gt; KafkaExporter
-        end
-    end
-
-    subgraph ObsModule["obs"]
-        direction TB
-        subgraph ObsStack[" "]
-            direction TB
-            Prometheus["Prometheus&lt;br/&gt;localhost:49090"]
-            Grafana["Grafana&lt;br/&gt;localhost:43000"]
-            Prometheus --&gt; Grafana
-        end
-    end
-
-    PySparkModule --&gt;|"U2: streaming consumer"| Kafka
-    UseFast --&gt;|"orden-eventos"| Kafka
-    UseMS --&gt;|"orden-eventos / pago-eventos"| Kafka
-    UseIoT -. "futuro" .-&gt; Kafka
-    UseCDC -. "futuro: migracion CDC" .-&gt; Kafka
-    KafkaExporter --&gt;|"metricas"| Prometheus
-
-    style KafkaStack fill:transparent,stroke:transparent,color:transparent
-    style ObsStack fill:transparent,stroke:transparent,color:transparent</code></pre>
-<h2 id="flujo-de-trabajo">Flujo de trabajo<a class="headerlink" href="#flujo-de-trabajo" title="Permanent link">&para;</a></h2>
+<h1 id="ingesta-de-eventos-iotsensores-en-tiempo-real">Ingesta de eventos IoT/sensores en tiempo real<a class="headerlink" href="#ingesta-de-eventos-iotsensores-en-tiempo-real" title="Permanent link">&para;</a></h1>
+<h2 id="proposito-de-la-sesion">Proposito de la sesion<a class="headerlink" href="#proposito-de-la-sesion" title="Permanent link">&para;</a></h2>
+<p>Implementar un segundo patron de ingesta en tiempo real usando eventos de
+sensores. Esta sesion complementa el caso empresarial de la sesion 6 y prepara
+datos IoT para ser consumidos posteriormente con Spark Structured Streaming.</p>
+<h2 id="resultado-esperado">Resultado esperado<a class="headerlink" href="#resultado-esperado" title="Permanent link">&para;</a></h2>
+<p>Al finalizar, el estudiante debe tener un flujo de eventos de sensores publicado
+en Kafka, con contrato de evento documentado y evidencias de producer, topic y
+consumer.</p>
+<h2 id="flujo-de-referencia">Flujo de referencia<a class="headerlink" href="#flujo-de-referencia" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>sensor o simulador -&gt; producer/bridge -&gt; Kafka -&gt; consumer de validacion
+</code></pre></div>
+<p>Para el laboratorio se puede usar una de estas alternativas:</p>
+<ul>
+<li>simulador local en Python;</li>
+<li>Wokwi como entorno de sensores;</li>
+<li>puente MQTT/HTTP hacia Kafka, si la practica lo requiere.</li>
+</ul>
+<h2 id="topic-sugerido">Topic sugerido<a class="headerlink" href="#topic-sugerido" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>sensor-eventos
+</code></pre></div>
+<h2 id="evento-sugerido">Evento sugerido<a class="headerlink" href="#evento-sugerido" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;tipoEvento&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sensor.lectura&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;sensorId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sensor-001&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;variable&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;temperatura&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;valor&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">24.8</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;unidad&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;C&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;origen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;wokwi&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1710000000000</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
-<li>El alumno ejecuta los notebooks desde <code>pyspark/notebooks/</code> usando el laboratorio local.</li>
-<li>Spark lee datos desde <code>pyspark/data/</code> y escribe resultados temporales en <code>pyspark/artifacts/</code>.</li>
-<li>En los laboratorios de streaming, Spark consume eventos desde el broker y produce resultados para BI/ML.</li>
-<li>Los casos de uso publican y consumen eventos para simular flujos reales.</li>
+<li>Crear el topic de sensores en Kafka.</li>
+<li>Generar eventos desde el simulador o entorno Wokwi.</li>
+<li>Validar los mensajes con un consumer.</li>
+<li>Documentar el contrato del evento.</li>
+<li>Registrar evidencias para la evaluacion U2.</li>
 </ol>
-<h2 id="unidades">Unidades<a class="headerlink" href="#unidades" title="Permanent link">&para;</a></h2>
-<h3 id="u1-arquitecturas-big-data-y-etl-distribuido">U1: Arquitecturas Big Data y ETL distribuido<a class="headerlink" href="#u1-arquitecturas-big-data-y-etl-distribuido" title="Permanent link">&para;</a></h3>
-<p>Producto: pipeline batch con dataset listo para BI/ML.</p>
-<h3 id="u2-sistema-big-data-en-tiempo-real">U2: Sistema Big Data en tiempo real<a class="headerlink" href="#u2-sistema-big-data-en-tiempo-real" title="Permanent link">&para;</a></h3>
-<p>Producto: pipeline streaming con patrones de ingesta MS/CDC o sensores,
-procesamiento con Spark, observabilidad y BI/ML distribuido.</p>
+<h2 id="evidencias">Evidencias<a class="headerlink" href="#evidencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li>topic creado en Kafka;</li>
+<li>mensajes de sensores publicados;</li>
+<li>consumer recibiendo eventos;</li>
+<li>contrato de evento;</li>
+<li>observaciones sobre frecuencia, volumen y formato de mensajes.</li>
+</ul>
+<h2 id="relacion-con-las-siguientes-sesiones">Relacion con las siguientes sesiones<a class="headerlink" href="#relacion-con-las-siguientes-sesiones" title="Permanent link">&para;</a></h2>
+<p>En la sesion 8, Spark Structured Streaming podra consumir eventos de negocio,
+CDC o sensores desde Kafka. El objetivo es que el estudiante comprenda que Kafka
+puede integrar multiples fuentes de ingesta para un mismo sistema Big Data.</p>
 
 
 
@@ -1052,10 +1079,10 @@ procesamiento con Spark, observabilidad y BI/ML distribuido.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "content.code.copy", "search.suggest", "search.highlight"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
