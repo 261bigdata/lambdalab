@@ -945,6 +945,10 @@
         IoT["pendiente"]
     end
 
+    subgraph UseCDC["uso-replica-cdc"]
+        CDC["pendiente&lt;br/&gt;MySQL -&gt; Debezium -&gt; Kafka -&gt; PostgreSQL RAW&lt;br/&gt;migracion / Spark BI-ML"]
+    end
+
     subgraph KafkaModule["kafka"]
         direction TB
         subgraph KafkaStack[" "]
@@ -971,6 +975,7 @@
     UseFast --&gt;|"orden-eventos"| Kafka
     UseMS --&gt;|"orden-eventos / pago-eventos"| Kafka
     UseIoT -. "futuro" .-&gt; Kafka
+    UseCDC -. "futuro: migracion CDC" .-&gt; Kafka
     KafkaExporter --&gt;|"metricas"| Prometheus
 
     style KafkaStack fill:transparent,stroke:transparent,color:transparent
