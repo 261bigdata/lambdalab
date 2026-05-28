@@ -1309,6 +1309,113 @@ con un esquema común que funcione tanto si el productor fue hecho en <strong>Ja
 <span class="c1">#query_console.stop()</span>
 <span class="c1">#query_parquet.stop()</span>
 </code></pre></div>
+<h1 id="guia-de-sesion-spark-structured-streaming">Guia de sesion: Spark Structured Streaming<a class="headerlink" href="#guia-de-sesion-spark-structured-streaming" title="Permanent link">&para;</a></h1>
+<h2 id="proposito">Proposito<a class="headerlink" href="#proposito" title="Permanent link">&para;</a></h2>
+<p>Consumir eventos Kafka con Spark Structured Streaming, parsear mensajes JSON, validar el contrato del evento y aplicar transformaciones basicas en tiempo real.</p>
+<p>Esta guia complementa el notebook de la sesion. El notebook contiene la ejecucion paso a paso; esta seccion resume el objetivo pedagogico, las evidencias y la actividad autonoma.</p>
+<h2 id="requisitos-previos">Requisitos previos<a class="headerlink" href="#requisitos-previos" title="Permanent link">&para;</a></h2>
+<p>Antes de empezar:</p>
+<ul>
+<li>levantar Kafka desde <code>kafka/</code>;</li>
+<li>verificar que exista el topic <code>orden-eventos</code>;</li>
+<li>generar eventos desde <code>uso-rapido/ec-orden-py</code> o <code>uso-ms-sb/ec-orden-ms</code>;</li>
+<li>levantar Spark/Jupyter con el override de Kafka.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">pyspark</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="o">-f</span> <span class="n">pyspark</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">kafka</span><span class="p">.</span><span class="n">yml</span> <span class="n">up</span> <span class="p">-</span><span class="n">-build</span>
+</code></pre></div>
+<h2 id="evento-esperado_1">Evento esperado<a class="headerlink" href="#evento-esperado_1" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;tipoEvento&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orden.creada&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;ordenId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">150.0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;estado&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PENDIENTE&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;origen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ec-orden-ms&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1710000000000</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Campos minimos:</p>
+<ul>
+<li><code>tipoEvento</code></li>
+<li><code>ordenId</code></li>
+<li><code>total</code></li>
+<li><code>estado</code></li>
+</ul>
+<p>Campos recomendados:</p>
+<ul>
+<li><code>origen</code></li>
+<li><code>timestamp</code></li>
+</ul>
+<h2 id="practica">Practica<a class="headerlink" href="#practica" title="Permanent link">&para;</a></h2>
+<p>En el notebook:</p>
+<ol>
+<li>Crea una <code>SparkSession</code> con el conector Kafka.</li>
+<li>Lee desde <code>orden-eventos</code> usando <code>.format("kafka")</code>.</li>
+<li>Convierte <code>value</code> de binario a texto.</li>
+<li>Parsea el JSON con un esquema explicito.</li>
+<li>Filtra eventos invalidos.</li>
+<li>Aplica una transformacion simple, por ejemplo <code>total &gt; 100</code>.</li>
+<li>Configura salida a consola y checkpoint.</li>
+<li>Observa latencia, volumen y comportamiento del micro-batch.</li>
+</ol>
+<h2 id="que-observar">Que observar<a class="headerlink" href="#que-observar" title="Permanent link">&para;</a></h2>
+<p>Registra:</p>
+<ul>
+<li>si Spark recibe eventos en tiempo real;</li>
+<li>si el parseo JSON funciona;</li>
+<li>si el esquema coincide con el contrato;</li>
+<li>cuantos eventos pasan el filtro;</li>
+<li>diferencias entre eventos emitidos por Python y por Spring Boot;</li>
+<li>efecto de cambiar trigger, volumen o frecuencia de generacion.</li>
+</ul>
+<h2 id="evidencias">Evidencias<a class="headerlink" href="#evidencias" title="Permanent link">&para;</a></h2>
+<p>Adjunta:</p>
+<ul>
+<li>captura del notebook leyendo desde Kafka;</li>
+<li>captura del esquema parseado;</li>
+<li>salida de eventos validos;</li>
+<li>evidencia del filtro aplicado;</li>
+<li>tabla breve con observaciones de latencia y throughput.</li>
+</ul>
+<h2 id="actividad-autonoma">Actividad autonoma<a class="headerlink" href="#actividad-autonoma" title="Permanent link">&para;</a></h2>
+<p>Ajusta parametros y registra su efecto:</p>
+<table>
+<thead>
+<tr>
+<th>Prueba</th>
+<th>Trigger</th>
+<th style="text-align: right;">Eventos generados</th>
+<th style="text-align: right;">Latencia observada</th>
+<th style="text-align: right;">Eventos procesados</th>
+<th>Observaciones</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 
 
 

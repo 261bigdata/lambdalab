@@ -1745,6 +1745,286 @@
 <p>Al terminar la practica, detiene las queries activas para evitar conflictos con checkpoints o salidas Parquet.</p>
 <div class="highlight"><pre><span></span><code><span class="n">stop_active_streams</span><span class="p">()</span>
 </code></pre></div>
+<h1 id="costos-y-escalado-de-pipelines-streaming">Costos y escalado de pipelines streaming<a class="headerlink" href="#costos-y-escalado-de-pipelines-streaming" title="Permanent link">&para;</a></h1>
+<h2 id="proposito">Proposito<a class="headerlink" href="#proposito" title="Permanent link">&para;</a></h2>
+<p>Esta seccion completa la sesion de observabilidad con una estimacion cloud-agnostic de recursos, costos y escalado para el pipeline:</p>
+<div class="highlight"><pre><span></span><code>Producer -&gt; Kafka -&gt; Spark Structured Streaming
+</code></pre></div>
+<p>La idea no es elegir un proveedor cloud, sino justificar capacidad usando unidades tecnicas: vCPU, memoria, almacenamiento, red, particiones Kafka, ejecutores Spark, retencion y replicas.</p>
+<h2 id="resultado-esperado">Resultado esperado<a class="headerlink" href="#resultado-esperado" title="Permanent link">&para;</a></h2>
+<p>Entrega una propuesta tecnica que incluya:</p>
+<ul>
+<li>volumen esperado de eventos;</li>
+<li>throughput promedio y de pico;</li>
+<li>numero inicial de particiones Kafka;</li>
+<li>recursos estimados para Kafka;</li>
+<li>recursos estimados para Spark;</li>
+<li>estrategia de escalado horizontal o vertical;</li>
+<li>impacto de retencion de mensajes y logs;</li>
+<li>riesgos de lag, backpressure o saturacion;</li>
+<li>buenas practicas para optimizar costos;</li>
+<li>comparacion de escenarios pequeno, medio y alto.</li>
+</ul>
+<h2 id="caso-base">Caso base<a class="headerlink" href="#caso-base" title="Permanent link">&para;</a></h2>
+<p>Usa como referencia:</p>
+<div class="highlight"><pre><span></span><code>Producer de ordenes -&gt; Kafka topic orden-eventos -&gt; Spark Structured Streaming
+</code></pre></div>
+<p>Evento ejemplo:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;ordenId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tipoEvento&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orden.creada&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">150.0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;estado&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PENDIENTE&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1710000000000</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;origen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ec-orden-ms&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Supuestos iniciales:</p>
+<table>
+<thead>
+<tr>
+<th>Supuesto</th>
+<th style="text-align: right;">Valor inicial</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tamano promedio del evento</td>
+<td style="text-align: right;">1 KB</td>
+</tr>
+<tr>
+<td>Topic principal</td>
+<td style="text-align: right;"><code>orden-eventos</code></td>
+</tr>
+<tr>
+<td>Retencion inicial</td>
+<td style="text-align: right;">7 dias</td>
+</tr>
+<tr>
+<td>Ambiente dev</td>
+<td style="text-align: right;">1 broker, replication factor 1</td>
+</tr>
+<tr>
+<td>Ambiente productivo propuesto</td>
+<td style="text-align: right;">3 brokers, replication factor 3</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-estimar-volumen">1. Estimar volumen<a class="headerlink" href="#1-estimar-volumen" title="Permanent link">&para;</a></h2>
+<p>Formula:</p>
+<div class="highlight"><pre><span></span><code>volumen_diario = cantidad_eventos_dia * tamano_promedio_evento
+</code></pre></div>
+<p>Ejemplos:</p>
+<table>
+<thead>
+<tr>
+<th>Escenario</th>
+<th style="text-align: right;">Eventos por dia</th>
+<th style="text-align: right;">Tamano evento</th>
+<th style="text-align: right;">Volumen diario</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pequeno</td>
+<td style="text-align: right;">10 000</td>
+<td style="text-align: right;">1 KB</td>
+<td style="text-align: right;">10 MB/dia</td>
+</tr>
+<tr>
+<td>Medio</td>
+<td style="text-align: right;">1 000 000</td>
+<td style="text-align: right;">1 KB</td>
+<td style="text-align: right;">1 GB/dia</td>
+</tr>
+<tr>
+<td>Alto</td>
+<td style="text-align: right;">10 000 000</td>
+<td style="text-align: right;">1 KB</td>
+<td style="text-align: right;">10 GB/dia</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-estimar-throughput">2. Estimar throughput<a class="headerlink" href="#2-estimar-throughput" title="Permanent link">&para;</a></h2>
+<p>Formula:</p>
+<div class="highlight"><pre><span></span><code>throughput_promedio = eventos_dia / 86 400
+throughput_pico = throughput_promedio * factor_pico
+</code></pre></div>
+<p>Ejemplo:</p>
+<div class="highlight"><pre><span></span><code>1 000 000 eventos/dia / 86 400 = 11.57 eventos/s promedio
+Si el factor pico es 25, el pico aproximado es 289 eventos/s
+</code></pre></div>
+<h2 id="3-definir-particiones-kafka">3. Definir particiones Kafka<a class="headerlink" href="#3-definir-particiones-kafka" title="Permanent link">&para;</a></h2>
+<p>Mas particiones permiten mas paralelismo, pero tambien aumentan el overhead operativo.</p>
+<p>Regla practica para la propuesta:</p>
+<table>
+<thead>
+<tr>
+<th>Escenario</th>
+<th style="text-align: right;">Particiones sugeridas</th>
+<th>Criterio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pequeno</td>
+<td style="text-align: right;">1</td>
+<td>Bajo volumen y laboratorio</td>
+</tr>
+<tr>
+<td>Medio</td>
+<td style="text-align: right;">3 a 6</td>
+<td>Picos moderados y consumidores paralelos</td>
+</tr>
+<tr>
+<td>Alto</td>
+<td style="text-align: right;">12 o mas</td>
+<td>Alta concurrencia y crecimiento esperado</td>
+</tr>
+</tbody>
+</table>
+<p>La decision debe justificarse con throughput, paralelismo de consumidores y crecimiento esperado.</p>
+<h2 id="4-estimar-almacenamiento-con-retencion">4. Estimar almacenamiento con retencion<a class="headerlink" href="#4-estimar-almacenamiento-con-retencion" title="Permanent link">&para;</a></h2>
+<p>Formula:</p>
+<div class="highlight"><pre><span></span><code>almacenamiento_base = volumen_diario * dias_retencion
+almacenamiento_con_replicas = almacenamiento_base * replication_factor
+almacenamiento_recomendado = almacenamiento_con_replicas * 1.3
+</code></pre></div>
+<p>Ejemplo:</p>
+<div class="highlight"><pre><span></span><code>volumen diario: 5 GB
+retencion: 7 dias
+replication factor: 3
+
+almacenamiento_base = 35 GB
+almacenamiento_con_replicas = 105 GB
+almacenamiento_recomendado = 136.5 GB
+</code></pre></div>
+<h2 id="5-escalar-spark">5. Escalar Spark<a class="headerlink" href="#5-escalar-spark" title="Permanent link">&para;</a></h2>
+<p>Si aumenta el lag o la latencia, evalua:</p>
+<ul>
+<li>ajustar el intervalo de trigger;</li>
+<li>aumentar memoria del driver o executor;</li>
+<li>aumentar numero de executors;</li>
+<li>aumentar cores por executor;</li>
+<li>revisar particiones Kafka;</li>
+<li>optimizar transformaciones;</li>
+<li>evitar operaciones costosas por micro-batch;</li>
+<li>persistir resultados solo cuando sea necesario.</li>
+</ul>
+<p>Ejemplo operativo:</p>
+<div class="highlight"><pre><span></span><code>Si Kafka recibe 500 eventos/s y Spark procesa 200 eventos/s,
+el lag crecera y sera necesario escalar el consumer o ajustar el procesamiento.
+</code></pre></div>
+<h2 id="6-indicadores-de-riesgo">6. Indicadores de riesgo<a class="headerlink" href="#6-indicadores-de-riesgo" title="Permanent link">&para;</a></h2>
+<p>Observa:</p>
+<table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Interpretacion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kafka_consumergroup_lag</code></td>
+<td>Eventos pendientes de consumo</td>
+</tr>
+<tr>
+<td><code>numInputRows</code></td>
+<td>Eventos procesados por micro-batch</td>
+</tr>
+<tr>
+<td><code>inputRowsPerSecond</code></td>
+<td>Velocidad de entrada</td>
+</tr>
+<tr>
+<td><code>processedRowsPerSecond</code></td>
+<td>Velocidad de procesamiento</td>
+</tr>
+<tr>
+<td>Duracion del batch</td>
+<td>Tiempo usado por cada micro-batch</td>
+</tr>
+<tr>
+<td><code>latencyMs</code></td>
+<td>Diferencia entre creacion y procesamiento del evento</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7-tabla-de-escenarios">7. Tabla de escenarios<a class="headerlink" href="#7-tabla-de-escenarios" title="Permanent link">&para;</a></h2>
+<p>Completa y ajusta esta tabla:</p>
+<table>
+<thead>
+<tr>
+<th>Escenario</th>
+<th style="text-align: right;">Eventos/dia</th>
+<th style="text-align: right;">Pico eventos/s</th>
+<th style="text-align: right;">Tamano evento</th>
+<th style="text-align: right;">Particiones</th>
+<th>Kafka</th>
+<th>Spark</th>
+<th>Riesgo principal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pequeno</td>
+<td style="text-align: right;">10 000</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">1 KB</td>
+<td style="text-align: right;">1</td>
+<td>1 broker dev</td>
+<td>local/notebook</td>
+<td>bajo</td>
+</tr>
+<tr>
+<td>Medio</td>
+<td style="text-align: right;">1 000 000</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">1 KB</td>
+<td style="text-align: right;">3-6</td>
+<td>3 brokers</td>
+<td>cluster pequeno</td>
+<td>lag en picos</td>
+</tr>
+<tr>
+<td>Alto</td>
+<td style="text-align: right;">10 000 000</td>
+<td style="text-align: right;">3000</td>
+<td style="text-align: right;">1 KB</td>
+<td style="text-align: right;">12+</td>
+<td>3+ brokers</td>
+<td>cluster escalable</td>
+<td>backpressure/costo</td>
+</tr>
+</tbody>
+</table>
+<h2 id="8-buenas-practicas">8. Buenas practicas<a class="headerlink" href="#8-buenas-practicas" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Iniciar con particiones suficientes para el crecimiento esperado.</li>
+<li>No aumentar particiones sin una razon medible.</li>
+<li>Definir claves de particionado estables.</li>
+<li>Medir lag antes de escalar.</li>
+<li>Ajustar Spark segun la duracion de micro-batches.</li>
+<li>Separar ambientes <code>dev</code>, <code>test</code> y <code>prod</code>.</li>
+<li>Usar retencion acorde al caso de negocio.</li>
+<li>Evitar eventos innecesariamente grandes.</li>
+<li>Monitorear CPU, memoria, disco y red.</li>
+<li>Definir umbrales de alerta antes de operar en produccion.</li>
+</ul>
+<h2 id="evidencias">Evidencias<a class="headerlink" href="#evidencias" title="Permanent link">&para;</a></h2>
+<p>Adjunta:</p>
+<ul>
+<li>tabla de supuestos;</li>
+<li>calculo de volumen diario;</li>
+<li>calculo de throughput promedio y pico;</li>
+<li>estimacion de almacenamiento por retencion;</li>
+<li>propuesta de particiones Kafka;</li>
+<li>propuesta de recursos para Kafka y Spark;</li>
+<li>tabla de escenarios pequeno, medio y alto;</li>
+<li>lista de riesgos y mitigaciones;</li>
+<li>conclusion tecnica de escalado.</li>
+</ul>
 
 
 
