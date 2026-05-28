@@ -81,7 +81,7 @@ a la toma de decisiones.
 - Sesion 15: Sustentacion final con demo end-to-end.
 - Sesion 16: Evaluacion final.
 
-## Arquitectura del proyecto
+## Arquitectura del laboratorio
 
 ```mermaid
 flowchart LR
@@ -157,3 +157,15 @@ flowchart LR
 2. Spark lee datos desde `pyspark/data/` y escribe resultados temporales en `pyspark/artifacts/`.
 3. En los laboratorios de streaming, Spark consume eventos desde el broker y produce resultados para BI/ML.
 4. Los casos de uso publican y consumen eventos para simular flujos reales.
+
+
+## Arquitectura Uber
+
+Uber maneja millones de eventos por segundo en tiempo real usando Kafka como
+columna vertebral de su sistema de datos. La siguiente imagen muestra como
+organizan el almacenamiento por niveles (tiered storage) para procesar
+pedidos, pagos y ubicaciones a escala global. Esta arquitectura inspira los
+conceptos que veremos en el curso: streaming, particionamiento, tolerancia a
+fallos y procesamiento distribuido.
+
+![Arquitectura Uber](https://lh7-us.googleusercontent.com/docsz/AD_4nXePSpSp72unfaVqK7tofbbbOpMaZLJ7qYJ2Es-Chg3CHBeZ9kcJDZ9ouvPRYs-CarI8bAqXs2459rJ0_QrsgBaUwqikE5fwYSianNkl1u6Ehbjz_yH6XuWJGn54P5kCaRSaBrCgeVPN4q2QC_RDu9ag1YgU?key=kis14CJAvWJjUiCdmN0jHg)
