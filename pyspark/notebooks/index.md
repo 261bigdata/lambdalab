@@ -27,7 +27,7 @@ y del modelo, y demostrar valor para la toma de decisiones.
 
 ## Contenido
 
-### U1: Arquitecturas Big Data y ETL distribuido
+### U1: Arquitecturas Big Data y ETL batch distribuido
 
 Producto U1: pipeline batch de ETL distribuido con salidas analiticas en
 Parquet listas para BI/ML.
@@ -43,7 +43,7 @@ como Parquet y deja un dataset preparado para consumo BI/ML.
 - Sesion 4: Almacenamiento, HDFS y formatos.
 - Sesion 5: Evaluacion U1.
 
-### U2: Sistema Big Data en tiempo real
+### U2: Sistema Big Data en tiempo real y ETL streaming distribuido
 
 Producto U2: pipeline streaming con multiples patrones de ingesta y Spark,
 observabilidad, estimacion de recursos/costos y modelo predictivo de
