@@ -13,10 +13,12 @@ streaming, observabilidad y ML distribuido.
 - `pyspark/compose.yml`: laboratorio Spark/Jupyter.
 - `pyspark/compose.kafka.yml`: override para conectar Spark con la red Kafka.
 - `kafka/compose.yml`: broker Kafka, Kafka UI y Kafka Exporter.
+- `kafka-debezium/compose.yml`: stack Kafka alternativo con ZooKeeper, Kafka Connect y Debezium para CDC.
 - `obs/compose.yml`: Prometheus y Grafana para observabilidad.
 - `uso-rapido/`: caso de uso ligero en Python para producer/consumer Kafka.
 - `uso-ms-sb/`: caso de uso con microservicios Spring Boot.
 - `uso-atmos/`: caso de uso IoT reservado para mas adelante.
+- `uso-replica-cdc/`: caso de uso futuro para migracion CDC MySQL a PostgreSQL RAW con Debezium y ETL BI/ML con Spark.
 - `docs/`: version documental en Markdown publicada con MkDocs.
 
 ## Laboratorio Spark local
@@ -45,10 +47,35 @@ Spark UI queda disponible en:
 http://localhost:4040
 ```
 
+## Elegir stack Kafka
+
+Antes de levantar Kafka, elige el stack segun recursos y necesidad de Debezium.
+No es tanto una decision por caso de uso, porque `kafka-debezium/` tambien sirve
+para MS, MQ, Big Data, Spark y observabilidad/Telemetria IoT. La diferencia es
+que agrega ZooKeeper, Kafka Connect y Debezium, por lo que consume mas recursos.
+
+| Stack | Uso recomendado |
+|---|---|
+| `kafka/` | Usa este stack si no trabajaras CDC/Debezium. Es el Kafka moderno y mas liviano. |
+| `kafka-debezium/` | Usa este stack si trabajaras CDC/Debezium. Tambien sirve para MS, MQ, Spark, observabilidad y Telemetria IoT. |
+
+Ambos stacks usan los mismos puertos, el mismo alias interno `kafka:9092` y la
+misma red `lambdalab-kafka-net`. Tecnicamente podrian correr en paralelo si se
+cambian puertos, nombres internos, alias y red Docker, pero para el curso se
+recomienda ejecutar solo uno a la vez por equipos limitados y claridad operativa.
+
 Para trabajar con streaming, primero levanta Kafka:
 
 ```powershell
 cd kafka
+docker compose up -d
+cd ..
+```
+
+Si la sesion requiere CDC/Debezium, levanta el stack alternativo:
+
+```powershell
+cd kafka-debezium
 docker compose up -d
 cd ..
 ```
@@ -88,6 +115,8 @@ Servicios disponibles:
 | `kafka` | Kafka externo | 49092 | 49092 |
 | `kafka` | Kafka Exporter | 49308 | 9308 |
 | `kafka` | Kafka UI | 48085 | 8080 |
+| `kafka-debezium` | Kafka Connect | 48083 | 8083 |
+| `kafka-debezium` | ZooKeeper | 42181 | 2181 |
 | `obs` | Prometheus | 49090 | 9090 |
 | `obs` | Grafana | 43000 | 3000 |
 | `obs` | Loki, comentado | 43100 | 3100 |
@@ -105,6 +134,7 @@ que puedan identificarse y eliminarse en bloque.
 - Python rapido: `uso-rapido/ec-orden-py`
 - Spring Boot: `uso-ms-sb/ec-orden-ms` y `uso-ms-sb/ec-pago-ms`
 - IoT: `uso-atmos` queda reservado para una practica posterior.
+- Migracion CDC MySQL a PostgreSQL RAW con Debezium: `uso-replica-cdc` queda reservado para una practica posterior con dos caminos: migracion sin detener el monolito y ETL BI/ML con Spark.
 
 ## Sitio de documentacion
 

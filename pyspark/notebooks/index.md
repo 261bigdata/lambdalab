@@ -35,6 +35,10 @@ flowchart LR
         IoT["pendiente"]
     end
 
+    subgraph UseCDC["uso-replica-cdc"]
+        CDC["pendiente<br/>MySQL -> Debezium -> Kafka -> PostgreSQL RAW<br/>migracion / Spark BI-ML"]
+    end
+
     subgraph KafkaModule["kafka"]
         direction TB
         subgraph KafkaStack[" "]
@@ -61,6 +65,7 @@ flowchart LR
     UseFast -->|"orden-eventos"| Kafka
     UseMS -->|"orden-eventos / pago-eventos"| Kafka
     UseIoT -. "futuro" .-> Kafka
+    UseCDC -. "futuro: migracion CDC" .-> Kafka
     KafkaExporter -->|"metricas"| Prometheus
 
     style KafkaStack fill:transparent,stroke:transparent,color:transparent
