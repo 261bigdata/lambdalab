@@ -1,6 +1,83 @@
 # LambdaLab
 
-Curso practico de Big Data con procesamiento distribuido, streaming, observabilidad y BI/ML distribuido.
+Repositorio unico del curso de Big Data para construir pipelines batch y
+streaming con Spark y Kafka, gestionar datos en formatos analiticos como
+Parquet, aplicar observabilidad y desarrollar BI/ML distribuido. Integra
+laboratorios ejecutables, servicios Docker y documentacion publicada.
+
+## Producto del curso
+
+Producto del curso = Producto U3:
+
+```text
+Sistema Big Data distribuido end-to-end para procesamiento batch y streaming,
+analitica/ML, observabilidad y visualizacion BI para la toma de decisiones.
+```
+
+Resultado esperado del curso:
+
+Al finalizar el curso, el estudiante implementa, integra y sustenta una solucion
+Big Data end-to-end que combina procesamiento batch distribuido, ingesta y
+procesamiento de eventos en tiempo real, analitica/ML a escala, observabilidad
+tecnica y una capa de visualizacion BI. La solucion debe poder ejecutarse de
+forma reproducible, mostrar evidencias de ejecucion, reportar metricas tecnicas
+y del modelo, y demostrar valor para la toma de decisiones.
+
+## Contenido
+
+### U1: Arquitecturas Big Data y ETL distribuido
+
+Producto U1: pipeline batch de ETL distribuido con salidas analiticas en
+Parquet listas para BI/ML.
+
+Resultado esperado U1: el estudiante construye un pipeline batch reproducible
+con procesamiento distribuido, aplica transformaciones sobre datos a escala,
+valida la calidad basica de los datos, organiza salidas en formatos analiticos
+como Parquet y deja un dataset preparado para consumo BI/ML.
+
+- Sesion 1: Arquitectura Big Data.
+- Sesion 2: Fundamentos Apache Spark.
+- Sesion 3: Procesamiento batch con Spark: ETL distribuido.
+- Sesion 4: Almacenamiento, HDFS y formatos.
+- Sesion 5: Evaluacion U1.
+
+### U2: Sistema Big Data en tiempo real
+
+Producto U2: pipeline streaming con multiples patrones de ingesta y Spark,
+observabilidad, estimacion de recursos/costos y modelo predictivo de
+analitica/ML entrenado y evaluado.
+
+Resultado esperado U2: el estudiante implementa un pipeline streaming con un
+sistema de mensajeria/event streaming y Spark, trabaja eventos de negocio, CDC o
+sensores, procesa eventos en tiempo real, mide latencia y throughput, propone
+observabilidad, estima recursos/costos y entrega un modelo predictivo de
+analitica/ML entrenado y evaluado, listo para integrarse y desplegarse en la U3
+mediante practicas de DataOps/DevOps.
+
+- Sesion 6: Ingesta de eventos empresariales en tiempo real.
+- Sesion 7: Ingesta de eventos IoT/sensores en tiempo real.
+- Sesion 8: Procesamiento en streaming con Spark.
+- Sesion 9: Observabilidad con Grafana y costos.
+- Sesion 10: BI/ML distribuido con Spark.
+- Sesion 11: Series de tiempo e inferencia en streaming.
+- Sesion 12: Evaluacion U2.
+
+### U3: Integracion, DataOps y despliegue del sistema final
+
+Producto U3 / producto del curso: sistema Big Data distribuido end-to-end para
+procesamiento batch y streaming, analitica/ML, observabilidad y visualizacion BI
+para la toma de decisiones.
+
+Resultado esperado U3: el estudiante integra los componentes desarrollados en
+las unidades anteriores, despliega o empaqueta el sistema mediante practicas de
+DataOps/DevOps, prepara una demo end-to-end, documenta la operacion del sistema,
+valida resultados tecnicos y analiticos, y sustenta una solucion final orientada
+a la toma de decisiones.
+
+- Sesion 13: Integracion del sistema, DataOps y BI.
+- Sesion 14: Revision tecnica final y hardening.
+- Sesion 15: Sustentacion final con demo end-to-end.
+- Sesion 16: Evaluacion final.
 
 ## Arquitectura del proyecto
 
@@ -78,14 +155,3 @@ flowchart LR
 2. Spark lee datos desde `pyspark/data/` y escribe resultados temporales en `pyspark/artifacts/`.
 3. En los laboratorios de streaming, Spark consume eventos desde el broker y produce resultados para BI/ML.
 4. Los casos de uso publican y consumen eventos para simular flujos reales.
-
-## Unidades
-
-### U1: Arquitecturas Big Data y ETL distribuido
-
-Producto: pipeline batch con dataset listo para BI/ML.
-
-### U2: Sistema Big Data en tiempo real
-
-Producto: pipeline streaming con patrones de ingesta MS/CDC o sensores,
-procesamiento con Spark, observabilidad y BI/ML distribuido.
