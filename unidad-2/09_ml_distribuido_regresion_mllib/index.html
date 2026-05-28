@@ -1,0 +1,1558 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Curso de Big Data con Spark, Kafka, streaming y ML distribuido.">
+      
+      
+        <meta name="author" content="UPeU">
+      
+      
+      
+        <link rel="prev" href="../08_observabilidad_costos/">
+      
+      
+        <link rel="next" href="../10_series_tiempo_inferencia_spark/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>9. ML distribuido con MLlib - LambdaLab</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sesion-09-ml-distribuido-regresion-con-spark-mllib" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="LambdaLab" class="md-header__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LambdaLab
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              9. ML distribuido con MLlib
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LambdaLab" class="md-nav__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LambdaLab
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/01_arquitecturas_big_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Arquitectura Big Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/02_fundamentos_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Fundamentos Apache Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/03_etl_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. ETL distribuido en batch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/04_hdfs_formatos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. HDFS y formatos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/05_evaluacion_u1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Evaluacion U1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U2 Streaming, operacion y ML a escala
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U2 Streaming, operacion y ML a escala
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_ingesta_kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Ingesta en tiempo real con Kafka
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_spark_streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Streaming con Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08_observabilidad_costos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Observabilidad y costos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. ML distribuido con MLlib
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. ML distribuido con MLlib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-idea-general" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Idea general
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-crear-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Crear SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-leer-datos-del-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Leer datos del pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-construir-serie-temporal-de-latencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Construir serie temporal de latencia
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-preparar-features-y-label" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Preparar features y label
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-separar-entrenamiento-y-prueba" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Separar entrenamiento y prueba
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-crear-pipeline-de-spark-ml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Crear Pipeline de Spark ML
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-entrenar-el-modelo-distribuido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Entrenar el modelo distribuido
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-evaluar-el-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Evaluar el modelo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-interpretar-resultados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Interpretar resultados
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-ver-parametros-aprendidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Ver parametros aprendidos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-guardar-y-cargar-el-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Guardar y cargar el modelo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-reutilizar-el-modelo-sobre-nuevos-datos-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Reutilizar el modelo sobre nuevos datos batch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-que-observar-en-spark-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Que observar en Spark UI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Cierre
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ejercicios-sugeridos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejercicios sugeridos
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_series_tiempo_inferencia_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Series de tiempo e inferencia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_tuning_experimentacion_distribuida/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Tuning y experimentacion distribuida
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_evaluacion_u2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Evaluacion U2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-idea-general" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Idea general
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-crear-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Crear SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-leer-datos-del-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Leer datos del pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-construir-serie-temporal-de-latencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Construir serie temporal de latencia
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-preparar-features-y-label" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Preparar features y label
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-separar-entrenamiento-y-prueba" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Separar entrenamiento y prueba
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-crear-pipeline-de-spark-ml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Crear Pipeline de Spark ML
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-entrenar-el-modelo-distribuido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Entrenar el modelo distribuido
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-evaluar-el-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Evaluar el modelo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-interpretar-resultados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Interpretar resultados
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-ver-parametros-aprendidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Ver parametros aprendidos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-guardar-y-cargar-el-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Guardar y cargar el modelo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-reutilizar-el-modelo-sobre-nuevos-datos-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Reutilizar el modelo sobre nuevos datos batch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-que-observar-en-spark-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Que observar en Spark UI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Cierre
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ejercicios-sugeridos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejercicios sugeridos
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sesion-09-ml-distribuido-regresion-con-spark-mllib">Sesion 09 - ML distribuido: regresion con Spark MLlib<a class="headerlink" href="#sesion-09-ml-distribuido-regresion-con-spark-mllib" title="Permanent link">&para;</a></h1>
+<p>En la sesion anterior usamos datos de observabilidad del pipeline Kafka + Spark para construir una primera regresion de latencia.</p>
+<p>En esta sesion formalizaremos ese flujo como un pipeline distribuido de Spark MLlib.</p>
+<p>Logro de la sesion:</p>
+<div class="highlight"><pre><span></span><code>Ahora puedo construir un pipeline ML distribuido, entrenarlo, evaluarlo y reutilizarlo.
+</code></pre></div>
+<p>Usaremos Spark MLlib, no Pandas ni scikit-learn.</p>
+<h2 id="1-idea-general">1. Idea general<a class="headerlink" href="#1-idea-general" title="Permanent link">&para;</a></h2>
+<p>Queremos predecir la latencia promedio del siguiente minuto usando metricas del minuto actual.</p>
+<p>Ejemplo conceptual:</p>
+<div class="highlight"><pre><span></span><code>metricas minuto actual -&gt; latencia promedio del siguiente minuto
+</code></pre></div>
+<p>En Spark ML el flujo se organiza con tres ideas clave:</p>
+<ul>
+<li><code>Transformer</code>: recibe un DataFrame y devuelve otro DataFrame transformado.</li>
+<li><code>Estimator</code>: aprende desde los datos y produce un modelo.</li>
+<li><code>Pipeline</code>: une varios pasos para que el entrenamiento sea reproducible.</li>
+</ul>
+<p>En esta practica el pipeline sera:</p>
+<div class="highlight"><pre><span></span><code>VectorAssembler -&gt; StandardScaler -&gt; LinearRegression
+</code></pre></div>
+<h2 id="2-crear-sparksession">2. Crear SparkSession<a class="headerlink" href="#2-crear-sparksession" title="Permanent link">&para;</a></h2>
+<p>Creamos una sesion local de Spark. Aunque estemos en una maquina, el codigo usa APIs distribuidas de Spark.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
+    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;s09-ml-distribuido-regresion-mllib&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[*]&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.shuffle.partitions&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">setLogLevel</span><span class="p">(</span><span class="s2">&quot;WARN&quot;</span><span class="p">)</span>
+
+<span class="n">spark</span>
+</code></pre></div>
+<h2 id="3-leer-datos-del-pipeline">3. Leer datos del pipeline<a class="headerlink" href="#3-leer-datos-del-pipeline" title="Permanent link">&para;</a></h2>
+<p>Primero intentamos leer los datos Parquet generados en las practicas de streaming y observabilidad.</p>
+<p>Si esos archivos no existen en el entorno, se genera un dataset sintetico para que la clase pueda continuar.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">functions</span> <span class="k">as</span> <span class="n">F</span>
+
+<span class="n">candidate_paths</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;../artifacts/output/orden_eventos_observabilidad_p1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;../artifacts/output/orden_eventos_parquet&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">source_path</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">candidate_paths</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">source_path</span> <span class="o">=</span> <span class="n">path</span>
+            <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No se pudo leer </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No se encontraron Parquet reales. Se creara un dataset sintetico para la practica.&quot;</span><span class="p">)</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">240</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">timestamp_seconds</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="mi">1746300000</span><span class="p">)</span> <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">20</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span>
+            <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">when</span><span class="p">((</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">37</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span> <span class="o">*</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;long&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="s2">&quot;ordenes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;topic&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;partition&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;long&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="s2">&quot;demo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;origen&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;isValid&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">source_path</span> <span class="o">=</span> <span class="s2">&quot;dataset sintetico&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fuente de datos: </span><span class="si">{</span><span class="n">source_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="4-construir-serie-temporal-de-latencia">4. Construir serie temporal de latencia<a class="headerlink" href="#4-construir-serie-temporal-de-latencia" title="Permanent link">&para;</a></h2>
+<p>El modelo no usara eventos individuales. Primero agregamos por ventanas de 1 minuto.</p>
+<p>Cada fila representa el comportamiento del pipeline durante un minuto.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_latency_series</span><span class="p">(</span><span class="n">input_df</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">input_df</span> \
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">())</span> \
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">())</span> \
+        <span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;1 minute&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;eventCount&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;minLatencyMs&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">stddev</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">)</span>
+        <span class="p">)</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;window.start&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;windowEnd&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;window.end&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;window&quot;</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span> \
+        <span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span>
+
+<span class="n">serie_latency</span> <span class="o">=</span> <span class="n">build_latency_series</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">window_count</span> <span class="o">=</span> <span class="n">serie_latency</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">window_count</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Solo hay </span><span class="si">{</span><span class="n">window_count</span><span class="si">}</span><span class="s2"> ventanas. Se usara una serie sintetica mas amplia para entrenar sin problemas.&quot;</span><span class="p">)</span>
+    <span class="n">synthetic_base</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">synthetic_base</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">timestamp_seconds</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="mi">1746300000</span><span class="p">)</span> <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">20</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span>
+            <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">when</span><span class="p">((</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">41</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">190</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span> <span class="o">*</span> <span class="mi">35</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;long&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">serie_latency</span> <span class="o">=</span> <span class="n">build_latency_series</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">window_count</span> <span class="o">=</span> <span class="n">serie_latency</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+<span class="n">serie_latency</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cantidad de ventanas:&quot;</span><span class="p">,</span> <span class="n">window_count</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="5-preparar-features-y-label">5. Preparar features y label<a class="headerlink" href="#5-preparar-features-y-label" title="Permanent link">&para;</a></h2>
+<p>La columna <code>label</code> sera la latencia promedio del siguiente minuto.</p>
+<p>Para construirla usamos <code>lead</code>, una funcion de ventana analitica. Asi convertimos la serie temporal en un problema supervisado.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.window</span><span class="w"> </span><span class="kn">import</span> <span class="n">Window</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span>
+
+<span class="n">dataset_ml</span> <span class="o">=</span> <span class="n">serie_latency</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">lead</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;latencyRangeMs&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;minLatencyMs&quot;</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;hourOfDay&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">hour</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;minuteOfHour&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">minute</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="s2">&quot;windowStart&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;eventCount&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;minLatencyMs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;latencyRangeMs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hourOfDay&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;minuteOfHour&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;label&quot;</span>
+    <span class="p">)</span> \
+    <span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">drop</span><span class="p">()</span>
+
+<span class="n">dataset_ml</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filas para ML:&quot;</span><span class="p">,</span> <span class="n">dataset_ml</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+</code></pre></div>
+<h2 id="6-separar-entrenamiento-y-prueba">6. Separar entrenamiento y prueba<a class="headerlink" href="#6-separar-entrenamiento-y-prueba" title="Permanent link">&para;</a></h2>
+<p>Como estamos trabajando con una serie temporal, usaremos una separacion cronologica: las primeras filas entrenan y las ultimas prueban.</p>
+<p>Esto evita entrenar con informacion del futuro.</p>
+<div class="highlight"><pre><span></span><code><span class="n">ordered</span> <span class="o">=</span> <span class="n">dataset_ml</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;rowNumber&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">row_number</span><span class="p">()</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+<span class="n">total_rows</span> <span class="o">=</span> <span class="n">ordered</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="n">train_cutoff</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_rows</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">)</span>
+
+<span class="n">train</span> <span class="o">=</span> <span class="n">ordered</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;rowNumber&quot;</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">train_cutoff</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;rowNumber&quot;</span><span class="p">)</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">ordered</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;rowNumber&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">train_cutoff</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;rowNumber&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filas train:&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filas test:&quot;</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+
+<span class="n">train</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">,</span> <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">test</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">,</span> <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="7-crear-pipeline-de-spark-ml">7. Crear Pipeline de Spark ML<a class="headerlink" href="#7-crear-pipeline-de-spark-ml" title="Permanent link">&para;</a></h2>
+<p>Spark ML espera que las variables predictoras esten dentro de una columna vectorial llamada normalmente <code>features</code>.</p>
+<p>En este pipeline:</p>
+<ul>
+<li><code>VectorAssembler</code> une columnas numericas en un vector.</li>
+<li><code>StandardScaler</code> escala las variables para que tengan magnitudes comparables.</li>
+<li><code>LinearRegression</code> entrena el modelo de regresion distribuido.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.feature</span><span class="w"> </span><span class="kn">import</span> <span class="n">VectorAssembler</span><span class="p">,</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.regression</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
+
+<span class="n">feature_cols</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;eventCount&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;minLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;latencyRangeMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hourOfDay&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;minuteOfHour&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">assembler</span> <span class="o">=</span> <span class="n">VectorAssembler</span><span class="p">(</span>
+    <span class="n">inputCols</span><span class="o">=</span><span class="n">feature_cols</span><span class="p">,</span>
+    <span class="n">outputCol</span><span class="o">=</span><span class="s2">&quot;rawFeatures&quot;</span><span class="p">,</span>
+    <span class="n">handleInvalid</span><span class="o">=</span><span class="s2">&quot;keep&quot;</span>
+<span class="p">)</span>
+
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">(</span>
+    <span class="n">inputCol</span><span class="o">=</span><span class="s2">&quot;rawFeatures&quot;</span><span class="p">,</span>
+    <span class="n">outputCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">,</span>
+    <span class="n">withStd</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">withMean</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">(</span>
+    <span class="n">featuresCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">,</span>
+    <span class="n">labelCol</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span>
+    <span class="n">predictionCol</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span>
+    <span class="n">maxIter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">regParam</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">elasticNetParam</span><span class="o">=</span><span class="mf">0.0</span>
+<span class="p">)</span>
+
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">stages</span><span class="o">=</span><span class="p">[</span><span class="n">assembler</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">lr</span><span class="p">])</span>
+
+<span class="n">pipeline</span>
+</code></pre></div>
+<h2 id="8-entrenar-el-modelo-distribuido">8. Entrenar el modelo distribuido<a class="headerlink" href="#8-entrenar-el-modelo-distribuido" title="Permanent link">&para;</a></h2>
+<p>Cuando ejecutamos <code>fit</code>, Spark distribuye las transformaciones y el entrenamiento sobre las particiones del DataFrame.</p>
+<div class="highlight"><pre><span></span><code><span class="n">pipeline_model</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">pipeline_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+
+<span class="n">predictions</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">&quot;windowStart&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;label&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;prediction&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="9-evaluar-el-modelo">9. Evaluar el modelo<a class="headerlink" href="#9-evaluar-el-modelo" title="Permanent link">&para;</a></h2>
+<p>Usaremos tres metricas:</p>
+<ul>
+<li><code>RMSE</code>: penaliza mas los errores grandes.</li>
+<li><code>MAE</code>: error promedio absoluto, facil de interpretar.</li>
+<li><code>R2</code>: proporcion de variabilidad explicada por el modelo.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">RegressionEvaluator</span>
+
+<span class="n">metrics</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="s2">&quot;mae&quot;</span><span class="p">,</span> <span class="s2">&quot;r2&quot;</span><span class="p">]:</span>
+    <span class="n">evaluator</span> <span class="o">=</span> <span class="n">RegressionEvaluator</span><span class="p">(</span>
+        <span class="n">labelCol</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span>
+        <span class="n">predictionCol</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span>
+        <span class="n">metricName</span><span class="o">=</span><span class="n">metric_name</span>
+    <span class="p">)</span>
+    <span class="n">metrics</span><span class="p">[</span><span class="n">metric_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="10-interpretar-resultados">10. Interpretar resultados<a class="headerlink" href="#10-interpretar-resultados" title="Permanent link">&para;</a></h2>
+<p>Ahora revisamos la diferencia entre el valor real y la prediccion.</p>
+<p>Esto ayuda a pasar de la metrica numerica a una lectura operacional: cuantos milisegundos se esta equivocando el modelo.</p>
+<div class="highlight"><pre><span></span><code><span class="n">error_df</span> <span class="o">=</span> <span class="n">predictions</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;errorMs&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;prediction&quot;</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;absErrorMs&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;errorMs&quot;</span><span class="p">)))</span>
+
+<span class="n">error_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">&quot;windowStart&quot;</span><span class="p">,</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;realNextAvgLatencyMs&quot;</span><span class="p">),</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;predictedNextAvgLatencyMs&quot;</span><span class="p">),</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;errorMs&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;errorMs&quot;</span><span class="p">),</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;absErrorMs&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;absErrorMs&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">desc</span><span class="p">(</span><span class="s2">&quot;absErrorMs&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="11-ver-parametros-aprendidos">11. Ver parametros aprendidos<a class="headerlink" href="#11-ver-parametros-aprendidos" title="Permanent link">&para;</a></h2>
+<p>Como el ultimo paso del pipeline es una regresion lineal, podemos inspeccionar sus coeficientes.</p>
+<p>Ojo: como usamos <code>StandardScaler</code>, los coeficientes corresponden a variables escaladas.</p>
+<div class="highlight"><pre><span></span><code><span class="n">lr_model</span> <span class="o">=</span> <span class="n">pipeline_model</span><span class="o">.</span><span class="n">stages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Intercept:&quot;</span><span class="p">,</span> <span class="n">lr_model</span><span class="o">.</span><span class="n">intercept</span><span class="p">)</span>
+
+<span class="n">coef_rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">feature_cols</span><span class="p">,</span> <span class="n">lr_model</span><span class="o">.</span><span class="n">coefficients</span><span class="o">.</span><span class="n">toArray</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+<span class="n">coef_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">coef_rows</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;feature&quot;</span><span class="p">,</span> <span class="s2">&quot;coefficient&quot;</span><span class="p">])</span>
+
+<span class="n">coef_df</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">desc</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;coefficient&quot;</span><span class="p">))))</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="12-guardar-y-cargar-el-modelo">12. Guardar y cargar el modelo<a class="headerlink" href="#12-guardar-y-cargar-el-modelo" title="Permanent link">&para;</a></h2>
+<p>Un modelo de ML no termina al entrenarse. Debe poder guardarse y reutilizarse.</p>
+<p>Guardaremos el <code>PipelineModel</code>, no solo la regresion. Asi se conservan tambien los pasos de preparacion de features.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml</span><span class="w"> </span><span class="kn">import</span> <span class="n">PipelineModel</span>
+
+<span class="n">model_path</span> <span class="o">=</span> <span class="s2">&quot;../artifacts/models/ml_latency_pipeline_lr&quot;</span>
+
+<span class="n">pipeline_model</span><span class="o">.</span><span class="n">write</span><span class="p">()</span><span class="o">.</span><span class="n">overwrite</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+
+<span class="n">loaded_model</span> <span class="o">=</span> <span class="n">PipelineModel</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+
+<span class="n">loaded_predictions</span> <span class="o">=</span> <span class="n">loaded_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+<span class="n">loaded_predictions</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;prediction&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Modelo guardado en: </span><span class="si">{</span><span class="n">model_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="13-reutilizar-el-modelo-sobre-nuevos-datos-batch">13. Reutilizar el modelo sobre nuevos datos batch<a class="headerlink" href="#13-reutilizar-el-modelo-sobre-nuevos-datos-batch" title="Permanent link">&para;</a></h2>
+<p>Para simular datos nuevos, tomaremos las ultimas ventanas de la serie.</p>
+<p>La sesion 10 usara esta misma idea, pero aplicandola sobre datos nuevos y luego sobre streaming.</p>
+<div class="highlight"><pre><span></span><code><span class="n">new_batch</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">)</span>
+
+<span class="c1"># Para evaluar en esta practica volvemos a unir la etiqueta real.</span>
+<span class="c1"># En produccion normalmente la etiqueta futura aun no existe.</span>
+<span class="n">new_batch_for_demo</span> <span class="o">=</span> <span class="n">test</span>
+
+<span class="n">batch_predictions</span> <span class="o">=</span> <span class="n">loaded_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">new_batch_for_demo</span><span class="p">)</span>
+
+<span class="n">batch_predictions</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">&quot;windowStart&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;prediction&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="14-que-observar-en-spark-ui">14. Que observar en Spark UI<a class="headerlink" href="#14-que-observar-en-spark-ui" title="Permanent link">&para;</a></h2>
+<p>Durante la ejecucion, revisar:</p>
+<ul>
+<li>Jobs creados por <code>fit</code> y <code>transform</code>.</li>
+<li>Stages generados por agregaciones y joins internos.</li>
+<li>Particiones usadas por el DataFrame.</li>
+<li>Tiempo de ejecucion del entrenamiento.</li>
+</ul>
+<p>La idea no es solo ver el resultado del modelo, sino entender que el entrenamiento tambien es un trabajo distribuido.</p>
+<h2 id="15-cierre">15. Cierre<a class="headerlink" href="#15-cierre" title="Permanent link">&para;</a></h2>
+<p>En esta sesion construimos un pipeline ML distribuido completo:</p>
+<div class="highlight"><pre><span></span><code>datos Parquet -&gt; serie temporal -&gt; features -&gt; Pipeline ML -&gt; evaluacion -&gt; modelo guardado
+</code></pre></div>
+<p>Lo importante:</p>
+<ul>
+<li>MLlib trabaja con DataFrames distribuidos.</li>
+<li><code>Pipeline</code> permite reproducir el flujo completo.</li>
+<li>El modelo guardado incluye transformaciones y algoritmo.</li>
+<li>La evaluacion debe interpretarse en unidades del problema, aqui milisegundos de latencia.</li>
+</ul>
+<p>Proxima sesion:</p>
+<div class="highlight"><pre><span></span><code>Aplicar el modelo entrenado sobre datos nuevos y sobre streaming.
+</code></pre></div>
+<h2 id="ejercicios-sugeridos">Ejercicios sugeridos<a class="headerlink" href="#ejercicios-sugeridos" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Cambiar el tamano de ventana de 1 minuto a 30 segundos o 2 minutos.</li>
+<li>Agregar una variable <code>previousAvgLatencyMs</code> usando <code>lag</code>.</li>
+<li>Comparar el split cronologico con <code>randomSplit</code>.</li>
+<li>Modificar <code>regParam</code> y observar cambios en RMSE, MAE y R2.</li>
+<li>Guardar las predicciones en Parquet para analizarlas en otra sesion.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Angel Sullon @asullom - UPeU 2026
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

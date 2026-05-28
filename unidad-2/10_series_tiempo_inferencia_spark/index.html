@@ -1,0 +1,1736 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Curso de Big Data con Spark, Kafka, streaming y ML distribuido.">
+      
+      
+        <meta name="author" content="UPeU">
+      
+      
+      
+        <link rel="prev" href="../09_ml_distribuido_regresion_mllib/">
+      
+      
+        <link rel="next" href="../11_tuning_experimentacion_distribuida/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>10. Series de tiempo e inferencia - LambdaLab</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sesion-10-series-de-tiempo-e-inferencia-en-streaming-con-spark" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="LambdaLab" class="md-header__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LambdaLab
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              10. Series de tiempo e inferencia
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LambdaLab" class="md-nav__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LambdaLab
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/01_arquitecturas_big_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Arquitectura Big Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/02_fundamentos_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Fundamentos Apache Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/03_etl_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. ETL distribuido en batch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/04_hdfs_formatos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. HDFS y formatos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/05_evaluacion_u1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Evaluacion U1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U2 Streaming, operacion y ML a escala
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U2 Streaming, operacion y ML a escala
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_ingesta_kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Ingesta en tiempo real con Kafka
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_spark_streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Streaming con Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08_observabilidad_costos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Observabilidad y costos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09_ml_distribuido_regresion_mllib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. ML distribuido con MLlib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Series de tiempo e inferencia
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Series de tiempo e inferencia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#proposito-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proposito de la sesion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resultado-esperado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resultado esperado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-idea-general" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Idea general
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-crear-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Crear SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-parametros-de-trabajo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Parametros de trabajo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-helpers-datos-serie-temporal-y-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Helpers: datos, serie temporal y features
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cargar-datos-batch-y-reconstruir-la-serie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cargar datos batch y reconstruir la serie
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-cargar-el-modelo-guardado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Cargar el modelo guardado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-inferencia-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Inferencia batch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-evaluacion-batch-con-etiqueta-futura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Evaluacion batch con etiqueta futura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-guardar-predicciones-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Guardar predicciones batch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-preparar-lectura-kafka-streaming-opcional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Preparar lectura Kafka streaming opcional
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-construir-features-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Construir features streaming
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-salida-streaming-a-consola" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Salida streaming a consola
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-salida-streaming-a-parquet-con-foreachbatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Salida streaming a Parquet con foreachBatch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-leer-predicciones-streaming-guardadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Leer predicciones streaming guardadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-detener-consultas-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Detener consultas streaming
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-que-observar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Que observar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Cierre
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ejercicios-sugeridos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejercicios sugeridos
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_tuning_experimentacion_distribuida/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Tuning y experimentacion distribuida
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_evaluacion_u2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Evaluacion U2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#proposito-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proposito de la sesion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resultado-esperado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resultado esperado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-idea-general" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Idea general
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-crear-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Crear SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-parametros-de-trabajo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Parametros de trabajo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-helpers-datos-serie-temporal-y-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Helpers: datos, serie temporal y features
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cargar-datos-batch-y-reconstruir-la-serie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cargar datos batch y reconstruir la serie
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-cargar-el-modelo-guardado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Cargar el modelo guardado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-inferencia-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Inferencia batch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-evaluacion-batch-con-etiqueta-futura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Evaluacion batch con etiqueta futura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-guardar-predicciones-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Guardar predicciones batch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-preparar-lectura-kafka-streaming-opcional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Preparar lectura Kafka streaming opcional
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-construir-features-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Construir features streaming
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-salida-streaming-a-consola" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Salida streaming a consola
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-salida-streaming-a-parquet-con-foreachbatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Salida streaming a Parquet con foreachBatch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-leer-predicciones-streaming-guardadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Leer predicciones streaming guardadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-detener-consultas-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Detener consultas streaming
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-que-observar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Que observar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Cierre
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ejercicios-sugeridos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejercicios sugeridos
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sesion-10-series-de-tiempo-e-inferencia-en-streaming-con-spark">Sesion 10 - Series de tiempo e inferencia en streaming con Spark<a class="headerlink" href="#sesion-10-series-de-tiempo-e-inferencia-en-streaming-con-spark" title="Permanent link">&para;</a></h1>
+<p><strong>Producto:</strong> aplicacion del modelo guardado sobre datos batch y, opcionalmente, sobre un stream Kafka.</p>
+<h2 id="proposito-de-la-sesion">Proposito de la sesion<a class="headerlink" href="#proposito-de-la-sesion" title="Permanent link">&para;</a></h2>
+<p>Aplicar un modelo de regresion ya entrenado sobre una serie temporal de latencia, primero en modo batch y luego como opcion sobre datos que llegan desde Kafka con Spark Structured Streaming.</p>
+<h2 id="resultado-esperado">Resultado esperado<a class="headerlink" href="#resultado-esperado" title="Permanent link">&para;</a></h2>
+<p>Al finalizar, el estudiante debe tener predicciones de latencia generadas con el modelo guardado, evidencia batch persistida en Parquet y una ruta funcional para ejecutar inferencia streaming sobre eventos Kafka.</p>
+<p>En la sesion 9 entrenamos un <code>PipelineModel</code> de Spark MLlib para estimar la latencia promedio de la siguiente ventana temporal. En esta sesion lo usamos como artefacto reutilizable: cargamos el modelo, reconstruimos las mismas features y generamos predicciones sin volver a disenar el pipeline de ML.</p>
+<h2 id="1-idea-general">1. Idea general<a class="headerlink" href="#1-idea-general" title="Permanent link">&para;</a></h2>
+<p>El flujo de inferencia mantiene tres reglas:</p>
+<ol>
+<li>Usar el mismo modelo guardado en <code>../artifacts/models/ml_latency_pipeline_lr</code>.</li>
+<li>Construir exactamente las mismas columnas de entrada usadas por la sesion 9.</li>
+<li>Separar la inferencia batch de la inferencia streaming para observar como cambia la ejecucion.</li>
+</ol>
+<p>La prediccion significa: <strong>dada la ventana actual, estimar la latencia promedio de la siguiente ventana</strong>.</p>
+<h2 id="2-crear-sparksession">2. Crear SparkSession<a class="headerlink" href="#2-crear-sparksession" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
+    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;s10-series-tiempo-inferencia-spark&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[*]&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.shuffle.partitions&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">setLogLevel</span><span class="p">(</span><span class="s2">&quot;WARN&quot;</span><span class="p">)</span>
+
+<span class="n">spark</span>
+</code></pre></div>
+<h2 id="3-parametros-de-trabajo">3. Parametros de trabajo<a class="headerlink" href="#3-parametros-de-trabajo" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">functions</span> <span class="k">as</span> <span class="n">F</span>
+
+<span class="n">MODEL_PATHS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;../artifacts/models/ml_latency_pipeline_lr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;/opt/artifacts/models/ml_latency_pipeline_lr&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">BATCH_INPUT_PATHS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;../artifacts/output/orden_eventos_observabilidad_p1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;../artifacts/output/orden_eventos_parquet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;/opt/artifacts/output/orden_eventos_observabilidad_p1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;/opt/artifacts/output/orden_eventos_parquet&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">PREDICTIONS_BATCH_PATH</span> <span class="o">=</span> <span class="s2">&quot;../artifacts/output/ml_latency_predictions_batch&quot;</span>
+<span class="n">PREDICTIONS_STREAM_PATH</span> <span class="o">=</span> <span class="s2">&quot;../artifacts/output/ml_latency_predictions_stream&quot;</span>
+<span class="n">CHECKPOINT_STREAM_PATH</span> <span class="o">=</span> <span class="s2">&quot;../artifacts/checkpoint/ml-latency-inference-stream&quot;</span>
+
+<span class="n">KAFKA_BOOTSTRAP_SERVERS</span> <span class="o">=</span> <span class="s2">&quot;ec-kafka:9092&quot;</span>
+<span class="n">TOPIC_ORDENES</span> <span class="o">=</span> <span class="s2">&quot;orden-eventos&quot;</span>
+
+<span class="c1"># Si el modelo aun no existe porque no se ejecuto la sesion 9 completa,</span>
+<span class="c1"># esta bandera permite crear un modelo compatible para que la practica siga corriendo.</span>
+<span class="n">BOOTSTRAP_MODEL_IF_MISSING</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div>
+<h2 id="4-helpers-datos-serie-temporal-y-features">4. Helpers: datos, serie temporal y features<a class="headerlink" href="#4-helpers-datos-serie-temporal-y-features" title="Permanent link">&para;</a></h2>
+<p>Estas funciones son deliberadamente parecidas a la sesion 9. En inferencia, cambiar el contrato de features es una de las formas mas comunes de romper un modelo ya entrenado.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">first_existing_path</span><span class="p">(</span><span class="n">paths</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">path</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load_observability_batch</span><span class="p">():</span>
+    <span class="n">source_path</span> <span class="o">=</span> <span class="n">first_existing_path</span><span class="p">(</span><span class="n">BATCH_INPUT_PATHS</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">source_path</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">source_path</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fuente batch: </span><span class="si">{</span><span class="n">source_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No se encontraron Parquet reales. Se creara un dataset sintetico para la practica.&quot;</span><span class="p">)</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">base</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">timestamp_seconds</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="mi">1746300000</span><span class="p">)</span> <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">20</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span>
+            <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">when</span><span class="p">((</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">41</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">190</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span> <span class="o">*</span> <span class="mi">35</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;long&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="s2">&quot;ordenes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;topic&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;partition&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;long&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="s2">&quot;demo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;origen&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;isValid&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_latency_series</span><span class="p">(</span><span class="n">input_df</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">input_df</span> \
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">())</span> \
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">())</span> \
+        <span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;1 minute&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;eventCount&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;minLatencyMs&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">stddev</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">)</span>
+        <span class="p">)</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;window.start&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;windowEnd&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;window.end&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;window&quot;</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span>
+
+    <span class="k">if</span> <span class="n">ordered</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">add_inference_features</span><span class="p">(</span><span class="n">series_df</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">series_df</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;latencyRangeMs&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;minLatencyMs&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;hourOfDay&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">hour</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;minuteOfHour&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">minute</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">))</span>
+</code></pre></div>
+<h2 id="5-cargar-datos-batch-y-reconstruir-la-serie">5. Cargar datos batch y reconstruir la serie<a class="headerlink" href="#5-cargar-datos-batch-y-reconstruir-la-serie" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">df_batch</span> <span class="o">=</span> <span class="n">load_observability_batch</span><span class="p">()</span>
+
+<span class="n">df_batch</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<span class="n">df_batch</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">serie_latency</span> <span class="o">=</span> <span class="n">build_latency_series</span><span class="p">(</span><span class="n">df_batch</span><span class="p">)</span>
+<span class="n">features_batch</span> <span class="o">=</span> <span class="n">add_inference_features</span><span class="p">(</span><span class="n">serie_latency</span><span class="p">)</span>
+
+<span class="n">features_batch</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ventanas disponibles:&quot;</span><span class="p">,</span> <span class="n">features_batch</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+</code></pre></div>
+<h2 id="6-cargar-el-modelo-guardado">6. Cargar el modelo guardado<a class="headerlink" href="#6-cargar-el-modelo-guardado" title="Permanent link">&para;</a></h2>
+<p>El camino ideal es que el modelo exista porque se ejecuto la sesion 9. Si no existe, la siguiente celda puede crear un modelo compatible usando los datos disponibles. Esto evita que el laboratorio se bloquee por orden de ejecucion, pero en un flujo real el entrenamiento y la inferencia se separan.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span><span class="p">,</span> <span class="n">PipelineModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.feature</span><span class="w"> </span><span class="kn">import</span> <span class="n">VectorAssembler</span><span class="p">,</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.regression</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.window</span><span class="w"> </span><span class="kn">import</span> <span class="n">Window</span>
+
+<span class="n">feature_cols</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;eventCount&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;minLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;latencyRangeMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hourOfDay&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;minuteOfHour&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">model_path</span> <span class="o">=</span> <span class="n">first_existing_path</span><span class="p">(</span><span class="n">MODEL_PATHS</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">model_path</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">BOOTSTRAP_MODEL_IF_MISSING</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Modelo no encontrado. Entrenando modelo compatible con la logica de la sesion 9...&quot;</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span>
+    <span class="n">training_df</span> <span class="o">=</span> <span class="n">features_batch</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">lead</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">feature_cols</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">drop</span><span class="p">()</span>
+
+    <span class="n">assembler</span> <span class="o">=</span> <span class="n">VectorAssembler</span><span class="p">(</span><span class="n">inputCols</span><span class="o">=</span><span class="n">feature_cols</span><span class="p">,</span> <span class="n">outputCol</span><span class="o">=</span><span class="s2">&quot;rawFeatures&quot;</span><span class="p">,</span> <span class="n">handleInvalid</span><span class="o">=</span><span class="s2">&quot;keep&quot;</span><span class="p">)</span>
+    <span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">(</span><span class="n">inputCol</span><span class="o">=</span><span class="s2">&quot;rawFeatures&quot;</span><span class="p">,</span> <span class="n">outputCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">,</span> <span class="n">withStd</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">withMean</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">lr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">(</span>
+        <span class="n">featuresCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">,</span>
+        <span class="n">labelCol</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span>
+        <span class="n">predictionCol</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span>
+        <span class="n">maxIter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">regParam</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">elasticNetParam</span><span class="o">=</span><span class="mf">0.0</span>
+    <span class="p">)</span>
+    <span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">stages</span><span class="o">=</span><span class="p">[</span><span class="n">assembler</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">lr</span><span class="p">])</span>
+    <span class="n">pipeline_model</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">training_df</span><span class="p">)</span>
+
+    <span class="n">target_model_path</span> <span class="o">=</span> <span class="n">MODEL_PATHS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pipeline_model</span><span class="o">.</span><span class="n">write</span><span class="p">()</span><span class="o">.</span><span class="n">overwrite</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">target_model_path</span><span class="p">)</span>
+    <span class="n">model_path</span> <span class="o">=</span> <span class="n">target_model_path</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Modelo bootstrap guardado en: </span><span class="si">{</span><span class="n">model_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">model_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;No se encontro el modelo. Ejecuta la sesion 9 hasta la celda de guardado.&quot;</span><span class="p">)</span>
+
+<span class="n">loaded_model</span> <span class="o">=</span> <span class="n">PipelineModel</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Modelo cargado desde: </span><span class="si">{</span><span class="n">model_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="7-inferencia-batch">7. Inferencia batch<a class="headerlink" href="#7-inferencia-batch" title="Permanent link">&para;</a></h2>
+<p>Aqui el modelo recibe ventanas historicas y produce una prediccion para cada una. Esta es la forma mas simple de validar que el artefacto guardado se puede reutilizar.</p>
+<div class="highlight"><pre><span></span><code><span class="n">batch_predictions</span> <span class="o">=</span> <span class="n">loaded_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">features_batch</span><span class="p">)</span>
+
+<span class="n">batch_predictions</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">&quot;windowStart&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;windowEnd&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;eventCount&quot;</span><span class="p">,</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">),</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;predictedNextAvgLatencyMs&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="8-evaluacion-batch-con-etiqueta-futura">8. Evaluacion batch con etiqueta futura<a class="headerlink" href="#8-evaluacion-batch-con-etiqueta-futura" title="Permanent link">&para;</a></h2>
+<p>En inferencia productiva la etiqueta futura todavia no existe. Para evaluacion offline, usamos <code>lead(avgLatencyMs)</code> como etiqueta y comparamos contra la prediccion.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">RegressionEvaluator</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span>
+
+<span class="n">evaluation_df</span> <span class="o">=</span> <span class="n">batch_predictions</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">lead</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;prediction&quot;</span><span class="p">])</span>
+
+<span class="n">metrics</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="s2">&quot;mae&quot;</span><span class="p">,</span> <span class="s2">&quot;r2&quot;</span><span class="p">]:</span>
+    <span class="n">evaluator</span> <span class="o">=</span> <span class="n">RegressionEvaluator</span><span class="p">(</span>
+        <span class="n">labelCol</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span>
+        <span class="n">predictionCol</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span>
+        <span class="n">metricName</span><span class="o">=</span><span class="n">metric_name</span>
+    <span class="p">)</span>
+    <span class="n">metrics</span><span class="p">[</span><span class="n">metric_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">evaluation_df</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">evaluation_df</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;errorMs&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;prediction&quot;</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;absErrorMs&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;errorMs&quot;</span><span class="p">)))</span> \
+    <span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="s2">&quot;windowStart&quot;</span><span class="p">,</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;currentAvgLatencyMs&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;realNextAvgLatencyMs&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;predictedNextAvgLatencyMs&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;absErrorMs&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;absErrorMs&quot;</span><span class="p">)</span>
+    <span class="p">)</span> \
+    <span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">desc</span><span class="p">(</span><span class="s2">&quot;absErrorMs&quot;</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="9-guardar-predicciones-batch">9. Guardar predicciones batch<a class="headerlink" href="#9-guardar-predicciones-batch" title="Permanent link">&para;</a></h2>
+<p>Esto deja evidencia del producto de la sesion: el modelo fue aplicado y sus resultados quedaron como Parquet.</p>
+<div class="highlight"><pre><span></span><code><span class="n">batch_output</span> <span class="o">=</span> <span class="n">batch_predictions</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">&quot;windowStart&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;windowEnd&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;eventCount&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;minLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;latencyRangeMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hourOfDay&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;minuteOfHour&quot;</span><span class="p">,</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;prediction&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;predictedNextAvgLatencyMs&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">batch_output</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">PREDICTIONS_BATCH_PATH</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicciones batch guardadas en: </span><span class="si">{</span><span class="n">PREDICTIONS_BATCH_PATH</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">PREDICTIONS_BATCH_PATH</span><span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="10-preparar-lectura-kafka-streaming-opcional">10. Preparar lectura Kafka streaming opcional<a class="headerlink" href="#10-preparar-lectura-kafka-streaming-opcional" title="Permanent link">&para;</a></h2>
+<p>Ejecuta esta parte solo si levantaste el laboratorio con Kafka:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>C:<span class="se">\2</span>61bigdata<span class="se">\b</span>igdata-lab<span class="se">\d</span>ocker
+docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.kafka.yml<span class="w"> </span>up<span class="w"> </span>--build
+</code></pre></div>
+<p>El topic esperado es <code>orden-eventos</code>, el mismo usado en sesiones anteriores.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">LongType</span><span class="p">,</span> <span class="n">DoubleType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">from_json</span><span class="p">,</span> <span class="n">current_timestamp</span><span class="p">,</span> <span class="n">unix_millis</span>
+
+<span class="n">schema_evento</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;tipoEvento&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;ordenId&quot;</span><span class="p">,</span> <span class="n">LongType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;total&quot;</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;estado&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;origen&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="n">LongType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<span class="p">])</span>
+
+<span class="c1"># Esta celda solo define el stream; no ejecuta nada hasta usar writeStream.</span>
+<span class="n">df_kafka</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span> \
+    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;kafka&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;kafka.bootstrap.servers&quot;</span><span class="p">,</span> <span class="n">KAFKA_BOOTSTRAP_SERVERS</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;subscribe&quot;</span><span class="p">,</span> <span class="n">TOPIC_ORDENES</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;startingOffsets&quot;</span><span class="p">,</span> <span class="s2">&quot;latest&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;failOnDataLoss&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">load</span><span class="p">()</span>
+
+<span class="n">df_stream_events</span> <span class="o">=</span> <span class="n">df_kafka</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;topic&quot;</span><span class="p">),</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;partition&quot;</span><span class="p">),</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">),</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">),</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">&quot;topic&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;partition&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;offset&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">,</span>
+    <span class="n">from_json</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">),</span> <span class="n">schema_evento</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;evento&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;topic&quot;</span><span class="p">,</span> <span class="s2">&quot;partition&quot;</span><span class="p">,</span> <span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;evento.*&quot;</span><span class="p">)</span>
+
+<span class="n">df_stream_observable</span> <span class="o">=</span> <span class="n">df_stream_events</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+        <span class="s2">&quot;isValid&quot;</span><span class="p">,</span>
+        <span class="n">col</span><span class="p">(</span><span class="s2">&quot;tipoEvento&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">()</span>
+        <span class="o">&amp;</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;ordenId&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">()</span>
+        <span class="o">&amp;</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;total&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">()</span>
+        <span class="o">&amp;</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">()</span>
+    <span class="p">)</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;processedAt&quot;</span><span class="p">,</span> <span class="n">unix_millis</span><span class="p">(</span><span class="n">current_timestamp</span><span class="p">()))</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;processedAt&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">))</span>
+
+<span class="n">df_stream_observable</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="11-construir-features-streaming">11. Construir features streaming<a class="headerlink" href="#11-construir-features-streaming" title="Permanent link">&para;</a></h2>
+<p>En streaming no usamos <code>orderBy</code>, porque el flujo no tiene un orden global cerrado. En su lugar agregamos por ventanas con watermark y dejamos que Spark procese micro-batches.</p>
+<div class="highlight"><pre><span></span><code><span class="n">serie_stream</span> <span class="o">=</span> <span class="n">df_stream_observable</span> \
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;isValid&quot;</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">())</span> \
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">())</span> \
+    <span class="o">.</span><span class="n">withWatermark</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;2 minutes&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;1 minute&quot;</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;eventCount&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;minLatencyMs&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">stddev</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">)</span>
+    <span class="p">)</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;window.start&quot;</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;windowEnd&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;window.end&quot;</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;window&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span>
+
+<span class="n">features_stream</span> <span class="o">=</span> <span class="n">add_inference_features</span><span class="p">(</span><span class="n">serie_stream</span><span class="p">)</span>
+<span class="n">stream_predictions</span> <span class="o">=</span> <span class="n">loaded_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">features_stream</span><span class="p">)</span>
+
+<span class="n">stream_predictions</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="12-salida-streaming-a-consola">12. Salida streaming a consola<a class="headerlink" href="#12-salida-streaming-a-consola" title="Permanent link">&para;</a></h2>
+<p>Esta consulta permite ver predicciones en vivo. Detenla cuando ya tengas evidencia suficiente.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">stop_query_if_exists</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">query</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">query</span><span class="o">.</span><span class="n">isActive</span><span class="p">:</span>
+        <span class="n">query</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> detenida.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> no estaba activa.&quot;</span><span class="p">)</span>
+
+
+<span class="n">stop_query_if_exists</span><span class="p">(</span><span class="s2">&quot;query_predictions_console&quot;</span><span class="p">)</span>
+
+<span class="n">query_predictions_console</span> <span class="o">=</span> <span class="n">stream_predictions</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">&quot;windowStart&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;windowEnd&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;eventCount&quot;</span><span class="p">,</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">),</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;predictedNextAvgLatencyMs&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">writeStream</span> \
+    <span class="o">.</span><span class="n">queryName</span><span class="p">(</span><span class="s2">&quot;ml_latency_predictions_console&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;console&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">outputMode</span><span class="p">(</span><span class="s2">&quot;update&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;truncate&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="n">query_predictions_console</span>
+</code></pre></div>
+<h2 id="13-salida-streaming-a-parquet-con-foreachbatch">13. Salida streaming a Parquet con foreachBatch<a class="headerlink" href="#13-salida-streaming-a-parquet-con-foreachbatch" title="Permanent link">&para;</a></h2>
+<p><code>foreachBatch</code> convierte cada micro-batch en un DataFrame batch normal. Esto permite guardar predicciones inferidas por el modelo en un destino reutilizable.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">write_predictions_batch</span><span class="p">(</span><span class="n">microbatch_df</span><span class="p">,</span> <span class="n">batch_id</span><span class="p">):</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">microbatch_df</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">rows</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Microbatch </span><span class="si">{</span><span class="n">batch_id</span><span class="si">}</span><span class="s2">: sin filas&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">output_df</span> <span class="o">=</span> <span class="n">microbatch_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="n">batch_id</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;batchId&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;windowStart&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;windowEnd&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;eventCount&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;minLatencyMs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;latencyRangeMs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hourOfDay&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;minuteOfHour&quot;</span><span class="p">,</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;prediction&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;predictedNextAvgLatencyMs&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">output_df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">PREDICTIONS_STREAM_PATH</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Microbatch </span><span class="si">{</span><span class="n">batch_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">rows</span><span class="si">}</span><span class="s2"> predicciones guardadas&quot;</span><span class="p">)</span>
+
+
+<span class="n">stop_query_if_exists</span><span class="p">(</span><span class="s2">&quot;query_predictions_parquet&quot;</span><span class="p">)</span>
+
+<span class="n">query_predictions_parquet</span> <span class="o">=</span> <span class="n">stream_predictions</span><span class="o">.</span><span class="n">writeStream</span> \
+    <span class="o">.</span><span class="n">queryName</span><span class="p">(</span><span class="s2">&quot;ml_latency_predictions_parquet&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">foreachBatch</span><span class="p">(</span><span class="n">write_predictions_batch</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">outputMode</span><span class="p">(</span><span class="s2">&quot;update&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="n">CHECKPOINT_STREAM_PATH</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="n">query_predictions_parquet</span>
+</code></pre></div>
+<h2 id="14-leer-predicciones-streaming-guardadas">14. Leer predicciones streaming guardadas<a class="headerlink" href="#14-leer-predicciones-streaming-guardadas" title="Permanent link">&para;</a></h2>
+<p>Ejecuta esta celda despues de que hayan ingresado eventos y existan micro-batches guardados.</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">PREDICTIONS_STREAM_PATH</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">PREDICTIONS_STREAM_PATH</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">desc</span><span class="p">(</span><span class="s2">&quot;batchId&quot;</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">desc</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Todavia no existe salida streaming. Ejecuta la consulta y produce eventos en Kafka.&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="15-detener-consultas-streaming">15. Detener consultas streaming<a class="headerlink" href="#15-detener-consultas-streaming" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">stop_query_if_exists</span><span class="p">(</span><span class="s2">&quot;query_predictions_console&quot;</span><span class="p">)</span>
+<span class="n">stop_query_if_exists</span><span class="p">(</span><span class="s2">&quot;query_predictions_parquet&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Queries activas:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">spark</span><span class="o">.</span><span class="n">streams</span><span class="o">.</span><span class="n">active</span><span class="p">))</span>
+</code></pre></div>
+<h2 id="16-que-observar">16. Que observar<a class="headerlink" href="#16-que-observar" title="Permanent link">&para;</a></h2>
+<ul>
+<li>En <strong>batch</strong>, Spark lee ventanas historicas, aplica el <code>PipelineModel</code> y guarda resultados reproducibles.</li>
+<li>En <strong>streaming</strong>, Spark espera eventos, agrega por ventanas y aplica el mismo modelo dentro de cada micro-batch.</li>
+<li>El modelo no sabe si los datos vienen de archivos o de Kafka; solo necesita recibir las mismas columnas de features.</li>
+<li><code>foreachBatch</code> es una frontera practica entre streaming y batch: permite persistir, auditar o enviar predicciones a otro sistema.</li>
+</ul>
+<h2 id="17-cierre">17. Cierre<a class="headerlink" href="#17-cierre" title="Permanent link">&para;</a></h2>
+<p>Al terminar esta sesion debes tener:</p>
+<ul>
+<li>Modelo cargado desde <code>../artifacts/models/ml_latency_pipeline_lr</code>.</li>
+<li>Predicciones batch guardadas en <code>../artifacts/output/ml_latency_predictions_batch</code>.</li>
+<li>Ruta opcional para predicciones streaming en <code>../artifacts/output/ml_latency_predictions_stream</code>.</li>
+</ul>
+<p>Con esto queda lista la base para la sesion 11: comparar modelos y seleccionar el mejor con validacion distribuida.</p>
+<h2 id="ejercicios-sugeridos">Ejercicios sugeridos<a class="headerlink" href="#ejercicios-sugeridos" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Cambia la ventana de 1 minuto a 2 minutos y compara la estabilidad de las predicciones.</li>
+<li>Agrega una regla de alerta cuando <code>predictedNextAvgLatencyMs &gt; 250</code>.</li>
+<li>Guarda tambien el error real cuando la siguiente ventana ya exista en batch.</li>
+<li>Prueba el stream con <code>startingOffsets = earliest</code> para reprocesar eventos disponibles.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Angel Sullon @asullom - UPeU 2026
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

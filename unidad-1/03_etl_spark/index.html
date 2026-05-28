@@ -1,0 +1,1376 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Curso de Big Data con Spark, Kafka, streaming y ML distribuido.">
+      
+      
+        <meta name="author" content="UPeU">
+      
+      
+      
+        <link rel="prev" href="../02_fundamentos_spark/">
+      
+      
+        <link rel="next" href="../04_hdfs_formatos/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>3. ETL distribuido en batch - LambdaLab</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sesion-03-etl-escalable-con-spark" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="LambdaLab" class="md-header__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LambdaLab
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3. ETL distribuido en batch
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LambdaLab" class="md-nav__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LambdaLab
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_arquitecturas_big_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Arquitectura Big Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_fundamentos_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Fundamentos Apache Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. ETL distribuido en batch
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. ETL distribuido en batch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Propósito
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caso
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-1-crear-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 1: Crear SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-extract-leer-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Extract – Leer datasets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-explorar-estructura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Explorar estructura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-transform-limpieza-basica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Transform – Limpieza básica
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-join-distribuido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Join distribuido
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-funcion-ventana" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Función ventana
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-validacion-de-calidad-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Validación de calidad de datos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-revisar-decisiones-iniciales-de-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Revisar decisiones iniciales de performance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-load-escribir-salida-en-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Load – Escribir salida en Parquet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-verificacion-de-salida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Verificación de salida
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-reto-de-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Reto de extensión
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-cierre-breve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Cierre breve
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_hdfs_formatos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. HDFS y formatos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_evaluacion_u1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Evaluacion U1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U2 Streaming, operacion y ML a escala
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U2 Streaming, operacion y ML a escala
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/06_ingesta_kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Ingesta en tiempo real con Kafka
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/07_spark_streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Streaming con Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/08_observabilidad_costos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Observabilidad y costos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/09_ml_distribuido_regresion_mllib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. ML distribuido con MLlib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/10_series_tiempo_inferencia_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Series de tiempo e inferencia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/11_tuning_experimentacion_distribuida/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Tuning y experimentacion distribuida
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/12_evaluacion_u2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Evaluacion U2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Propósito
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caso
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-1-crear-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 1: Crear SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-extract-leer-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Extract – Leer datasets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-explorar-estructura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Explorar estructura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-transform-limpieza-basica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Transform – Limpieza básica
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-join-distribuido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Join distribuido
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-funcion-ventana" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Función ventana
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-validacion-de-calidad-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Validación de calidad de datos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-revisar-decisiones-iniciales-de-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Revisar decisiones iniciales de performance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-load-escribir-salida-en-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Load – Escribir salida en Parquet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-verificacion-de-salida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Verificación de salida
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-reto-de-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Reto de extensión
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-cierre-breve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Cierre breve
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sesion-03-etl-escalable-con-spark">Sesión 03 – ETL escalable con Spark<a class="headerlink" href="#sesion-03-etl-escalable-con-spark" title="Permanent link">&para;</a></h1>
+<h2 id="proposito">Propósito<a class="headerlink" href="#proposito" title="Permanent link">&para;</a></h2>
+<p>Construir un flujo ETL en Apache Spark aplicando transformaciones encadenadas, joins distribuidos y funciones ventana, validando la calidad de los datos y analizando decisiones iniciales de rendimiento.</p>
+<h2 id="caso">Caso<a class="headerlink" href="#caso" title="Permanent link">&para;</a></h2>
+<p>Se dispone de dos datasets:
+- ventas: transacciones
+- clientes: información de clientes</p>
+<p>Se requiere integrar, transformar y analizar estos datos.</p>
+<h2 id="paso-1-crear-sparksession">Paso 1: Crear SparkSession<a class="headerlink" href="#paso-1-crear-sparksession" title="Permanent link">&para;</a></h2>
+<p>Inicializamos el entorno de trabajo en modo local.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span>
+    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;sesion3-etl&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[*]&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.ui.port&quot;</span><span class="p">,</span> <span class="s2">&quot;4040&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.shuffle.partitions&quot;</span><span class="p">,</span> <span class="s2">&quot;8&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">spark</span>
+</code></pre></div>
+<h2 id="2-extract-leer-datasets">2. Extract – Leer datasets<a class="headerlink" href="#2-extract-leer-datasets" title="Permanent link">&para;</a></h2>
+<p>Se cargan los archivos desde la carpeta <code>/opt/data</code>.
+Para la sesión 3 se trabaja con dos datasets relacionados: <code>ventas.csv</code> y <code>clientes.csv</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">ventas</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;/opt/data/ventas.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">clientes</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;/opt/data/clientes.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">ventas</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">clientes</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="3-explorar-estructura">3. Explorar estructura<a class="headerlink" href="#3-explorar-estructura" title="Permanent link">&para;</a></h2>
+<p>Antes de transformar, verificamos esquema (estructura) y tipos de datos.</p>
+<div class="highlight"><pre><span></span><code><span class="n">ventas</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<span class="n">clientes</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="4-transform-limpieza-basica">4. Transform – Limpieza básica<a class="headerlink" href="#4-transform-limpieza-basica" title="Permanent link">&para;</a></h2>
+<p>Aplicamos limpieza inicial:
+- eliminar nulos críticos
+- remover duplicados en clientes
+- registros inconsistentes.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">#ventas_limpio = ventas.dropna(subset=[&quot;id&quot;, &quot;cliente_id&quot;, &quot;fecha&quot;, &quot;monto&quot;])</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span>
+
+<span class="n">ventas_limpio</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">ventas</span>
+    <span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cliente_id&quot;</span><span class="p">,</span> <span class="s2">&quot;fecha&quot;</span><span class="p">,</span> <span class="s2">&quot;monto&quot;</span><span class="p">])</span> <span class="c1"># “Elimina registros donde falte cliente_id, fecha o monto”</span>
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;monto&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">clientes_limpio</span> <span class="o">=</span> <span class="n">clientes</span><span class="o">.</span><span class="n">dropDuplicates</span><span class="p">([</span><span class="s2">&quot;cliente_id&quot;</span><span class="p">])</span>
+<span class="n">ventas_limpio</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">clientes_limpio</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<p>🔎 <strong>Pregunta:</strong>
+¿Por qué es importante limpiar datos antes de hacer un join?</p>
+<h2 id="5-join-distribuido">5. Join distribuido<a class="headerlink" href="#5-join-distribuido" title="Permanent link">&para;</a></h2>
+<p>Integramos ventas con clientes mediante <code>cliente_id</code>. Este paso permite conectar información transaccional con atributos descriptivos.</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_join</span> <span class="o">=</span> <span class="n">ventas_limpio</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">clientes_limpio</span><span class="p">,</span> <span class="s2">&quot;cliente_id&quot;</span><span class="p">,</span> <span class="s2">&quot;inner&quot;</span><span class="p">)</span>
+<span class="n">df_join</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<p>🔎 <strong>Pregunta:</strong>
+¿Qué ocurre internamente en Spark cuando se realiza este join?</p>
+<p>(Shuffle = redistribución de datos entre nodos)
+Spark mueve datos entre máquinas (o particiones) para poder agruparlos o combinarlos correctamente.</p>
+<p>🔥 Problema:</p>
+<p>Los datos del mismo cliente están en diferentes grupos (particiones)</p>
+<p>💥 Solución (shuffle):</p>
+<p>👉 Spark dice:</p>
+<p>“Muevan todos los datos del cliente 101 al mismo lugar”</p>
+<p>Alternativa optimizada :
+from pyspark.sql.functions import broadcast</p>
+<p>df = ventas_limpio.join(broadcast(clientes_limpio), "cliente_id")</p>
+<h2 id="6-funcion-ventana">6. Función ventana<a class="headerlink" href="#6-funcion-ventana" title="Permanent link">&para;</a></h2>
+<p>Se calculan métricas por cliente:
+- <code>ranking</code>: orden de compra por cliente
+- <code>total_acumulado</code>: monto acumulado por cliente</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.window</span><span class="w"> </span><span class="kn">import</span> <span class="n">Window</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">row_number</span><span class="p">,</span> <span class="nb">sum</span>
+
+<span class="n">window_spec</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">partitionBy</span><span class="p">(</span><span class="s2">&quot;cliente_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;fecha&quot;</span><span class="p">)</span>
+
+<span class="n">df_window</span> <span class="o">=</span> <span class="n">df_join</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;ranking&quot;</span><span class="p">,</span> <span class="n">row_number</span><span class="p">()</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">window_spec</span><span class="p">))</span>
+<span class="n">df_window</span> <span class="o">=</span> <span class="n">df_join</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;total_acumulado&quot;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="s2">&quot;monto&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">window_spec</span><span class="p">))</span>
+
+<span class="c1">#df_window = (</span>
+<span class="c1">#    df_join</span>
+<span class="c1">#    .withColumn(&quot;ranking&quot;, row_number().over(window_spec))</span>
+<span class="c1">#    .withColumn(&quot;total_acumulado&quot;, sum(&quot;monto&quot;).over(window_spec))</span>
+<span class="c1">#)</span>
+
+<span class="n">df_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<p>📌 <strong>Interpretación:</strong>
+- <code>partitionBy</code>: agrupa por cliente
+- <code>orderBy</code>: ordena las compras
+- <code>over</code>: aplica el cálculo sobre ese grupo</p>
+<p>A diferencia de <code>groupBy</code>, no se pierden filas.</p>
+<h2 id="7-validacion-de-calidad-de-datos">7. Validación de calidad de datos<a class="headerlink" href="#7-validacion-de-calidad-de-datos" title="Permanent link">&para;</a></h2>
+<p>Revisamos nulos por columna, cantidad de registros y posibles duplicados en el identificador de venta.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">count</span><span class="p">,</span> <span class="n">when</span>
+
+<span class="c1"># Nulos</span>
+<span class="n">df_window</span><span class="o">.</span><span class="n">select</span><span class="p">([</span>
+    <span class="n">count</span><span class="p">(</span><span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">isNull</span><span class="p">(),</span> <span class="n">c</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df_window</span><span class="o">.</span><span class="n">columns</span>
+<span class="p">])</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Duplicados</span>
+<span class="n">df_window</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;count &gt; 1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Conteo total</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total registros:&quot;</span><span class="p">,</span> <span class="n">df_window</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total de registros:&quot;</span><span class="p">,</span> <span class="n">df_window</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+
+<span class="n">df_window</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;count &gt; 1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="8-revisar-decisiones-iniciales-de-performance">8. Revisar decisiones iniciales de performance<a class="headerlink" href="#8-revisar-decisiones-iniciales-de-performance" title="Permanent link">&para;</a></h2>
+<p>Primero observamos el plan de ejecución del join y de la transformación con ventana.</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_window</span><span class="o">.</span><span class="n">explain</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">broadcast</span>
+
+<span class="n">df_broadcast</span> <span class="o">=</span> <span class="n">ventas_limpio</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">broadcast</span><span class="p">(</span><span class="n">clientes_limpio</span><span class="p">),</span> <span class="s2">&quot;cliente_id&quot;</span><span class="p">)</span>
+<span class="n">df_broadcast</span><span class="o">.</span><span class="n">explain</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Particiones ventas:&quot;</span><span class="p">,</span> <span class="n">ventas_limpio</span><span class="o">.</span><span class="n">rdd</span><span class="o">.</span><span class="n">getNumPartitions</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Particiones df final:&quot;</span><span class="p">,</span> <span class="n">df_window</span><span class="o">.</span><span class="n">rdd</span><span class="o">.</span><span class="n">getNumPartitions</span><span class="p">())</span>
+</code></pre></div>
+<p>🔎 <strong>Pregunta:</strong>
+¿Qué operaciones generan mayor costo en el plan de ejecución?</p>
+<h2 id="9-load-escribir-salida-en-parquet">9. Load – Escribir salida en Parquet<a class="headerlink" href="#9-load-escribir-salida-en-parquet" title="Permanent link">&para;</a></h2>
+<p>La salida del ETL se guarda en formato Parquet dentro de <code>/opt/artifacts/output</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_window</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;/opt/artifacts/output&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="10-verificacion-de-salida">10. Verificación de salida<a class="headerlink" href="#10-verificacion-de-salida" title="Permanent link">&para;</a></h2>
+<p>Leemos nuevamente el resultado para comprobar que el ETL se generó correctamente.</p>
+<div class="highlight"><pre><span></span><code><span class="n">salida</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;/opt/artifacts/output&quot;</span><span class="p">)</span>
+<span class="n">salida</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="11-reto-de-extension">11. Reto de extensión<a class="headerlink" href="#11-reto-de-extension" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Filtrar solo ventas mayores a 150 antes del join.</li>
+<li>Agregar una columna de categoría de monto: bajo, medio, alto.</li>
+<li>Justificar si conviene pensar en broadcast cuando una tabla es muy pequeña.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="n">df_reto</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">ventas_limpio</span>
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;monto&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">150</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">clientes_limpio</span><span class="p">,</span> <span class="s2">&quot;cliente_id&quot;</span><span class="p">,</span> <span class="s2">&quot;inner&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+        <span class="s2">&quot;categoria_monto&quot;</span><span class="p">,</span>
+        <span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;monto&quot;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">150</span><span class="p">,</span> <span class="s2">&quot;bajo&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;monto&quot;</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">250</span><span class="p">,</span> <span class="s2">&quot;medio&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="s2">&quot;alto&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">df_reto</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="12-cierre-breve">12. Cierre breve<a class="headerlink" href="#12-cierre-breve" title="Permanent link">&para;</a></h2>
+<p><strong>Preguntas para reflexión:</strong>
+- ¿Qué diferencia hay entre una transformación simple y un join distribuido?
+- ¿Qué aporta la función ventana frente a un <code>groupBy</code> tradicional?
+- ¿Por qué Parquet es una mejor salida que CSV para analítica posterior?</p>
+<p><strong>Entregable sugerido:</strong> notebook funcional con ETL ejecutado, salida en Parquet y breve interpretación.</p>
+<h1 id="actividad-autonoma-aplicacion-al-proyecto-sello-ps">Actividad Autónoma – Aplicación al Proyecto Sello (PS)<a class="headerlink" href="#actividad-autonoma-aplicacion-al-proyecto-sello-ps" title="Permanent link">&para;</a></h1>
+<h2 id="objetivo">Objetivo<a class="headerlink" href="#objetivo" title="Permanent link">&para;</a></h2>
+<p>Aplicar el flujo ETL desarrollado en clase sobre el dataset real del proyecto grupal.</p>
+<h2 id="instrucciones">Instrucciones<a class="headerlink" href="#instrucciones" title="Permanent link">&para;</a></h2>
+<p>Cada grupo debe:</p>
+<ol>
+<li>Leer sus datasets reales del proyecto.</li>
+<li>Aplicar limpieza de datos:</li>
+<li>manejo de nulos</li>
+<li>eliminación de duplicados</li>
+<li>Integrar al menos dos fuentes mediante join.</li>
+<li>Aplicar al menos:</li>
+<li>una función ventana (ranking o acumulado)</li>
+<li>Validar resultados:</li>
+<li>conteo de registros</li>
+<li>verificación de nulos</li>
+<li>Guardar salida en formato Parquet.</li>
+<li>Analizar el plan de ejecución (<code>explain()</code>).</li>
+</ol>
+<h2 id="entregable">Entregable<a class="headerlink" href="#entregable" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Notebook Jupyter (<code>.ipynb</code>)</li>
+<li>Código ejecutable</li>
+<li>Resultados visibles</li>
+<li>Breve interpretación (máx. 1 página):</li>
+<li>qué hicieron</li>
+<li>qué problemas encontraron</li>
+<li>qué decisiones tomaron</li>
+</ul>
+<h2 id="criterios-de-evaluacion">Criterios de evaluación<a class="headerlink" href="#criterios-de-evaluacion" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Correcta implementación del ETL</li>
+<li>Uso adecuado de joins y funciones ventana</li>
+<li>Validación de datos</li>
+<li>Interpretación técnica</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Angel Sullon @asullom - UPeU 2026
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

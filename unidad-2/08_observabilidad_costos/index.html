@@ -1,0 +1,1816 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Curso de Big Data con Spark, Kafka, streaming y ML distribuido.">
+      
+      
+        <meta name="author" content="UPeU">
+      
+      
+      
+        <link rel="prev" href="../07_spark_streaming/">
+      
+      
+        <link rel="next" href="../09_ml_distribuido_regresion_mllib/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>8. Observabilidad y costos - LambdaLab</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#observabilidad-de-pipeline-kafka-spark" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="LambdaLab" class="md-header__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LambdaLab
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              8. Observabilidad y costos
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LambdaLab" class="md-nav__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LambdaLab
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/01_arquitecturas_big_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Arquitectura Big Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/02_fundamentos_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Fundamentos Apache Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/03_etl_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. ETL distribuido en batch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/04_hdfs_formatos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. HDFS y formatos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/05_evaluacion_u1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Evaluacion U1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U2 Streaming, operacion y ML a escala
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U2 Streaming, operacion y ML a escala
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_ingesta_kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Ingesta en tiempo real con Kafka
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_spark_streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Streaming con Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Observabilidad y costos
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Observabilidad y costos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datos-del-entorno" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Datos del entorno
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-1-crear-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 1. Crear SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-2-definir-parametros-y-helper-de-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 2. Definir parametros y helper de streams
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-3-leer-eventos-desde-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 3. Leer eventos desde Kafka
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-4-parsear-json-y-conservar-metadata-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 4. Parsear JSON y conservar metadata Kafka
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-5-crear-dataframe-observable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 5. Crear dataframe observable
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-6-salida-a-consola" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 6. Salida a consola
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-7-revisar-throughput-y-lag-desde-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 7. Revisar throughput y lag desde Spark
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 7. Revisar throughput y lag desde Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interpretacion-del-resultado-del-paso-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interpretacion del resultado del Paso 7
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-alternativa-spark-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidencia alternativa: Spark UI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-8-persistir-evidencia-observable-en-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 8. Persistir evidencia observable en Parquet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-81-producir-eventos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 8.1. Producir eventos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-9-leer-evidencia-guardada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 9. Leer evidencia guardada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-10-prometheus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 10. Prometheus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-11-grafana" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 11. Grafana
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 11. Grafana">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interpretacion-del-panel-consumer-lag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interpretacion del panel Consumer Lag
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-12-alertas-propuestas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 12. Alertas propuestas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 12. Alertas propuestas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crear-una-alerta-en-grafana" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crear una alerta en Grafana
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-2-opcional-latencia-calculada-en-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejemplo 2 opcional: latencia calculada en Spark
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-13-detener-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 13. Detener streams
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09_ml_distribuido_regresion_mllib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. ML distribuido con MLlib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_series_tiempo_inferencia_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Series de tiempo e inferencia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_tuning_experimentacion_distribuida/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Tuning y experimentacion distribuida
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_evaluacion_u2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Evaluacion U2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datos-del-entorno" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Datos del entorno
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-1-crear-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 1. Crear SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-2-definir-parametros-y-helper-de-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 2. Definir parametros y helper de streams
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-3-leer-eventos-desde-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 3. Leer eventos desde Kafka
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-4-parsear-json-y-conservar-metadata-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 4. Parsear JSON y conservar metadata Kafka
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-5-crear-dataframe-observable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 5. Crear dataframe observable
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-6-salida-a-consola" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 6. Salida a consola
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-7-revisar-throughput-y-lag-desde-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 7. Revisar throughput y lag desde Spark
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 7. Revisar throughput y lag desde Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interpretacion-del-resultado-del-paso-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interpretacion del resultado del Paso 7
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-alternativa-spark-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidencia alternativa: Spark UI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-8-persistir-evidencia-observable-en-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 8. Persistir evidencia observable en Parquet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-81-producir-eventos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 8.1. Producir eventos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-9-leer-evidencia-guardada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 9. Leer evidencia guardada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-10-prometheus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 10. Prometheus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-11-grafana" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 11. Grafana
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 11. Grafana">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interpretacion-del-panel-consumer-lag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interpretacion del panel Consumer Lag
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-12-alertas-propuestas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 12. Alertas propuestas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 12. Alertas propuestas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crear-una-alerta-en-grafana" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crear una alerta en Grafana
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-2-opcional-latencia-calculada-en-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejemplo 2 opcional: latencia calculada en Spark
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-13-detener-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 13. Detener streams
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="observabilidad-de-pipeline-kafka-spark">Observabilidad de pipeline Kafka + Spark<a class="headerlink" href="#observabilidad-de-pipeline-kafka-spark" title="Permanent link">&para;</a></h1>
+<p>Notebook P1 para medir disponibilidad, latencia, throughput, logging estructurado y alertas propuestas sobre el pipeline:</p>
+<p><code>Producer -&gt; Kafka -&gt; Spark Structured Streaming -&gt; evidencias</code></p>
+<p>Este notebook empieza desde cero y no reemplaza al <code>07_spark_streaming_consumer_ordenes.ipynb</code>; lo usa como base conceptual, pero aqui se trabaja la observabilidad de la sesion P1.</p>
+<h2 id="objetivo">Objetivo<a class="headerlink" href="#objetivo" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Leer eventos desde Kafka.</li>
+<li>Conservar metadata Kafka: <code>topic</code>, <code>partition</code>, <code>offset</code>, <code>kafkaTimestamp</code>.</li>
+<li>Validar eventos y separar registros validos/invalidos.</li>
+<li>Calcular <code>processedAt</code> y <code>latencyMs</code>: <code>processedAt</code> es el momento en que Spark procesa el evento; <code>latencyMs</code> es la diferencia entre <code>processedAt</code> y el <code>timestamp</code> enviado por el producer.</li>
+<li>Estimar throughput con <code>lastProgress</code>: <code>numInputRows</code>, <code>inputRowsPerSecond</code> y <code>processedRowsPerSecond</code> describen el ultimo micro-batch procesado.</li>
+<li>Persistir evidencia observable en Parquet.</li>
+<li>Relacionar Spark con Prometheus, Grafana y alertas propuestas.</li>
+</ol>
+<h2 id="datos-del-entorno">Datos del entorno<a class="headerlink" href="#datos-del-entorno" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Kafka broker interno: <code>ec-kafka:9092</code></li>
+<li>Topic: <code>orden-eventos</code></li>
+<li>Prometheus: <code>http://localhost:49090</code></li>
+<li>Grafana: <code>http://localhost:43000</code></li>
+<li>Kafka Exporter: <code>http://localhost:49308/metrics</code></li>
+<li>Salida Parquet: <code>/opt/artifacts/output/orden_eventos_observabilidad_p1</code></li>
+</ul>
+<h2 id="paso-1-crear-sparksession">Paso 1. Crear SparkSession<a class="headerlink" href="#paso-1-crear-sparksession" title="Permanent link">&para;</a></h2>
+<p>Se carga el conector Kafka para Spark Structured Streaming.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
+    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;observabilidad-pipeline-kafka-spark&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.jars.packages&quot;</span><span class="p">,</span> <span class="s2">&quot;org.apache.spark:spark-sql-kafka-0-10_2.13:4.1.1&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">setLogLevel</span><span class="p">(</span><span class="s2">&quot;WARN&quot;</span><span class="p">)</span>
+<span class="n">spark</span>
+</code></pre></div>
+<h2 id="paso-2-definir-parametros-y-helper-de-streams">Paso 2. Definir parametros y helper de streams<a class="headerlink" href="#paso-2-definir-parametros-y-helper-de-streams" title="Permanent link">&para;</a></h2>
+<p>El helper evita dejar queries activas cuando una celda se ejecuta mas de una vez.</p>
+<div class="highlight"><pre><span></span><code><span class="n">KAFKA_BOOTSTRAP_SERVERS</span> <span class="o">=</span> <span class="s2">&quot;ec-kafka:9092&quot;</span>
+<span class="n">TOPIC_ORDENES</span> <span class="o">=</span> <span class="s2">&quot;orden-eventos&quot;</span>
+<span class="n">OUTPUT_PATH</span> <span class="o">=</span> <span class="s2">&quot;/opt/artifacts/output/orden_eventos_observabilidad_p1&quot;</span>
+<span class="n">CHECKPOINT_PATH</span> <span class="o">=</span> <span class="s2">&quot;/opt/artifacts/checkpoint/orden-eventos-observabilidad-p1&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">stop_query_if_exists</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">query</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">query</span><span class="o">.</span><span class="n">isActive</span><span class="p">:</span>
+        <span class="n">query</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> detenida.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> no estaba activa.&quot;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">stop_active_streams</span><span class="p">():</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">streams</span><span class="o">.</span><span class="n">active</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Queries activas: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">active</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">active</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deteniendo </span><span class="si">{</span><span class="n">query</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">query</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">query</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="paso-3-leer-eventos-desde-kafka">Paso 3. Leer eventos desde Kafka<a class="headerlink" href="#paso-3-leer-eventos-desde-kafka" title="Permanent link">&para;</a></h2>
+<p><code>startingOffsets = latest</code> evita reprocesar backlog antiguo cuando se esta haciendo una prueba en vivo.</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_kafka</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span> \
+    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;kafka&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;kafka.bootstrap.servers&quot;</span><span class="p">,</span> <span class="n">KAFKA_BOOTSTRAP_SERVERS</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;subscribe&quot;</span><span class="p">,</span> <span class="n">TOPIC_ORDENES</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;startingOffsets&quot;</span><span class="p">,</span> <span class="s2">&quot;latest&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;failOnDataLoss&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">load</span><span class="p">()</span>
+
+<span class="n">df_kafka</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="paso-4-parsear-json-y-conservar-metadata-kafka">Paso 4. Parsear JSON y conservar metadata Kafka<a class="headerlink" href="#paso-4-parsear-json-y-conservar-metadata-kafka" title="Permanent link">&para;</a></h2>
+<p>El campo <code>timestamp</code> del evento esta en milisegundos Unix y representa cuando el producer genero/publico el evento.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">from_json</span><span class="p">,</span> <span class="n">current_timestamp</span><span class="p">,</span> <span class="n">unix_millis</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">LongType</span><span class="p">,</span> <span class="n">DoubleType</span>
+
+<span class="n">schema_evento</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;tipoEvento&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;ordenId&quot;</span><span class="p">,</span> <span class="n">LongType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;total&quot;</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;estado&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;origen&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="n">LongType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<span class="p">])</span>
+
+<span class="n">df_value</span> <span class="o">=</span> <span class="n">df_kafka</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;topic&quot;</span><span class="p">),</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;partition&quot;</span><span class="p">),</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">),</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">),</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">df_parsed</span> <span class="o">=</span> <span class="n">df_value</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">&quot;topic&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;partition&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;offset&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">,</span>
+    <span class="n">from_json</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">),</span> <span class="n">schema_evento</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;evento&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;topic&quot;</span><span class="p">,</span> <span class="s2">&quot;partition&quot;</span><span class="p">,</span> <span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;evento.*&quot;</span><span class="p">)</span>
+
+<span class="n">df_parsed</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="paso-5-crear-dataframe-observable">Paso 5. Crear dataframe observable<a class="headerlink" href="#paso-5-crear-dataframe-observable" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>isValid</code>: indica si el evento cumple campos minimos.</li>
+<li><code>processedAt</code>: momento de procesamiento en Spark, en ms.</li>
+<li><code>latencyMs</code>: diferencia entre procesamiento y creacion del evento.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">df_observable</span> <span class="o">=</span> <span class="n">df_parsed</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+        <span class="s2">&quot;isValid&quot;</span><span class="p">,</span>
+        <span class="n">col</span><span class="p">(</span><span class="s2">&quot;tipoEvento&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">()</span>
+        <span class="o">&amp;</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;ordenId&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">()</span>
+        <span class="o">&amp;</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;total&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">()</span>
+        <span class="o">&amp;</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">()</span>
+    <span class="p">)</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;processedAt&quot;</span><span class="p">,</span> <span class="n">unix_millis</span><span class="p">(</span><span class="n">current_timestamp</span><span class="p">()))</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;processedAt&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">))</span>
+
+<span class="n">df_observable</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="paso-6-salida-a-consola">Paso 6. Salida a consola<a class="headerlink" href="#paso-6-salida-a-consola" title="Permanent link">&para;</a></h2>
+<p>Arranca un stream visual para generar evidencia rapida. Para que la evidencia Parquet capture los mismos eventos, inicia tambien el Paso 8 antes de producir eventos.</p>
+<div class="highlight"><pre><span></span><code><span class="n">stop_query_if_exists</span><span class="p">(</span><span class="s2">&quot;query_console&quot;</span><span class="p">)</span>
+
+<span class="n">query_console</span> <span class="o">=</span> <span class="n">df_observable</span><span class="o">.</span><span class="n">writeStream</span> \
+    <span class="o">.</span><span class="n">queryName</span><span class="p">(</span><span class="s2">&quot;orden_eventos_console_observabilidad&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">outputMode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;console&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;truncate&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="c1"># query_console.awaitTermination()</span>
+</code></pre></div>
+<h2 id="paso-7-revisar-throughput-y-lag-desde-spark">Paso 7. Revisar throughput y lag desde Spark<a class="headerlink" href="#paso-7-revisar-throughput-y-lag-desde-spark" title="Permanent link">&para;</a></h2>
+<p>Ejecuta esta celda despues de iniciar Parquet y producir eventos. <code>lastProgress</code> muestra el rendimiento del ultimo progreso o ultimo micro-batch.</p>
+<ul>
+<li><code>numInputRows</code>: numero de filas/eventos de entrada en ese micro-batch.</li>
+<li><code>inputRowsPerSecond</code>: filas de entrada por segundo.</li>
+<li><code>processedRowsPerSecond</code>: filas procesadas por segundo.</li>
+<li><code>avgOffsetsBehindLatest</code> y <code>maxOffsetsBehindLatest</code>: atraso promedio/maximo respecto al ultimo offset disponible en Kafka.</li>
+</ul>
+<p>Si <code>numInputRows</code> sale <code>0</code>, significa que Spark ejecuto el micro-batch, pero no habia eventos nuevos.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="n">progress</span> <span class="o">=</span> <span class="n">query_console</span><span class="o">.</span><span class="n">lastProgress</span>
+
+<span class="k">if</span> <span class="n">progress</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Todavia no hay micro-batch procesado. Produce un evento y espera unos segundos.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">progress</span><span class="p">[</span><span class="s2">&quot;sources&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metrics&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;idle&quot;</span> <span class="k">if</span> <span class="n">progress</span><span class="p">[</span><span class="s2">&quot;numInputRows&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;processed&quot;</span>
+
+    <span class="n">log</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;service&quot;</span><span class="p">:</span> <span class="s2">&quot;spark-streaming&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;consumer&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;topic&quot;</span><span class="p">:</span> <span class="n">TOPIC_ORDENES</span><span class="p">,</span>
+        <span class="s2">&quot;batchId&quot;</span><span class="p">:</span> <span class="n">progress</span><span class="p">[</span><span class="s2">&quot;batchId&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;numInputRows&quot;</span><span class="p">:</span> <span class="n">progress</span><span class="p">[</span><span class="s2">&quot;numInputRows&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;inputRowsPerSecond&quot;</span><span class="p">:</span> <span class="n">progress</span><span class="p">[</span><span class="s2">&quot;inputRowsPerSecond&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;processedRowsPerSecond&quot;</span><span class="p">:</span> <span class="n">progress</span><span class="p">[</span><span class="s2">&quot;processedRowsPerSecond&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;avgOffsetsBehindLatest&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;avgOffsetsBehindLatest&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;maxOffsetsBehindLatest&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;maxOffsetsBehindLatest&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="n">status</span>
+    <span class="p">}</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">progress</span>
+</code></pre></div>
+<h3 id="interpretacion-del-resultado-del-paso-7">Interpretacion del resultado del Paso 7<a class="headerlink" href="#interpretacion-del-resultado-del-paso-7" title="Permanent link">&para;</a></h3>
+<p>Si el resultado muestra <code>numInputRows: 0</code>, Spark esta activo y observando Kafka, pero en ese ultimo micro-batch no encontro eventos nuevos.</p>
+<ul>
+<li><code>batchId</code>: numero del micro-batch ejecutado.</li>
+<li><code>numInputRows</code>: eventos recibidos en ese micro-batch.</li>
+<li><code>inputRowsPerSecond</code>: velocidad de entrada de eventos.</li>
+<li><code>processedRowsPerSecond</code>: velocidad de procesamiento de Spark.</li>
+<li><code>avgOffsetsBehindLatest</code> y <code>maxOffsetsBehindLatest</code>: atraso respecto al ultimo offset disponible en Kafka.</li>
+<li><code>status</code>: estado calculado para el micro-batch. <code>idle</code> significa sin eventos nuevos; <code>processed</code> significa que Spark procesó eventos.</li>
+</ul>
+<p>Ejemplo: si <code>numInputRows</code>, <code>inputRowsPerSecond</code> y <code>processedRowsPerSecond</code> salen <code>0</code>, significa que no llegaron eventos nuevos en ese intervalo. Si ademas <code>maxOffsetsBehindLatest</code> es <code>0</code>, el consumer esta al dia.</p>
+<h3 id="evidencia-alternativa-spark-ui">Evidencia alternativa: Spark UI<a class="headerlink" href="#evidencia-alternativa-spark-ui" title="Permanent link">&para;</a></h3>
+<p>Abre <code>http://localhost:4040</code> y entra a <code>Structured Streaming -&gt; Streaming Query Statistics</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Seccion Spark UI</th>
+<th>Que indica</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Input Rate</code></td>
+<td>velocidad de entrada de eventos hacia Spark</td>
+</tr>
+<tr>
+<td><code>Process Rate</code></td>
+<td>velocidad con la que Spark procesa eventos</td>
+</tr>
+<tr>
+<td><code>Input Rows</code></td>
+<td>cantidad de filas/eventos por micro-batch</td>
+</tr>
+<tr>
+<td><code>Batch Duration</code></td>
+<td>tiempo que tarda cada micro-batch</td>
+</tr>
+<tr>
+<td><code>Operation Duration</code></td>
+<td>desglose del tiempo usado por operaciones internas</td>
+</tr>
+</tbody>
+</table>
+<p>Lectura rapida: si <code>Input Rows</code> es <code>0</code>, no llegaron eventos en ese micro-batch. Si <code>Process Rate</code> es mayor que <code>Input Rate</code>, Spark procesa mas rapido de lo que entran los eventos.</p>
+<h2 id="paso-8-persistir-evidencia-observable-en-parquet">Paso 8. Persistir evidencia observable en Parquet<a class="headerlink" href="#paso-8-persistir-evidencia-observable-en-parquet" title="Permanent link">&para;</a></h2>
+<p>Esta salida guarda los eventos procesados con metadata Kafka y campos de observabilidad.</p>
+<div class="highlight"><pre><span></span><code><span class="n">stop_query_if_exists</span><span class="p">(</span><span class="s2">&quot;query_parquet&quot;</span><span class="p">)</span>
+
+<span class="n">query_parquet</span> <span class="o">=</span> <span class="n">df_observable</span><span class="o">.</span><span class="n">writeStream</span> \
+    <span class="o">.</span><span class="n">queryName</span><span class="p">(</span><span class="s2">&quot;orden_eventos_parquet_observabilidad_p1&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;parquet&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">OUTPUT_PATH</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="n">CHECKPOINT_PATH</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">outputMode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="paso-81-producir-eventos">Paso 8.1. Producir eventos<a class="headerlink" href="#paso-81-producir-eventos" title="Permanent link">&para;</a></h2>
+<p>Con <code>query_console</code> y <code>query_parquet</code> activos, genera eventos desde <code>ec-orden-py</code> o <code>ec-orden-ms</code>.</p>
+<p>Ejemplo con <code>ec-orden-ms</code> desde PowerShell:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">Invoke-RestMethod</span> <span class="p">`</span>
+  <span class="n">-Method</span> <span class="n">Post</span> <span class="p">`</span>
+  <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:19021/ordenes&quot;</span> <span class="p">`</span>
+  <span class="n">-ContentType</span> <span class="s2">&quot;application/json&quot;</span> <span class="p">`</span>
+  <span class="n">-Body</span> <span class="s1">&#39;{&quot;usuarioId&quot;:2,&quot;total&quot;:600}&#39;</span>
+</code></pre></div>
+<p>Despues espera unos segundos y vuelve a ejecutar el Paso 7 para revisar throughput.</p>
+<h2 id="paso-9-leer-evidencia-guardada">Paso 9. Leer evidencia guardada<a class="headerlink" href="#paso-9-leer-evidencia-guardada" title="Permanent link">&para;</a></h2>
+<p>Ejecuta esta celda despues de producir eventos y esperar algunos segundos.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">#Leer lo guardado</span>
+<span class="c1">#df_final = spark.read.parquet(&quot;data/orden_eventos_parquet&quot;)</span>
+<span class="c1">#df_final.show(truncate=False)</span>
+
+<span class="n">df_final</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">OUTPUT_PATH</span><span class="p">)</span>
+<span class="n">df_final</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="paso-10-prometheus">Paso 10. Prometheus<a class="headerlink" href="#paso-10-prometheus" title="Permanent link">&para;</a></h2>
+<p>Abre <code>http://localhost:49090</code> y revisa:</p>
+<ol>
+<li><code>Status &gt; Targets</code>: los targets <code>prometheus</code> y <code>kafka-exporter</code> deben estar <code>UP</code>.</li>
+<li>Ejecuta estas consultas:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nv">kafka_brokers</span>
+<span class="nv">up</span><span class="p">{</span><span class="nl">job</span><span class="o">=</span><span class="p">&quot;</span><span class="s">kafka-exporter</span><span class="p">&quot;}</span>
+<span class="nv">kafka_broker_info</span>
+<span class="nv">kafka_consumergroup_lag</span>
+</code></pre></div>
+<p>Si <code>kafka_consumergroup_lag</code> no devuelve datos, usa un consumer group activo y vuelve a consultar.</p>
+<p>Interpretacion rapida:</p>
+<ul>
+<li><code>kafka_broker_info = 1</code>: Kafka Exporter detecta el broker Kafka.</li>
+<li><code>up{job="kafka-exporter"} = 1</code>: Prometheus pudo consultar el exporter.</li>
+<li><code>up{job="kafka-exporter"} = 0</code>: el exporter esta caido o Prometheus no lo alcanza.</li>
+<li><code>kafka_consumergroup_lag = 0</code>: el consumer group esta al dia.</li>
+<li><code>kafka_consumergroup_lag &gt; 0</code>: hay eventos pendientes por consumir.</li>
+</ul>
+<h2 id="paso-11-grafana">Paso 11. Grafana<a class="headerlink" href="#paso-11-grafana" title="Permanent link">&para;</a></h2>
+<p>Abre <code>http://localhost:43000</code> con <code>admin</code> / <code>admin</code>.</p>
+<p>Crea un dashboard minimo:</p>
+<table>
+<thead>
+<tr>
+<th>Panel</th>
+<th>Consulta</th>
+<th>Visualizacion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kafka Brokers</td>
+<td><code>kafka_brokers</code></td>
+<td>Stat</td>
+</tr>
+<tr>
+<td>Kafka Exporter Up</td>
+<td><code>up{job="kafka-exporter"}</code></td>
+<td>Stat</td>
+</tr>
+<tr>
+<td>Kafka Broker Info</td>
+<td><code>kafka_broker_info</code></td>
+<td>Table</td>
+</tr>
+<tr>
+<td>Consumer Lag</td>
+<td><code>kafka_consumergroup_lag</code></td>
+<td>Time series o Table</td>
+</tr>
+</tbody>
+</table>
+<h3 id="interpretacion-del-panel-consumer-lag">Interpretacion del panel Consumer Lag<a class="headerlink" href="#interpretacion-del-panel-consumer-lag" title="Permanent link">&para;</a></h3>
+<p>Si usas la consulta <code>kafka_consumergroup_lag</code>, Grafana dibuja una linea por cada <code>consumergroup</code>.</p>
+<ul>
+<li>Valor <code>0</code>: el consumer group esta al dia; no tiene mensajes pendientes.</li>
+<li>Valor <code>1</code>: hay 1 mensaje pendiente por consumir en ese momento.</li>
+<li>Pico corto de <code>1</code> y luego vuelve a <code>0</code>: entro un evento, el consumer se atraso momentaneamente y luego lo consumio.</li>
+<li>Valor mayor que <code>0</code> sostenido: el consumer no esta alcanzando el ritmo de produccion o esta detenido.</li>
+</ul>
+<p>En un panel como <code>Consumer Lag</code>, una linea plana en <code>0</code> es buena senal. Un pico pequeno y temporal es normal durante la llegada de eventos. Lo preocupante es que el lag crezca o se mantenga alto.</p>
+<p>Adjunta capturas de <code>Explore</code> y del dashboard.</p>
+<h2 id="paso-12-alertas-propuestas">Paso 12. Alertas propuestas<a class="headerlink" href="#paso-12-alertas-propuestas" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Situacion</th>
+<th>Regla propuesta</th>
+<th>Accion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kafka no visible</td>
+<td><code>kafka_brokers &lt; 1</code></td>
+<td>Revisar contenedor Kafka</td>
+</tr>
+<tr>
+<td>Exporter caido</td>
+<td><code>up{job="kafka-exporter"} == 0</code></td>
+<td>Revisar exporter y red Docker</td>
+</tr>
+<tr>
+<td>Lag alto</td>
+<td><code>kafka_consumergroup_lag &gt; 100</code></td>
+<td>Revisar consumer, particiones y carga</td>
+</tr>
+<tr>
+<td>Eventos invalidos</td>
+<td><code>invalidRows &gt; 0</code></td>
+<td>Revisar contrato del evento</td>
+</tr>
+</tbody>
+</table>
+<p>Para esta practica, las alertas pueden entregarse como propuesta documentada. Si deseas configurarlas en Grafana Alerting, usa este flujo minimo:</p>
+<h3 id="crear-una-alerta-en-grafana">Crear una alerta en Grafana<a class="headerlink" href="#crear-una-alerta-en-grafana" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Entra a <code>Alerting -&gt; Alert rules</code>.</li>
+<li>Selecciona <code>New alert rule</code>.</li>
+<li>Define el nombre, por ejemplo <code>Lag alto en Kafka</code>.</li>
+<li>En <code>Query</code>, selecciona el datasource <code>Prometheus</code>.</li>
+<li>Usa una consulta, por ejemplo:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nv">kafka_consumergroup_lag</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">100</span>
+</code></pre></div>
+<ol>
+<li>En <code>Evaluate every</code>, usa <code>1m</code>.</li>
+<li>En <code>For</code>, usa <code>2m</code> para evitar alertas por picos muy breves.</li>
+<li>En condicion, deja que la regla dispare cuando el resultado sea mayor que <code>0</code>.</li>
+<li>Guarda la regla.</li>
+</ol>
+<p>Otra alerta util:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">up</span><span class="p">{</span><span class="nl">job</span><span class="o">=</span><span class="p">&quot;</span><span class="s">kafka-exporter</span><span class="p">&quot;}</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span>
+</code></pre></div>
+<p>Interpretacion: si se cumple, Prometheus no puede consultar el Kafka Exporter.</p>
+<h3 id="ejemplo-2-opcional-latencia-calculada-en-spark">Ejemplo 2 opcional: latencia calculada en Spark<a class="headerlink" href="#ejemplo-2-opcional-latencia-calculada-en-spark" title="Permanent link">&para;</a></h3>
+<p><code>latencyMs</code> no esta en Prometheus por defecto. En esta practica se calcula en Spark y se revisa desde el notebook o desde Parquet.</p>
+<table>
+<thead>
+<tr>
+<th>Situacion</th>
+<th>Regla operativa</th>
+<th>Donde se evalua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Latencia alta sensible</td>
+<td><code>latencyMs &gt; 100</code></td>
+<td>Notebook Spark / Parquet</td>
+</tr>
+<tr>
+<td>Latencia alta critica</td>
+<td><code>latencyMs &gt; 1000</code></td>
+<td>Notebook Spark / Parquet</td>
+</tr>
+</tbody>
+</table>
+<p>Ejemplo:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_final</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;latencyMs &gt; 100&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<p>Resumen: Grafana/Prometheus cubre <code>up</code>, <code>kafka_brokers</code> y <code>kafka_consumergroup_lag</code>; Spark/Parquet cubre <code>latencyMs</code>, eventos invalidos y throughput del micro-batch.</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_final</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;latencyMs &gt; 100&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">#Próxima clase: ML</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">avg</span><span class="p">,</span> <span class="nb">min</span> <span class="k">as</span> <span class="n">spark_min</span><span class="p">,</span> <span class="nb">max</span> <span class="k">as</span> <span class="n">spark_max</span><span class="p">,</span> <span class="n">count</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;/opt/artifacts/output/orden_eventos_observabilidad_p1&quot;</span><span class="p">)</span>
+
+<span class="n">serie_latency</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span>
+    <span class="n">window</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">),</span> <span class="s2">&quot;1 minute&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">count</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;numEventos&quot;</span><span class="p">),</span>
+    <span class="n">avg</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">),</span>
+    <span class="n">spark_min</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;minLatencyMs&quot;</span><span class="p">),</span>
+    <span class="n">spark_max</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;window&quot;</span><span class="p">)</span>
+
+<span class="n">serie_latency</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">serie_latency_limpia</span> <span class="o">=</span> <span class="n">serie_latency</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;window.start&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;inicioVentana&quot;</span><span class="p">),</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;window.end&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;finVentana&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;numEventos&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;minLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;maxLatencyMs&quot;</span>
+<span class="p">)</span>
+
+<span class="n">serie_latency_limpia</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">#avgLatencyMs = latencia real promedio del minuto</span>
+<span class="c1">#predictedLatencyMs = predicción usando los 3 minutos anteriores</span>
+<span class="c1">#errorMs = diferencia entre real y predicho</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">avg</span><span class="p">,</span> <span class="n">count</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.window</span><span class="w"> </span><span class="kn">import</span> <span class="n">Window</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">lag</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;/opt/artifacts/output/orden_eventos_observabilidad_p1&quot;</span><span class="p">)</span>
+
+<span class="n">serie</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span>
+    <span class="n">window</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">),</span> <span class="s2">&quot;1 minute&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">count</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;numEventos&quot;</span><span class="p">),</span>
+    <span class="n">avg</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;window.start&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;inicioVentana&quot;</span><span class="p">),</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;window.end&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;finVentana&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;numEventos&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;avgLatencyMs&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;inicioVentana&quot;</span><span class="p">)</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;inicioVentana&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rowsBetween</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">serie_prediccion</span> <span class="o">=</span> <span class="n">serie</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+    <span class="s2">&quot;predictedLatencyMs&quot;</span><span class="p">,</span>
+    <span class="n">avg</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+    <span class="s2">&quot;errorMs&quot;</span><span class="p">,</span>
+    <span class="n">col</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;predictedLatencyMs&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">serie_prediccion</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="paso-13-detener-streams">Paso 13. Detener streams<a class="headerlink" href="#paso-13-detener-streams" title="Permanent link">&para;</a></h2>
+<p>Al terminar la practica, detiene las queries activas para evitar conflictos con checkpoints o salidas Parquet.</p>
+<div class="highlight"><pre><span></span><code><span class="n">stop_active_streams</span><span class="p">()</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Angel Sullon @asullom - UPeU 2026
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

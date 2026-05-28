@@ -1,0 +1,1812 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Curso de Big Data con Spark, Kafka, streaming y ML distribuido.">
+      
+      
+        <meta name="author" content="UPeU">
+      
+      
+      
+        <link rel="prev" href="../10_series_tiempo_inferencia_spark/">
+      
+      
+        <link rel="next" href="../12_evaluacion_u2/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>11. Tuning y experimentacion distribuida - LambdaLab</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sesion-11-tuning-y-experimentacion-distribuida" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="LambdaLab" class="md-header__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LambdaLab
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              11. Tuning y experimentacion distribuida
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LambdaLab" class="md-nav__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LambdaLab
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/01_arquitecturas_big_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Arquitectura Big Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/02_fundamentos_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Fundamentos Apache Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/03_etl_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. ETL distribuido en batch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/04_hdfs_formatos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. HDFS y formatos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-1/05_evaluacion_u1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Evaluacion U1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U2 Streaming, operacion y ML a escala
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U2 Streaming, operacion y ML a escala
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_ingesta_kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Ingesta en tiempo real con Kafka
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_spark_streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Streaming con Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08_observabilidad_costos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Observabilidad y costos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09_ml_distribuido_regresion_mllib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. ML distribuido con MLlib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_series_tiempo_inferencia_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Series de tiempo e inferencia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Tuning y experimentacion distribuida
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Tuning y experimentacion distribuida
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#proposito-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proposito de la sesion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resultado-esperado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resultado esperado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-idea-general" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Idea general
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-crear-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Crear SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-parametros-y-rutas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Parametros y rutas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-helpers-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Helpers de datos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-construir-dataset-supervisado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Construir dataset supervisado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-separar-entrenamiento-y-holdout-cronologico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Separar entrenamiento y holdout cronologico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-definir-columnas-y-evaluadores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Definir columnas y evaluadores
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-experimento-a-linearregression-con-crossvalidator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Experimento A: LinearRegression con CrossValidator
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-revisar-parametros-del-mejor-modelo-lineal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Revisar parametros del mejor modelo lineal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-experimento-b-randomforestregressor-con-trainvalidationsplit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Experimento B: RandomForestRegressor con TrainValidationSplit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-revisar-parametros-del-mejor-bosque" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Revisar parametros del mejor bosque
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-comparar-candidatos-en-holdout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Comparar candidatos en holdout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-comparar-contra-el-modelo-baseline-de-la-sesion-9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Comparar contra el modelo baseline de la sesion 9
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-seleccionar-y-guardar-el-mejor-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Seleccionar y guardar el mejor modelo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-guardar-resultados-de-experimentacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Guardar resultados de experimentacion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-interpretacion-de-errores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Interpretacion de errores
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-cargar-el-modelo-ganador-y-probar-reutilizacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Cargar el modelo ganador y probar reutilizacion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-que-observar-en-spark-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Que observar en Spark UI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Cierre
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ejercicios-sugeridos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejercicios sugeridos
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_evaluacion_u2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Evaluacion U2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#proposito-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proposito de la sesion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resultado-esperado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resultado esperado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-idea-general" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Idea general
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-crear-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Crear SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-parametros-y-rutas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Parametros y rutas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-helpers-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Helpers de datos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-construir-dataset-supervisado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Construir dataset supervisado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-separar-entrenamiento-y-holdout-cronologico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Separar entrenamiento y holdout cronologico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-definir-columnas-y-evaluadores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Definir columnas y evaluadores
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-experimento-a-linearregression-con-crossvalidator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Experimento A: LinearRegression con CrossValidator
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-revisar-parametros-del-mejor-modelo-lineal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Revisar parametros del mejor modelo lineal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-experimento-b-randomforestregressor-con-trainvalidationsplit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Experimento B: RandomForestRegressor con TrainValidationSplit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-revisar-parametros-del-mejor-bosque" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Revisar parametros del mejor bosque
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-comparar-candidatos-en-holdout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Comparar candidatos en holdout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-comparar-contra-el-modelo-baseline-de-la-sesion-9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Comparar contra el modelo baseline de la sesion 9
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-seleccionar-y-guardar-el-mejor-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Seleccionar y guardar el mejor modelo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-guardar-resultados-de-experimentacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Guardar resultados de experimentacion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-interpretacion-de-errores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Interpretacion de errores
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-cargar-el-modelo-ganador-y-probar-reutilizacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Cargar el modelo ganador y probar reutilizacion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-que-observar-en-spark-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Que observar en Spark UI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Cierre
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ejercicios-sugeridos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejercicios sugeridos
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sesion-11-tuning-y-experimentacion-distribuida">Sesion 11 - Tuning y experimentacion distribuida<a class="headerlink" href="#sesion-11-tuning-y-experimentacion-distribuida" title="Permanent link">&para;</a></h1>
+<p><strong>Producto:</strong> mejor modelo seleccionado con validacion distribuida y guardado como artefacto reutilizable.</p>
+<h2 id="proposito-de-la-sesion">Proposito de la sesion<a class="headerlink" href="#proposito-de-la-sesion" title="Permanent link">&para;</a></h2>
+<p>Comparar modelos y combinaciones de hiperparametros con validacion distribuida en Spark ML, usando el mismo problema de prediccion de latencia construido en las sesiones anteriores.</p>
+<h2 id="resultado-esperado">Resultado esperado<a class="headerlink" href="#resultado-esperado" title="Permanent link">&para;</a></h2>
+<p>Al finalizar, el estudiante debe identificar el mejor candidato segun metricas de evaluacion, guardar el modelo ganador y conservar una tabla de resultados que documente la experimentacion realizada.</p>
+<p>En las sesiones 9 y 10 entrenamos, guardamos y aplicamos un modelo de regresion para predecir la latencia promedio de la siguiente ventana temporal. En esta sesion comparamos configuraciones y algoritmos usando Spark ML para elegir el mejor modelo de forma reproducible.</p>
+<h2 id="1-idea-general">1. Idea general<a class="headerlink" href="#1-idea-general" title="Permanent link">&para;</a></h2>
+<p>El flujo de experimentacion sera:</p>
+<ol>
+<li>Reconstruir el dataset supervisado de latencia.</li>
+<li>Separar un holdout cronologico para evaluar al final.</li>
+<li>Ejecutar validacion distribuida en el bloque de entrenamiento.</li>
+<li>Comparar metricas de los candidatos.</li>
+<li>Guardar el mejor modelo en <code>../artifacts/models/ml_latency_pipeline_best</code>.</li>
+</ol>
+<p>La validacion distribuida reparte combinaciones de parametros y folds como trabajos de Spark. En datasets pequenos se nota poco, pero el patron es el mismo para volumenes mayores.</p>
+<h2 id="2-crear-sparksession">2. Crear SparkSession<a class="headerlink" href="#2-crear-sparksession" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
+    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;s11-tuning-experimentacion-distribuida&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[*]&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.shuffle.partitions&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">setLogLevel</span><span class="p">(</span><span class="s2">&quot;WARN&quot;</span><span class="p">)</span>
+
+<span class="n">spark</span>
+</code></pre></div>
+<h2 id="3-parametros-y-rutas">3. Parametros y rutas<a class="headerlink" href="#3-parametros-y-rutas" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">functions</span> <span class="k">as</span> <span class="n">F</span>
+
+<span class="n">BATCH_INPUT_PATHS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;../artifacts/output/orden_eventos_observabilidad_p1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;../artifacts/output/orden_eventos_parquet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;/opt/artifacts/output/orden_eventos_observabilidad_p1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;/opt/artifacts/output/orden_eventos_parquet&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">BASELINE_MODEL_PATHS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;../artifacts/models/ml_latency_pipeline_lr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;/opt/artifacts/models/ml_latency_pipeline_lr&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">BEST_MODEL_PATH</span> <span class="o">=</span> <span class="s2">&quot;../artifacts/models/ml_latency_pipeline_best&quot;</span>
+<span class="n">EXPERIMENTS_PATH</span> <span class="o">=</span> <span class="s2">&quot;../artifacts/output/ml_latency_tuning_results&quot;</span>
+
+<span class="n">RANDOM_SEED</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">HOLDOUT_RATIO</span> <span class="o">=</span> <span class="mf">0.20</span>
+</code></pre></div>
+<h2 id="4-helpers-de-datos">4. Helpers de datos<a class="headerlink" href="#4-helpers-de-datos" title="Permanent link">&para;</a></h2>
+<p>Mantenemos el mismo contrato de features de la sesion 9 para que los modelos sean comparables.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">first_existing_path</span><span class="p">(</span><span class="n">paths</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">path</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load_observability_batch</span><span class="p">():</span>
+    <span class="n">source_path</span> <span class="o">=</span> <span class="n">first_existing_path</span><span class="p">(</span><span class="n">BATCH_INPUT_PATHS</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">source_path</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fuente batch: </span><span class="si">{</span><span class="n">source_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">source_path</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No se encontraron Parquet reales. Se creara un dataset sintetico para la practica.&quot;</span><span class="p">)</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">480</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">base</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">timestamp_seconds</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="mi">1746300000</span><span class="p">)</span> <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">20</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span>
+            <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">when</span><span class="p">((</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">41</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">190</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">when</span><span class="p">((</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">97</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">RANDOM_SEED</span><span class="p">)</span> <span class="o">*</span> <span class="mi">35</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;long&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="s2">&quot;ordenes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;topic&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;partition&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;long&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="s2">&quot;demo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;origen&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;isValid&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_latency_series</span><span class="p">(</span><span class="n">input_df</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">input_df</span> \
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">())</span> \
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">())</span> \
+        <span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;1 minute&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;eventCount&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;minLatencyMs&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">stddev</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">)</span>
+        <span class="p">)</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;window.start&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;windowEnd&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;window.end&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;window&quot;</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">fill</span><span class="p">({</span><span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span> \
+        <span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">add_features_and_label</span><span class="p">(</span><span class="n">series_df</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.window</span><span class="w"> </span><span class="kn">import</span> <span class="n">Window</span>
+
+    <span class="n">w</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">series_df</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">lead</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;latencyRangeMs&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;minLatencyMs&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;hourOfDay&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">hour</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;minuteOfHour&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">minute</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">select</span><span class="p">(</span>
+            <span class="s2">&quot;windowStart&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;windowEnd&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;eventCount&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;minLatencyMs&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;latencyRangeMs&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;hourOfDay&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;minuteOfHour&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;label&quot;</span>
+        <span class="p">)</span> \
+        <span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">drop</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="5-construir-dataset-supervisado">5. Construir dataset supervisado<a class="headerlink" href="#5-construir-dataset-supervisado" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">df_raw</span> <span class="o">=</span> <span class="n">load_observability_batch</span><span class="p">()</span>
+<span class="n">serie_latency</span> <span class="o">=</span> <span class="n">build_latency_series</span><span class="p">(</span><span class="n">df_raw</span><span class="p">)</span>
+<span class="n">dataset_ml</span> <span class="o">=</span> <span class="n">add_features_and_label</span><span class="p">(</span><span class="n">serie_latency</span><span class="p">)</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
+
+<span class="n">row_count</span> <span class="o">=</span> <span class="n">dataset_ml</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">row_count</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Solo hay </span><span class="si">{</span><span class="n">row_count</span><span class="si">}</span><span class="s2"> filas para ML. Se usara una serie sintetica mas amplia para tuning.&quot;</span><span class="p">)</span>
+    <span class="n">synthetic_base</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">480</span><span class="p">)</span>
+    <span class="n">df_raw</span> <span class="o">=</span> <span class="n">synthetic_base</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">timestamp_seconds</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="mi">1746300000</span><span class="p">)</span> <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">20</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;kafkaTimestamp&quot;</span><span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span>
+            <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">when</span><span class="p">((</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">41</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">190</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">when</span><span class="p">((</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="mi">97</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">RANDOM_SEED</span><span class="p">)</span> <span class="o">*</span> <span class="mi">35</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;long&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;latencyMs&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">serie_latency</span> <span class="o">=</span> <span class="n">build_latency_series</span><span class="p">(</span><span class="n">df_raw</span><span class="p">)</span>
+    <span class="n">dataset_ml</span> <span class="o">=</span> <span class="n">add_features_and_label</span><span class="p">(</span><span class="n">serie_latency</span><span class="p">)</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
+    <span class="n">row_count</span> <span class="o">=</span> <span class="n">dataset_ml</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filas para ML:&quot;</span><span class="p">,</span> <span class="n">row_count</span><span class="p">)</span>
+<span class="n">dataset_ml</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="6-separar-entrenamiento-y-holdout-cronologico">6. Separar entrenamiento y holdout cronologico<a class="headerlink" href="#6-separar-entrenamiento-y-holdout-cronologico" title="Permanent link">&para;</a></h2>
+<p>La validacion interna selecciona parametros. El holdout cronologico se reserva para una evaluacion final mas honesta sobre ventanas posteriores.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.window</span><span class="w"> </span><span class="kn">import</span> <span class="n">Window</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span>
+<span class="n">ordered</span> <span class="o">=</span> <span class="n">dataset_ml</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;rowNumber&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">row_number</span><span class="p">()</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+<span class="n">total_rows</span> <span class="o">=</span> <span class="n">ordered</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="n">train_cutoff</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_rows</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">HOLDOUT_RATIO</span><span class="p">))</span>
+
+<span class="n">train_full</span> <span class="o">=</span> <span class="n">ordered</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;rowNumber&quot;</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">train_cutoff</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;rowNumber&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
+<span class="n">holdout</span> <span class="o">=</span> <span class="n">ordered</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;rowNumber&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">train_cutoff</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;rowNumber&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filas train/validacion:&quot;</span><span class="p">,</span> <span class="n">train_full</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filas holdout final:&quot;</span><span class="p">,</span> <span class="n">holdout</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+
+<span class="n">train_full</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">,</span> <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">holdout</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">,</span> <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="7-definir-columnas-y-evaluadores">7. Definir columnas y evaluadores<a class="headerlink" href="#7-definir-columnas-y-evaluadores" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">RegressionEvaluator</span>
+
+<span class="n">feature_cols</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;eventCount&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;minLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;maxLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;stdLatencyMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;latencyRangeMs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hourOfDay&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;minuteOfHour&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">rmse_evaluator</span> <span class="o">=</span> <span class="n">RegressionEvaluator</span><span class="p">(</span><span class="n">labelCol</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">predictionCol</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> <span class="n">metricName</span><span class="o">=</span><span class="s2">&quot;rmse&quot;</span><span class="p">)</span>
+<span class="n">mae_evaluator</span> <span class="o">=</span> <span class="n">RegressionEvaluator</span><span class="p">(</span><span class="n">labelCol</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">predictionCol</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> <span class="n">metricName</span><span class="o">=</span><span class="s2">&quot;mae&quot;</span><span class="p">)</span>
+<span class="n">r2_evaluator</span> <span class="o">=</span> <span class="n">RegressionEvaluator</span><span class="p">(</span><span class="n">labelCol</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">predictionCol</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> <span class="n">metricName</span><span class="o">=</span><span class="s2">&quot;r2&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_predictions</span><span class="p">(</span><span class="n">predictions</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;rmse&quot;</span><span class="p">:</span> <span class="n">rmse_evaluator</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">predictions</span><span class="p">),</span>
+        <span class="s2">&quot;mae&quot;</span><span class="p">:</span> <span class="n">mae_evaluator</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">predictions</span><span class="p">),</span>
+        <span class="s2">&quot;r2&quot;</span><span class="p">:</span> <span class="n">r2_evaluator</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">predictions</span><span class="p">),</span>
+    <span class="p">}</span>
+</code></pre></div>
+<h2 id="8-experimento-a-linearregression-con-crossvalidator">8. Experimento A: LinearRegression con CrossValidator<a class="headerlink" href="#8-experimento-a-linearregression-con-crossvalidator" title="Permanent link">&para;</a></h2>
+<p><code>CrossValidator</code> entrena varias combinaciones de hiperparametros y calcula la metrica promedio. Spark reparte esos entrenamientos como jobs distribuidos.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.feature</span><span class="w"> </span><span class="kn">import</span> <span class="n">VectorAssembler</span><span class="p">,</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.regression</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.tuning</span><span class="w"> </span><span class="kn">import</span> <span class="n">CrossValidator</span><span class="p">,</span> <span class="n">ParamGridBuilder</span>
+
+<span class="n">assembler_lr</span> <span class="o">=</span> <span class="n">VectorAssembler</span><span class="p">(</span><span class="n">inputCols</span><span class="o">=</span><span class="n">feature_cols</span><span class="p">,</span> <span class="n">outputCol</span><span class="o">=</span><span class="s2">&quot;rawFeatures&quot;</span><span class="p">,</span> <span class="n">handleInvalid</span><span class="o">=</span><span class="s2">&quot;keep&quot;</span><span class="p">)</span>
+<span class="n">scaler_lr</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">(</span><span class="n">inputCol</span><span class="o">=</span><span class="s2">&quot;rawFeatures&quot;</span><span class="p">,</span> <span class="n">outputCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">,</span> <span class="n">withStd</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">withMean</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">(</span><span class="n">featuresCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">,</span> <span class="n">labelCol</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">predictionCol</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">)</span>
+
+<span class="n">pipeline_lr</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">stages</span><span class="o">=</span><span class="p">[</span><span class="n">assembler_lr</span><span class="p">,</span> <span class="n">scaler_lr</span><span class="p">,</span> <span class="n">lr</span><span class="p">])</span>
+
+<span class="n">param_grid_lr</span> <span class="o">=</span> <span class="n">ParamGridBuilder</span><span class="p">()</span> \
+    <span class="o">.</span><span class="n">addGrid</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">maxIter</span><span class="p">,</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">80</span><span class="p">])</span> \
+    <span class="o">.</span><span class="n">addGrid</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">regParam</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">])</span> \
+    <span class="o">.</span><span class="n">addGrid</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">elasticNetParam</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span> \
+    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+<span class="n">cv_lr</span> <span class="o">=</span> <span class="n">CrossValidator</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">pipeline_lr</span><span class="p">,</span>
+    <span class="n">estimatorParamMaps</span><span class="o">=</span><span class="n">param_grid_lr</span><span class="p">,</span>
+    <span class="n">evaluator</span><span class="o">=</span><span class="n">rmse_evaluator</span><span class="p">,</span>
+    <span class="n">numFolds</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">parallelism</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">RANDOM_SEED</span>
+<span class="p">)</span>
+
+<span class="n">cv_model_lr</span> <span class="o">=</span> <span class="n">cv_lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_full</span><span class="p">)</span>
+<span class="n">pred_lr</span> <span class="o">=</span> <span class="n">cv_model_lr</span><span class="o">.</span><span class="n">bestModel</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">holdout</span><span class="p">)</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
+<span class="n">metrics_lr</span> <span class="o">=</span> <span class="n">evaluate_predictions</span><span class="p">(</span><span class="n">pred_lr</span><span class="p">)</span>
+
+<span class="n">metrics_lr</span>
+</code></pre></div>
+<h2 id="9-revisar-parametros-del-mejor-modelo-lineal">9. Revisar parametros del mejor modelo lineal<a class="headerlink" href="#9-revisar-parametros-del-mejor-modelo-lineal" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">best_lr_stage</span> <span class="o">=</span> <span class="n">cv_model_lr</span><span class="o">.</span><span class="n">bestModel</span><span class="o">.</span><span class="n">stages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mejor LinearRegression&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;maxIter:&quot;</span><span class="p">,</span> <span class="n">best_lr_stage</span><span class="o">.</span><span class="n">getMaxIter</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;regParam:&quot;</span><span class="p">,</span> <span class="n">best_lr_stage</span><span class="o">.</span><span class="n">getRegParam</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;elasticNetParam:&quot;</span><span class="p">,</span> <span class="n">best_lr_stage</span><span class="o">.</span><span class="n">getElasticNetParam</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;intercept:&quot;</span><span class="p">,</span> <span class="n">best_lr_stage</span><span class="o">.</span><span class="n">intercept</span><span class="p">)</span>
+
+<span class="n">lr_cv_rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">params</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">param_grid_lr</span><span class="p">,</span> <span class="n">cv_model_lr</span><span class="o">.</span><span class="n">avgMetrics</span><span class="p">):</span>
+    <span class="n">lr_cv_rows</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+        <span class="s2">&quot;linear_regression_cv&quot;</span><span class="p">,</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">lr</span><span class="o">.</span><span class="n">maxIter</span><span class="p">]),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">lr</span><span class="o">.</span><span class="n">regParam</span><span class="p">]),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">lr</span><span class="o">.</span><span class="n">elasticNetParam</span><span class="p">])</span>
+    <span class="p">))</span>
+
+<span class="n">lr_cv_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="n">lr_cv_rows</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;experiment&quot;</span><span class="p">,</span> <span class="s2">&quot;cvRmse&quot;</span><span class="p">,</span> <span class="s2">&quot;maxIter&quot;</span><span class="p">,</span> <span class="s2">&quot;regParam&quot;</span><span class="p">,</span> <span class="s2">&quot;elasticNetParam&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">lr_cv_df</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;cvRmse&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="10-experimento-b-randomforestregressor-con-trainvalidationsplit">10. Experimento B: RandomForestRegressor con TrainValidationSplit<a class="headerlink" href="#10-experimento-b-randomforestregressor-con-trainvalidationsplit" title="Permanent link">&para;</a></h2>
+<p>El bosque aleatorio captura no linealidades y no necesita escalado. Usamos <code>TrainValidationSplit</code> para reducir costo frente a otro cross validation completo.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.regression</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestRegressor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.tuning</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrainValidationSplit</span>
+
+<span class="n">assembler_rf</span> <span class="o">=</span> <span class="n">VectorAssembler</span><span class="p">(</span><span class="n">inputCols</span><span class="o">=</span><span class="n">feature_cols</span><span class="p">,</span> <span class="n">outputCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">,</span> <span class="n">handleInvalid</span><span class="o">=</span><span class="s2">&quot;keep&quot;</span><span class="p">)</span>
+<span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span>
+    <span class="n">featuresCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">,</span>
+    <span class="n">labelCol</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span>
+    <span class="n">predictionCol</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">RANDOM_SEED</span>
+<span class="p">)</span>
+
+<span class="n">pipeline_rf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">stages</span><span class="o">=</span><span class="p">[</span><span class="n">assembler_rf</span><span class="p">,</span> <span class="n">rf</span><span class="p">])</span>
+
+<span class="n">param_grid_rf</span> <span class="o">=</span> <span class="n">ParamGridBuilder</span><span class="p">()</span> \
+    <span class="o">.</span><span class="n">addGrid</span><span class="p">(</span><span class="n">rf</span><span class="o">.</span><span class="n">numTrees</span><span class="p">,</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">60</span><span class="p">])</span> \
+    <span class="o">.</span><span class="n">addGrid</span><span class="p">(</span><span class="n">rf</span><span class="o">.</span><span class="n">maxDepth</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span> \
+    <span class="o">.</span><span class="n">addGrid</span><span class="p">(</span><span class="n">rf</span><span class="o">.</span><span class="n">minInstancesPerNode</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> \
+    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+<span class="n">tvs_rf</span> <span class="o">=</span> <span class="n">TrainValidationSplit</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">pipeline_rf</span><span class="p">,</span>
+    <span class="n">estimatorParamMaps</span><span class="o">=</span><span class="n">param_grid_rf</span><span class="p">,</span>
+    <span class="n">evaluator</span><span class="o">=</span><span class="n">rmse_evaluator</span><span class="p">,</span>
+    <span class="n">trainRatio</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">parallelism</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">RANDOM_SEED</span>
+<span class="p">)</span>
+
+<span class="n">tvs_model_rf</span> <span class="o">=</span> <span class="n">tvs_rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_full</span><span class="p">)</span>
+<span class="n">pred_rf</span> <span class="o">=</span> <span class="n">tvs_model_rf</span><span class="o">.</span><span class="n">bestModel</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">holdout</span><span class="p">)</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
+<span class="n">metrics_rf</span> <span class="o">=</span> <span class="n">evaluate_predictions</span><span class="p">(</span><span class="n">pred_rf</span><span class="p">)</span>
+
+<span class="n">metrics_rf</span>
+</code></pre></div>
+<h2 id="11-revisar-parametros-del-mejor-bosque">11. Revisar parametros del mejor bosque<a class="headerlink" href="#11-revisar-parametros-del-mejor-bosque" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">best_rf_stage</span> <span class="o">=</span> <span class="n">tvs_model_rf</span><span class="o">.</span><span class="n">bestModel</span><span class="o">.</span><span class="n">stages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">best_rf_num_trees</span> <span class="o">=</span> <span class="n">best_rf_stage</span><span class="o">.</span><span class="n">getNumTrees</span><span class="p">()</span> <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">best_rf_stage</span><span class="o">.</span><span class="n">getNumTrees</span><span class="p">)</span> <span class="k">else</span> <span class="n">best_rf_stage</span><span class="o">.</span><span class="n">getNumTrees</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mejor RandomForestRegressor&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;numTrees:&quot;</span><span class="p">,</span> <span class="n">best_rf_num_trees</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;maxDepth:&quot;</span><span class="p">,</span> <span class="n">best_rf_stage</span><span class="o">.</span><span class="n">getMaxDepth</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;minInstancesPerNode:&quot;</span><span class="p">,</span> <span class="n">best_rf_stage</span><span class="o">.</span><span class="n">getMinInstancesPerNode</span><span class="p">())</span>
+
+<span class="n">rf_validation_rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">params</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">param_grid_rf</span><span class="p">,</span> <span class="n">tvs_model_rf</span><span class="o">.</span><span class="n">validationMetrics</span><span class="p">):</span>
+    <span class="n">rf_validation_rows</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+        <span class="s2">&quot;random_forest_tvs&quot;</span><span class="p">,</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">rf</span><span class="o">.</span><span class="n">numTrees</span><span class="p">]),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">rf</span><span class="o">.</span><span class="n">maxDepth</span><span class="p">]),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">rf</span><span class="o">.</span><span class="n">minInstancesPerNode</span><span class="p">])</span>
+    <span class="p">))</span>
+
+<span class="n">rf_validation_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="n">rf_validation_rows</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;experiment&quot;</span><span class="p">,</span> <span class="s2">&quot;validationRmse&quot;</span><span class="p">,</span> <span class="s2">&quot;numTrees&quot;</span><span class="p">,</span> <span class="s2">&quot;maxDepth&quot;</span><span class="p">,</span> <span class="s2">&quot;minInstancesPerNode&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">rf_validation_df</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;validationRmse&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="12-comparar-candidatos-en-holdout">12. Comparar candidatos en holdout<a class="headerlink" href="#12-comparar-candidatos-en-holdout" title="Permanent link">&para;</a></h2>
+<p>La seleccion final se hace con RMSE en el holdout cronologico. Tambien mostramos MAE y R2 para tener una lectura mas completa.</p>
+<div class="highlight"><pre><span></span><code><span class="n">candidate_rows</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;linear_regression_cv&quot;</span><span class="p">,</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">metrics_lr</span><span class="p">[</span><span class="s2">&quot;rmse&quot;</span><span class="p">]),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">metrics_lr</span><span class="p">[</span><span class="s2">&quot;mae&quot;</span><span class="p">]),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">metrics_lr</span><span class="p">[</span><span class="s2">&quot;r2&quot;</span><span class="p">]),</span>
+        <span class="sa">f</span><span class="s2">&quot;maxIter=</span><span class="si">{</span><span class="n">best_lr_stage</span><span class="o">.</span><span class="n">getMaxIter</span><span class="p">()</span><span class="si">}</span><span class="s2">, regParam=</span><span class="si">{</span><span class="n">best_lr_stage</span><span class="o">.</span><span class="n">getRegParam</span><span class="p">()</span><span class="si">}</span><span class="s2">, elasticNetParam=</span><span class="si">{</span><span class="n">best_lr_stage</span><span class="o">.</span><span class="n">getElasticNetParam</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">),</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;random_forest_tvs&quot;</span><span class="p">,</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">metrics_rf</span><span class="p">[</span><span class="s2">&quot;rmse&quot;</span><span class="p">]),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">metrics_rf</span><span class="p">[</span><span class="s2">&quot;mae&quot;</span><span class="p">]),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">metrics_rf</span><span class="p">[</span><span class="s2">&quot;r2&quot;</span><span class="p">]),</span>
+        <span class="sa">f</span><span class="s2">&quot;numTrees=</span><span class="si">{</span><span class="n">best_rf_num_trees</span><span class="si">}</span><span class="s2">, maxDepth=</span><span class="si">{</span><span class="n">best_rf_stage</span><span class="o">.</span><span class="n">getMaxDepth</span><span class="p">()</span><span class="si">}</span><span class="s2">, minInstancesPerNode=</span><span class="si">{</span><span class="n">best_rf_stage</span><span class="o">.</span><span class="n">getMinInstancesPerNode</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">comparison_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="n">candidate_rows</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;candidate&quot;</span><span class="p">,</span> <span class="s2">&quot;holdoutRmse&quot;</span><span class="p">,</span> <span class="s2">&quot;holdoutMae&quot;</span><span class="p">,</span> <span class="s2">&quot;holdoutR2&quot;</span><span class="p">,</span> <span class="s2">&quot;bestParams&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">comparison_df</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;holdoutRmse&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">best_candidate</span> <span class="o">=</span> <span class="n">comparison_df</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;holdoutRmse&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mejor candidato:&quot;</span><span class="p">,</span> <span class="n">best_candidate</span><span class="p">[</span><span class="s2">&quot;candidate&quot;</span><span class="p">])</span>
+</code></pre></div>
+<h2 id="13-comparar-contra-el-modelo-baseline-de-la-sesion-9">13. Comparar contra el modelo baseline de la sesion 9<a class="headerlink" href="#13-comparar-contra-el-modelo-baseline-de-la-sesion-9" title="Permanent link">&para;</a></h2>
+<p>Si existe el modelo original, lo evaluamos en el mismo holdout para saber si el tuning mejoro el resultado.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml</span><span class="w"> </span><span class="kn">import</span> <span class="n">PipelineModel</span>
+
+<span class="n">baseline_path</span> <span class="o">=</span> <span class="n">first_existing_path</span><span class="p">(</span><span class="n">BASELINE_MODEL_PATHS</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">baseline_path</span><span class="p">:</span>
+    <span class="n">baseline_model</span> <span class="o">=</span> <span class="n">PipelineModel</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">baseline_path</span><span class="p">)</span>
+    <span class="n">baseline_predictions</span> <span class="o">=</span> <span class="n">baseline_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">holdout</span><span class="p">)</span>
+    <span class="n">baseline_metrics</span> <span class="o">=</span> <span class="n">evaluate_predictions</span><span class="p">(</span><span class="n">baseline_predictions</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Baseline cargado desde: </span><span class="si">{</span><span class="n">baseline_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">baseline_metrics</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">baseline_metrics</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No se encontro baseline de sesion 9. Se omite esta comparacion.&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="14-seleccionar-y-guardar-el-mejor-modelo">14. Seleccionar y guardar el mejor modelo<a class="headerlink" href="#14-seleccionar-y-guardar-el-mejor-modelo" title="Permanent link">&para;</a></h2>
+<p>Guardamos el <code>PipelineModel</code> completo. Asi conserva transformaciones de features y estimador final en un solo artefacto.</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="n">best_candidate</span><span class="p">[</span><span class="s2">&quot;candidate&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;linear_regression_cv&quot;</span><span class="p">:</span>
+    <span class="n">best_model</span> <span class="o">=</span> <span class="n">cv_model_lr</span><span class="o">.</span><span class="n">bestModel</span>
+    <span class="n">best_predictions</span> <span class="o">=</span> <span class="n">pred_lr</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">best_model</span> <span class="o">=</span> <span class="n">tvs_model_rf</span><span class="o">.</span><span class="n">bestModel</span>
+    <span class="n">best_predictions</span> <span class="o">=</span> <span class="n">pred_rf</span>
+
+<span class="n">best_model</span><span class="o">.</span><span class="n">write</span><span class="p">()</span><span class="o">.</span><span class="n">overwrite</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">BEST_MODEL_PATH</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mejor modelo guardado en: </span><span class="si">{</span><span class="n">BEST_MODEL_PATH</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">best_predictions</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">&quot;windowStart&quot;</span><span class="p">,</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;currentAvgLatencyMs&quot;</span><span class="p">),</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;realNextAvgLatencyMs&quot;</span><span class="p">),</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;predictedNextAvgLatencyMs&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="15-guardar-resultados-de-experimentacion">15. Guardar resultados de experimentacion<a class="headerlink" href="#15-guardar-resultados-de-experimentacion" title="Permanent link">&para;</a></h2>
+<p>Esta salida sirve como evidencia del proceso de seleccion, no solo del modelo final.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">DoubleType</span>
+
+<span class="n">experiment_rows</span> <span class="o">=</span> <span class="n">candidate_rows</span>
+
+<span class="k">if</span> <span class="n">baseline_metrics</span><span class="p">:</span>
+    <span class="n">experiment_rows</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+        <span class="s2">&quot;baseline_session_09&quot;</span><span class="p">,</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">baseline_metrics</span><span class="p">[</span><span class="s2">&quot;rmse&quot;</span><span class="p">]),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">baseline_metrics</span><span class="p">[</span><span class="s2">&quot;mae&quot;</span><span class="p">]),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">baseline_metrics</span><span class="p">[</span><span class="s2">&quot;r2&quot;</span><span class="p">]),</span>
+        <span class="s2">&quot;modelo guardado en sesion 9&quot;</span>
+    <span class="p">))</span>
+
+<span class="n">experiment_schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;candidate&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">False</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;holdoutRmse&quot;</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="kc">False</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;holdoutMae&quot;</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="kc">False</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;holdoutR2&quot;</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="kc">False</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;bestParams&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">False</span><span class="p">),</span>
+<span class="p">])</span>
+
+<span class="n">experiment_results_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">experiment_rows</span><span class="p">,</span> <span class="n">experiment_schema</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;candidate&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">F</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="n">best_candidate</span><span class="p">[</span><span class="s2">&quot;candidate&quot;</span><span class="p">]))</span>
+
+<span class="n">experiment_results_df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">EXPERIMENTS_PATH</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Resultados guardados en: </span><span class="si">{</span><span class="n">EXPERIMENTS_PATH</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">EXPERIMENTS_PATH</span><span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;holdoutRmse&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="16-interpretacion-de-errores">16. Interpretacion de errores<a class="headerlink" href="#16-interpretacion-de-errores" title="Permanent link">&para;</a></h2>
+<p>Revisamos las ventanas con mayor error absoluto para entender donde el modelo falla.</p>
+<div class="highlight"><pre><span></span><code><span class="n">best_error_df</span> <span class="o">=</span> <span class="n">best_predictions</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;errorMs&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;prediction&quot;</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;absErrorMs&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;errorMs&quot;</span><span class="p">)))</span>
+
+<span class="n">best_error_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">&quot;windowStart&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;eventCount&quot;</span><span class="p">,</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;currentAvgLatencyMs&quot;</span><span class="p">),</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;realNextAvgLatencyMs&quot;</span><span class="p">),</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;predictedNextAvgLatencyMs&quot;</span><span class="p">),</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;errorMs&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;errorMs&quot;</span><span class="p">),</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;absErrorMs&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;absErrorMs&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">desc</span><span class="p">(</span><span class="s2">&quot;absErrorMs&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="17-cargar-el-modelo-ganador-y-probar-reutilizacion">17. Cargar el modelo ganador y probar reutilizacion<a class="headerlink" href="#17-cargar-el-modelo-ganador-y-probar-reutilizacion" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">loaded_best_model</span> <span class="o">=</span> <span class="n">PipelineModel</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">BEST_MODEL_PATH</span><span class="p">)</span>
+<span class="n">reloaded_predictions</span> <span class="o">=</span> <span class="n">loaded_best_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">holdout</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Metricas del modelo recargado:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">evaluate_predictions</span><span class="p">(</span><span class="n">reloaded_predictions</span><span class="p">))</span>
+
+<span class="n">reloaded_predictions</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;prediction&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="18-que-observar-en-spark-ui">18. Que observar en Spark UI<a class="headerlink" href="#18-que-observar-en-spark-ui" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Cada combinacion de parametros genera tareas de entrenamiento y evaluacion.</li>
+<li><code>parallelism=2</code> permite evaluar combinaciones en paralelo cuando hay recursos disponibles.</li>
+<li>Los stages con <code>VectorAssembler</code>, escalado y entrenamiento aparecen como partes del pipeline.</li>
+<li>El holdout final se evalua despues de seleccionar parametros; no participa en la busqueda.</li>
+</ul>
+<h2 id="19-cierre">19. Cierre<a class="headerlink" href="#19-cierre" title="Permanent link">&para;</a></h2>
+<p>Al terminar esta sesion debes tener:</p>
+<ul>
+<li>Comparacion de candidatos con RMSE, MAE y R2.</li>
+<li>Mejor modelo guardado en <code>../artifacts/models/ml_latency_pipeline_best</code>.</li>
+<li>Resultados de experimentos guardados en <code>../artifacts/output/ml_latency_tuning_results</code>.</li>
+</ul>
+<p>Este modelo ganador puede reemplazar al modelo de la sesion 9 en la inferencia batch o streaming de la sesion 10.</p>
+<h2 id="ejercicios-sugeridos">Ejercicios sugeridos<a class="headerlink" href="#ejercicios-sugeridos" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Agrega <code>GBTRegressor</code> como tercer candidato y compara su RMSE.</li>
+<li>Cambia <code>numFolds</code> de 3 a 5 y observa el costo en Spark UI.</li>
+<li>Agrega una feature <code>dayOfWeek</code> y revisa si mejora el holdout.</li>
+<li>Reutiliza <code>ml_latency_pipeline_best</code> en la sesion 10 para inferencia streaming.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Angel Sullon @asullom - UPeU 2026
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

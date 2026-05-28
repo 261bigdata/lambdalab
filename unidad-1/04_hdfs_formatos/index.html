@@ -1,0 +1,1859 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Curso de Big Data con Spark, Kafka, streaming y ML distribuido.">
+      
+      
+        <meta name="author" content="UPeU">
+      
+      
+      
+        <link rel="prev" href="../03_etl_spark/">
+      
+      
+        <link rel="next" href="../05_evaluacion_u1/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>4. HDFS y formatos - LambdaLab</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sesion-04-hdfs-formatos-y-diseno-de-almacenamiento" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="LambdaLab" class="md-header__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LambdaLab
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              4. HDFS y formatos
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LambdaLab" class="md-nav__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LambdaLab
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_arquitecturas_big_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Arquitectura Big Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_fundamentos_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Fundamentos Apache Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_etl_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. ETL distribuido en batch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. HDFS y formatos
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. HDFS y formatos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Propósito
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producto
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contexto-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexto de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-1-crear-la-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 1: Crear la SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-2-revisar-el-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 2: Revisar el dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-3-leer-los-datasets-desde-la-zona-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 3: Leer los datasets desde la zona de datos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-4-explorar-estructura-y-tipos-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 4: Explorar estructura y tipos de datos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-5-exploracion-rapida-de-calidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 5: Exploración rápida de calidad
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-6-detectar-errores-intencionales-en-el-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 6: Detectar errores intencionales en el dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-7-limpieza-basica-para-construir-una-salida-confiable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 7: Limpieza básica para construir una salida confiable
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-8-verificar-el-efecto-de-la-limpieza" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 8: Verificar el efecto de la limpieza
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-9-join-distribuido-entre-ventas-y-clientes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 9: Join distribuido entre ventas y clientes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-10-preparar-columnas-para-particionado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 10: Preparar columnas para particionado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-11-antes-de-escribir-pensar-como-ingenieros-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 11: Antes de escribir, pensar como ingenieros de datos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-12-comparar-dos-estrategias-de-salida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 12: Comparar dos estrategias de salida
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-13-escribir-la-salida-optimizada-en-parquet-con-particionado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 13: Escribir la salida optimizada en Parquet con particionado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-14-leer-nuevamente-la-salida-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 14: Leer nuevamente la salida Parquet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-15-observar-la-estructura-fisica-de-carpetas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 15: Observar la estructura física de carpetas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-16-consulta-tipica-que-se-beneficia-del-particionado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 16: Consulta típica que se beneficia del particionado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-17-comparacion-simple-de-tamano-entre-csv-y-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 17: Comparación simple de tamaño entre CSV y Parquet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-18-comparacion-de-lectura-selectiva" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 18: Comparación de lectura selectiva
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-19-errores-y-decisiones-que-deben-detectar-los-estudiantes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 19: Errores y decisiones que deben detectar los estudiantes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-20-mini-ficha-tecnica-de-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 20: Mini ficha técnica de cierre
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 20: Mini ficha técnica de cierre">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formato-elegido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formato elegido
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#particionado-elegido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Particionado elegido
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consulta-objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consulta objetivo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#justificacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Justificación
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#riesgo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Riesgo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-21-reflexion-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 21: Reflexión final
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_evaluacion_u1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Evaluacion U1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U2 Streaming, operacion y ML a escala
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U2 Streaming, operacion y ML a escala
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/06_ingesta_kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Ingesta en tiempo real con Kafka
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/07_spark_streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Streaming con Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/08_observabilidad_costos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Observabilidad y costos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/09_ml_distribuido_regresion_mllib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. ML distribuido con MLlib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/10_series_tiempo_inferencia_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Series de tiempo e inferencia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/11_tuning_experimentacion_distribuida/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Tuning y experimentacion distribuida
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unidad-2/12_evaluacion_u2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Evaluacion U2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Propósito
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producto
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contexto-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexto de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-1-crear-la-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 1: Crear la SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-2-revisar-el-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 2: Revisar el dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-3-leer-los-datasets-desde-la-zona-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 3: Leer los datasets desde la zona de datos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-4-explorar-estructura-y-tipos-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 4: Explorar estructura y tipos de datos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-5-exploracion-rapida-de-calidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 5: Exploración rápida de calidad
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-6-detectar-errores-intencionales-en-el-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 6: Detectar errores intencionales en el dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-7-limpieza-basica-para-construir-una-salida-confiable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 7: Limpieza básica para construir una salida confiable
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-8-verificar-el-efecto-de-la-limpieza" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 8: Verificar el efecto de la limpieza
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-9-join-distribuido-entre-ventas-y-clientes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 9: Join distribuido entre ventas y clientes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-10-preparar-columnas-para-particionado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 10: Preparar columnas para particionado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-11-antes-de-escribir-pensar-como-ingenieros-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 11: Antes de escribir, pensar como ingenieros de datos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-12-comparar-dos-estrategias-de-salida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 12: Comparar dos estrategias de salida
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-13-escribir-la-salida-optimizada-en-parquet-con-particionado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 13: Escribir la salida optimizada en Parquet con particionado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-14-leer-nuevamente-la-salida-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 14: Leer nuevamente la salida Parquet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-15-observar-la-estructura-fisica-de-carpetas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 15: Observar la estructura física de carpetas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-16-consulta-tipica-que-se-beneficia-del-particionado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 16: Consulta típica que se beneficia del particionado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-17-comparacion-simple-de-tamano-entre-csv-y-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 17: Comparación simple de tamaño entre CSV y Parquet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-18-comparacion-de-lectura-selectiva" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 18: Comparación de lectura selectiva
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-19-errores-y-decisiones-que-deben-detectar-los-estudiantes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 19: Errores y decisiones que deben detectar los estudiantes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-20-mini-ficha-tecnica-de-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 20: Mini ficha técnica de cierre
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 20: Mini ficha técnica de cierre">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formato-elegido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formato elegido
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#particionado-elegido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Particionado elegido
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consulta-objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consulta objetivo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#justificacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Justificación
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#riesgo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Riesgo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-21-reflexion-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 21: Reflexión final
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sesion-04-hdfs-formatos-y-diseno-de-almacenamiento">Sesión 04 – HDFS + formatos y diseño de almacenamiento<a class="headerlink" href="#sesion-04-hdfs-formatos-y-diseno-de-almacenamiento" title="Permanent link">&para;</a></h1>
+<h2 id="proposito">Propósito<a class="headerlink" href="#proposito" title="Permanent link">&para;</a></h2>
+<p>Diseñar el almacenamiento de un pipeline batch usando formato columnar y particionado, leyendo y escribiendo datos desde la zona de trabajo del laboratorio para simular el flujo de almacenamiento distribuido.</p>
+<h2 id="producto">Producto<a class="headerlink" href="#producto" title="Permanent link">&para;</a></h2>
+<p>Dataset almacenado en Parquet con particionado y una justificación técnica del diseño elegido.</p>
+<h2 id="contexto-de-la-sesion">Contexto de la sesión<a class="headerlink" href="#contexto-de-la-sesion" title="Permanent link">&para;</a></h2>
+<p>En la sesión anterior ya construimos el ETL con Spark.<br />
+Ahora toca cerrar la unidad desde el lado del almacenamiento: <strong>cómo queda organizada la salida del pipeline, cómo se vuelve a leer y qué decisiones de diseño ayudan a la performance</strong>.</p>
+<blockquote>
+<p>En este laboratorio todavía no se está desplegando un HDFS real con NameNode y DataNode.<br />
+Sin embargo, trabajaremos la lógica correcta del flujo: <strong>leer datos desde la zona de almacenamiento, procesarlos con Spark y persistir la salida en Parquet con particionado</strong>.</p>
+</blockquote>
+<h2 id="paso-1-crear-la-sparksession">Paso 1: Crear la SparkSession<a class="headerlink" href="#paso-1-crear-la-sparksession" title="Permanent link">&para;</a></h2>
+<p>Inicializamos el entorno de trabajo en modo local dentro del contenedor Docker.<br />
+El puerto <code>4040</code> queda disponible para revisar la interfaz de Spark si se desea observar jobs, stages y tareas.</p>
+<p>También fijamos una cantidad moderada de particiones de shuffle para que la práctica sea más predecible.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span>
+    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;sesion4-hdfs-formatos&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[*]&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.ui.port&quot;</span><span class="p">,</span> <span class="s2">&quot;4040&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.shuffle.partitions&quot;</span><span class="p">,</span> <span class="s2">&quot;8&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">spark</span>
+</code></pre></div>
+<h2 id="paso-2-revisar-el-dataset">Paso 2:  Revisar el dataset<a class="headerlink" href="#paso-2-revisar-el-dataset" title="Permanent link">&para;</a></h2>
+<p>El dataset fue diseñado con algunos <strong>errores intencionales</strong> para que el estudiante no solo ejecute código, sino que también detecte problemas de calidad y tome decisiones antes de almacenar la salida final.</p>
+<h2 id="paso-3-leer-los-datasets-desde-la-zona-de-datos">Paso 3: Leer los datasets desde la zona de datos<a class="headerlink" href="#paso-3-leer-los-datasets-desde-la-zona-de-datos" title="Permanent link">&para;</a></h2>
+<p>En esta práctica la carpeta <code>/opt/data</code> representa la <strong>zona de almacenamiento de entrada</strong> del laboratorio.</p>
+<p>Desde la perspectiva del flujo Big Data, la idea es esta:</p>
+<ol>
+<li>el dato vive en una zona de almacenamiento,</li>
+<li>Spark lo lee,</li>
+<li>lo transforma,</li>
+<li>y publica una salida optimizada.</li>
+</ol>
+<p>Por eso aquí sí estamos trabajando la lógica de “leer desde almacenamiento y procesar con Spark”, pero sin adelantar una infraestructura HDFS real.</p>
+<div class="highlight"><pre><span></span><code><span class="n">ventas</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;/opt/data/ventas_s4.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">clientes</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;/opt/data/clientes_s4.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">ventas</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">clientes</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="paso-4-explorar-estructura-y-tipos-de-datos">Paso 4: Explorar estructura y tipos de datos<a class="headerlink" href="#paso-4-explorar-estructura-y-tipos-de-datos" title="Permanent link">&para;</a></h2>
+<p>Antes de transformar y almacenar, verificamos esquema, tipos y volumen básico.</p>
+<p>Esto responde una pregunta importante de ingeniería:</p>
+<blockquote>
+<p>¿Estoy leyendo el dato con la estructura esperada antes de diseñar la salida?</p>
+</blockquote>
+<p>Si el esquema ya viene mal desde el inicio, el problema se arrastra al join, al particionado y al almacenamiento final.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total de registros en ventas:&quot;</span><span class="p">,</span> <span class="n">ventas</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total de registros en clientes:&quot;</span><span class="p">,</span> <span class="n">clientes</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Esquema de ventas&quot;</span><span class="p">)</span>
+<span class="n">ventas</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Esquema de clientes&quot;</span><span class="p">)</span>
+<span class="n">clientes</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="paso-5-exploracion-rapida-de-calidad">Paso 5: Exploración rápida de calidad<a class="headerlink" href="#paso-5-exploracion-rapida-de-calidad" title="Permanent link">&para;</a></h2>
+<p>Antes de limpiar, revisamos los primeros síntomas:</p>
+<ul>
+<li>valores nulos,</li>
+<li>montos inválidos,</li>
+<li>posibles duplicados,</li>
+<li>dimensiones repetidas.</li>
+</ul>
+<p>No se trata todavía de corregir; primero buscamos <strong>entender el problema</strong>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">ventas</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="paso-6-detectar-errores-intencionales-en-el-dataset">Paso 6: Detectar errores intencionales en el dataset<a class="headerlink" href="#paso-6-detectar-errores-intencionales-en-el-dataset" title="Permanent link">&para;</a></h2>
+<p>En esta parte el estudiante debe identificar los problemas que afectarían al pipeline:</p>
+<ul>
+<li>un <code>cliente_id</code> vacío,</li>
+<li>un <code>monto</code> negativo,</li>
+<li>registros repetidos a nivel de negocio,</li>
+<li>un cliente duplicado en la tabla de referencia.</li>
+</ul>
+<p>Este paso es clave porque <strong>no todo problema de calidad se resuelve igual</strong>.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ventas con cliente_id nulo o vacío&quot;</span><span class="p">)</span>
+<span class="n">ventas</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;cliente_id IS NULL OR cliente_id = &#39;&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ventas con monto negativo&quot;</span><span class="p">)</span>
+<span class="n">ventas</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;monto &lt; 0&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Posibles duplicados exactos de negocio en ventas&quot;</span><span class="p">)</span>
+<span class="n">ventas</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span>
+    <span class="s2">&quot;cliente_id&quot;</span><span class="p">,</span> <span class="s2">&quot;fecha&quot;</span><span class="p">,</span> <span class="s2">&quot;categoria&quot;</span><span class="p">,</span> <span class="s2">&quot;producto&quot;</span><span class="p">,</span> <span class="s2">&quot;monto&quot;</span><span class="p">,</span> <span class="s2">&quot;canal&quot;</span><span class="p">,</span> <span class="s2">&quot;region&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;count &gt; 1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Clientes duplicados en la dimensión&quot;</span><span class="p">)</span>
+<span class="n">clientes</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;cliente_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;count &gt; 1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p>🔎 <strong>Pregunta guiada</strong></p>
+<p>Antes de continuar, responde:</p>
+<ol>
+<li>¿Qué registros sí deben eliminarse obligatoriamente?</li>
+<li>¿Qué registros podrían tratarse de otra forma según el negocio?</li>
+<li>¿Por qué conviene detectar duplicados en la dimensión antes de hacer el join?</li>
+</ol>
+<h2 id="paso-7-limpieza-basica-para-construir-una-salida-confiable">Paso 7: Limpieza básica para construir una salida confiable<a class="headerlink" href="#paso-7-limpieza-basica-para-construir-una-salida-confiable" title="Permanent link">&para;</a></h2>
+<p>Aplicamos una limpieza mínima orientada a esta práctica:</p>
+<ul>
+<li>eliminamos registros sin <code>cliente_id</code>, <code>fecha</code> o <code>monto</code>,</li>
+<li>filtramos montos negativos,</li>
+<li>deduplicamos clientes por <code>cliente_id</code>.</li>
+</ul>
+<p>En ventas, además de revisar duplicados por negocio, generaremos una salida sin duplicados exactos por todas las columnas relevantes.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span>
+
+<span class="n">ventas_limpio</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">ventas</span>
+    <span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cliente_id&quot;</span><span class="p">,</span> <span class="s2">&quot;fecha&quot;</span><span class="p">,</span> <span class="s2">&quot;monto&quot;</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;monto&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">dropDuplicates</span><span class="p">([</span>
+        <span class="s2">&quot;cliente_id&quot;</span><span class="p">,</span> <span class="s2">&quot;fecha&quot;</span><span class="p">,</span> <span class="s2">&quot;categoria&quot;</span><span class="p">,</span> <span class="s2">&quot;producto&quot;</span><span class="p">,</span> <span class="s2">&quot;monto&quot;</span><span class="p">,</span> <span class="s2">&quot;canal&quot;</span><span class="p">,</span> <span class="s2">&quot;region&quot;</span>
+    <span class="p">])</span>
+<span class="p">)</span>
+
+<span class="n">clientes_limpio</span> <span class="o">=</span> <span class="n">clientes</span><span class="o">.</span><span class="n">dropDuplicates</span><span class="p">([</span><span class="s2">&quot;cliente_id&quot;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ventas limpias:&quot;</span><span class="p">,</span> <span class="n">ventas_limpio</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Clientes limpios:&quot;</span><span class="p">,</span> <span class="n">clientes_limpio</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+</code></pre></div>
+<h2 id="paso-8-verificar-el-efecto-de-la-limpieza">Paso 8: Verificar el efecto de la limpieza<a class="headerlink" href="#paso-8-verificar-el-efecto-de-la-limpieza" title="Permanent link">&para;</a></h2>
+<p>Después de limpiar, volvemos a revisar los DataFrames para comprobar que:</p>
+<ul>
+<li>desaparecieron los nulos críticos,</li>
+<li>ya no hay montos inválidos,</li>
+<li>la dimensión de clientes quedó estable.</li>
+</ul>
+<p>Este control evita seguir avanzando sobre supuestos incorrectos.</p>
+<div class="highlight"><pre><span></span><code><span class="n">ventas_limpio</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">clientes_limpio</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="paso-9-join-distribuido-entre-ventas-y-clientes">Paso 9: Join distribuido entre ventas y clientes<a class="headerlink" href="#paso-9-join-distribuido-entre-ventas-y-clientes" title="Permanent link">&para;</a></h2>
+<p>Ahora integramos la información transaccional con la información descriptiva del cliente.</p>
+<p>Este join tiene sentido de negocio porque nos permite responder preguntas como:</p>
+<ul>
+<li>¿qué segmento compra más?</li>
+<li>¿qué tipo de cliente concentra mayor monto?</li>
+<li>¿qué regiones tienen mejor desempeño por tipo de cliente?</li>
+</ul>
+<p>Además, esta tabla integrada será la base del almacenamiento final en Parquet.</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_join</span> <span class="o">=</span> <span class="n">ventas_limpio</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">clientes_limpio</span><span class="p">,</span> <span class="s2">&quot;cliente_id&quot;</span><span class="p">,</span> <span class="s2">&quot;inner&quot;</span><span class="p">)</span>
+
+<span class="n">df_join</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total después del join:&quot;</span><span class="p">,</span> <span class="n">df_join</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+</code></pre></div>
+<h2 id="paso-10-preparar-columnas-para-particionado">Paso 10: Preparar columnas para particionado<a class="headerlink" href="#paso-10-preparar-columnas-para-particionado" title="Permanent link">&para;</a></h2>
+<p>Para almacenar con criterio, no basta con guardar el archivo.<br />
+Primero debemos preparar columnas útiles para organizar la salida.</p>
+<p>En esta práctica derivamos:</p>
+<ul>
+<li><code>anio</code></li>
+<li><code>mes</code></li>
+</ul>
+<p>Estas columnas ayudarán a estructurar la carpeta de salida y a optimizar consultas frecuentes por periodo.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_date</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span>
+
+<span class="n">df_final</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df_join</span>
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;fecha&quot;</span><span class="p">,</span> <span class="n">to_date</span><span class="p">(</span><span class="s2">&quot;fecha&quot;</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;anio&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">(</span><span class="s2">&quot;fecha&quot;</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;mes&quot;</span><span class="p">,</span> <span class="n">month</span><span class="p">(</span><span class="s2">&quot;fecha&quot;</span><span class="p">))</span>
+<span class="p">)</span>
+
+<span class="n">df_final</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<span class="n">df_final</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="paso-11-antes-de-escribir-pensar-como-ingenieros-de-datos">Paso 11: Antes de escribir, pensar como ingenieros de datos<a class="headerlink" href="#paso-11-antes-de-escribir-pensar-como-ingenieros-de-datos" title="Permanent link">&para;</a></h2>
+<p>Aquí viene la parte central de la sesión.</p>
+<p>La pregunta ya no es solo:</p>
+<blockquote>
+<p>¿cómo guardo el DataFrame?</p>
+</blockquote>
+<p>La pregunta correcta es:</p>
+<blockquote>
+<p>¿cómo diseño el almacenamiento para que futuras consultas lean menos datos y respondan más rápido?</p>
+</blockquote>
+<p>Por eso debemos justificar dos decisiones:</p>
+<ol>
+<li><strong>Formato</strong></li>
+<li><strong>Particionado</strong></li>
+</ol>
+<h2 id="paso-12-comparar-dos-estrategias-de-salida">Paso 12: Comparar dos estrategias de salida<a class="headerlink" href="#paso-12-comparar-dos-estrategias-de-salida" title="Permanent link">&para;</a></h2>
+<p>Vamos a escribir la misma salida en dos formatos:</p>
+<ul>
+<li>CSV</li>
+<li>Parquet</li>
+</ul>
+<p>Luego compararemos tamaño y organización para discutir por qué Parquet es más adecuado en este contexto.</p>
+<div class="highlight"><pre><span></span><code><span class="n">ruta_base</span> <span class="o">=</span> <span class="s2">&quot;/opt/artifacts/u1_s4&quot;</span>
+<span class="n">ruta_csv</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ruta_base</span><span class="si">}</span><span class="s2">/ventas_csv&quot;</span>
+<span class="n">ruta_parquet</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ruta_base</span><span class="si">}</span><span class="s2">/ventas_parquet&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">ruta_base</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="p">(</span>
+    <span class="n">df_final</span><span class="o">.</span><span class="n">write</span>
+    <span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="n">ruta_csv</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CSV generado en:&quot;</span><span class="p">,</span> <span class="n">ruta_csv</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="paso-13-escribir-la-salida-optimizada-en-parquet-con-particionado">Paso 13: Escribir la salida optimizada en Parquet con particionado<a class="headerlink" href="#paso-13-escribir-la-salida-optimizada-en-parquet-con-particionado" title="Permanent link">&para;</a></h2>
+<p>Ahora escribimos la salida en Parquet.</p>
+<p>Elegimos particionar por:</p>
+<ul>
+<li><code>anio</code></li>
+<li><code>mes</code></li>
+<li><code>region</code></li>
+</ul>
+<p>Esta propuesta es útil cuando las consultas suelen filtrar por periodo y región.<br />
+Más adelante discutiremos también cuándo este diseño podría dejar de ser conveniente.</p>
+<div class="highlight"><pre><span></span><code><span class="p">(</span>
+    <span class="n">df_final</span><span class="o">.</span><span class="n">write</span>
+    <span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">partitionBy</span><span class="p">(</span><span class="s2">&quot;anio&quot;</span><span class="p">,</span> <span class="s2">&quot;mes&quot;</span><span class="p">,</span> <span class="s2">&quot;region&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">ruta_parquet</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parquet generado en:&quot;</span><span class="p">,</span> <span class="n">ruta_parquet</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="paso-14-leer-nuevamente-la-salida-parquet">Paso 14: Leer nuevamente la salida Parquet<a class="headerlink" href="#paso-14-leer-nuevamente-la-salida-parquet" title="Permanent link">&para;</a></h2>
+<p>Este paso cierra el flujo lógico de la sesión:</p>
+<ol>
+<li>el dato se leyó desde almacenamiento,</li>
+<li>se procesó con Spark,</li>
+<li>se persistió en formato optimizado,</li>
+<li>y ahora se vuelve a leer como salida del pipeline.</li>
+</ol>
+<p>Así el estudiante entiende que el almacenamiento no es un tema aislado: forma parte del ciclo completo de datos.</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_parquet</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">ruta_parquet</span><span class="p">)</span>
+
+<span class="n">df_parquet</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total registros en Parquet:&quot;</span><span class="p">,</span> <span class="n">df_parquet</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+<span class="n">df_parquet</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="paso-15-observar-la-estructura-fisica-de-carpetas">Paso 15: Observar la estructura física de carpetas<a class="headerlink" href="#paso-15-observar-la-estructura-fisica-de-carpetas" title="Permanent link">&para;</a></h2>
+<p>Una ventaja del particionado es que el layout de carpetas expresa una organización útil para el acceso.</p>
+<p>Aquí inspeccionamos la estructura que Spark creó automáticamente.<br />
+Esto permite conectar el concepto lógico de <code>partitionBy()</code> con el resultado físico sobre almacenamiento.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">ruta_parquet</span><span class="p">):</span>
+    <span class="n">nivel</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">ruta_parquet</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">)</span>
+    <span class="n">sangria</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">nivel</span>
+    <span class="n">nombre</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">root</span><span class="p">)</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">root</span><span class="p">)</span> <span class="k">else</span> <span class="n">root</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sangria</span><span class="si">}{</span><span class="n">nombre</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">[:</span><span class="mi">4</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sangria</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="paso-16-consulta-tipica-que-se-beneficia-del-particionado">Paso 16: Consulta típica que se beneficia del particionado<a class="headerlink" href="#paso-16-consulta-tipica-que-se-beneficia-del-particionado" title="Permanent link">&para;</a></h2>
+<p>Supongamos que un analista necesita consultar ventas de enero en la región Sur.</p>
+<p>Si la salida está particionada por <code>anio</code>, <code>mes</code> y <code>region</code>, Spark puede reducir la lectura a una fracción del total.</p>
+<p>Aquí no estamos midiendo todavía tiempos de benchmark avanzados, pero sí mostrando la lógica correcta de diseño.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span>
+
+<span class="n">consulta_sur</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df_parquet</span>
+    <span class="o">.</span><span class="n">filter</span><span class="p">((</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;anio&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2026</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;mes&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;region&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Sur&quot;</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;fecha&quot;</span><span class="p">,</span> <span class="s2">&quot;cliente&quot;</span><span class="p">,</span> <span class="s2">&quot;producto&quot;</span><span class="p">,</span> <span class="s2">&quot;monto&quot;</span><span class="p">,</span> <span class="s2">&quot;region&quot;</span><span class="p">,</span> <span class="s2">&quot;segmento&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">consulta_sur</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="paso-17-comparacion-simple-de-tamano-entre-csv-y-parquet">Paso 17: Comparación simple de tamaño entre CSV y Parquet<a class="headerlink" href="#paso-17-comparacion-simple-de-tamano-entre-csv-y-parquet" title="Permanent link">&para;</a></h2>
+<p>Una diferencia importante entre formatos es el tamaño final de almacenamiento.</p>
+<p>Con datasets pequeños la diferencia puede no ser enorme, pero el ejercicio sigue siendo útil para introducir dos ideas:</p>
+<ul>
+<li>compresión,</li>
+<li>lectura selectiva por columnas.</li>
+</ul>
+<p>En escenarios grandes, estas diferencias se vuelven mucho más relevantes.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">size_mb</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">total</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">),</span> <span class="mi">6</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tamaño CSV (MB):&quot;</span><span class="p">,</span> <span class="n">size_mb</span><span class="p">(</span><span class="n">ruta_csv</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tamaño Parquet (MB):&quot;</span><span class="p">,</span> <span class="n">size_mb</span><span class="p">(</span><span class="n">ruta_parquet</span><span class="p">))</span>
+</code></pre></div>
+<h2 id="paso-18-comparacion-de-lectura-selectiva">Paso 18: Comparación de lectura selectiva<a class="headerlink" href="#paso-18-comparacion-de-lectura-selectiva" title="Permanent link">&para;</a></h2>
+<p>Cuando se trabaja con CSV, normalmente se lee fila completa.<br />
+Con Parquet, Spark puede aprovechar mejor la estructura columnar.</p>
+<p>Aquí simulamos una lectura donde solo necesitamos unas pocas columnas para análisis.</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_parquet</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;fecha&quot;</span><span class="p">,</span> <span class="s2">&quot;producto&quot;</span><span class="p">,</span> <span class="s2">&quot;monto&quot;</span><span class="p">,</span> <span class="s2">&quot;region&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="paso-19-errores-y-decisiones-que-deben-detectar-los-estudiantes">Paso 19: Errores y decisiones que deben detectar los estudiantes<a class="headerlink" href="#paso-19-errores-y-decisiones-que-deben-detectar-los-estudiantes" title="Permanent link">&para;</a></h2>
+<p>Durante esta práctica el estudiante debería poder reconocer al menos estos puntos:</p>
+<ol>
+<li>había un <code>cliente_id</code> nulo,</li>
+<li>había un <code>monto</code> negativo,</li>
+<li>había duplicado lógico en ventas,</li>
+<li>había duplicado en la tabla de clientes,</li>
+<li>no todo particionado es bueno por defecto.</li>
+</ol>
+<p>Esto convierte la sesión en una práctica de ingeniería y no solo en un ejercicio de sintaxis.</p>
+<h2 id="paso-20-mini-ficha-tecnica-de-cierre">Paso 20: Mini ficha técnica de cierre<a class="headerlink" href="#paso-20-mini-ficha-tecnica-de-cierre" title="Permanent link">&para;</a></h2>
+<p>Completa esta guía breve con base en lo que observaste en el laboratorio.</p>
+<h3 id="formato-elegido">Formato elegido<a class="headerlink" href="#formato-elegido" title="Permanent link">&para;</a></h3>
+<p>Parquet</p>
+<h3 id="particionado-elegido">Particionado elegido<a class="headerlink" href="#particionado-elegido" title="Permanent link">&para;</a></h3>
+<p><code>anio / mes / region</code></p>
+<h3 id="consulta-objetivo">Consulta objetivo<a class="headerlink" href="#consulta-objetivo" title="Permanent link">&para;</a></h3>
+<p>Ventas por periodo y región.</p>
+<h3 id="justificacion">Justificación<a class="headerlink" href="#justificacion" title="Permanent link">&para;</a></h3>
+<p>Parquet reduce lectura innecesaria por su estructura columnar, y el particionado ayuda cuando se filtra por tiempo y región.</p>
+<h3 id="riesgo">Riesgo<a class="headerlink" href="#riesgo" title="Permanent link">&para;</a></h3>
+<p>Si una columna de partición tiene cardinalidad muy alta o no se usa en filtros, se pueden crear demasiadas carpetas y empeorar la administración del almacenamiento.</p>
+<h2 id="paso-21-reflexion-final">Paso 21: Reflexión final<a class="headerlink" href="#paso-21-reflexion-final" title="Permanent link">&para;</a></h2>
+<p><strong>Preguntas para reflexión:</strong></p>
+<ul>
+<li>¿Por qué esta sesión no se reduce a “guardar archivos”?</li>
+<li>¿Qué relación existe entre el patrón de consulta y el particionado?</li>
+<li>¿En qué caso elegirías otro esquema de partición?</li>
+<li>¿Qué diferencia conceptual hay entre “zona de datos” y “formato de salida”?</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># Espacio opcional para respuestas o pruebas adicionales</span>
+</code></pre></div>
+<h1 id="actividad-autonoma-aplicacion-al-producto-de-la-unidad-1">Actividad Autónoma – Aplicación al Producto de la Unidad 1<a class="headerlink" href="#actividad-autonoma-aplicacion-al-producto-de-la-unidad-1" title="Permanent link">&para;</a></h1>
+<h2 id="objetivo">Objetivo<a class="headerlink" href="#objetivo" title="Permanent link">&para;</a></h2>
+<p>Tomar la salida ETL de su caso de trabajo y proponer un diseño de almacenamiento justificando:</p>
+<ul>
+<li>formato,</li>
+<li>columnas de partición,</li>
+<li>consulta objetivo,</li>
+<li>riesgos del diseño.</li>
+</ul>
+<h2 id="entregable-breve">Entregable breve<a class="headerlink" href="#entregable-breve" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Captura de la estructura de carpetas generada.</li>
+<li>Evidencia de lectura desde Parquet.</li>
+<li>Justificación del formato y particionado.</li>
+<li>Una consulta que se beneficie del diseño propuesto.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Angel Sullon @asullom - UPeU 2026
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>
