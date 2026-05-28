@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# MkDocs build
+site/
+.cache/
+
+# Generated documentation
+docs/
+
+# Spark/Hadoop generated artifacts
+pyspark/artifacts/
+*.crc
+_SUCCESS
+_temporary/
+_spark_metadata/
+.Trash-*/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python virtual environments
+venv/
+
+# Logs
+*.log
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# GitHub workflow artifacts
+*.coverage
+
+# Misc
+*.bak
+*.swp

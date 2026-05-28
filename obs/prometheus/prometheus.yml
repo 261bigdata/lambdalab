@@ -1,0 +1,23 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets:
+          - localhost:9090
+
+  - job_name: kafka-exporter
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - kafka-exporter:9308
+
+  # Para monitorear Spark desde Docker, levanta el laboratorio PySpark unido a
+  # lambdalab-kafka-net y expone endpoints compatibles con Prometheus.
+  # - job_name: spark
+  #   metrics_path: /metrics
+  #   static_configs:
+  #     - targets:
+  #         - pyspark:4040

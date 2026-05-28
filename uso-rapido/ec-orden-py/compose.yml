@@ -1,0 +1,17 @@
+name: lambdalab-ec-orden-py
+
+services:
+  ec-orden-py:
+    build: .
+    container_name: lambdalab-ec-orden-py
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    command: sleep infinity
+    networks:
+      - lambdalab-kafka-net
+
+networks:
+  lambdalab-kafka-net:
+    external: true
+    name: lambdalab-kafka-net

@@ -1,0 +1,25 @@
+
+server:
+  port: 9031
+  
+spring:
+  kafka:
+    bootstrap-servers: ${EC_KAFKA_BOOTSTRAP_SERVERS:localhost:49092}
+  datasource:
+    url: jdbc:mysql://${EC_PAGO_MS_DB_HOST}:${EC_PAGO_MS_DB_PORT}/${EC_PAGO_MS_DB_NAME}?useSSL=false&serverTimezone=America/Lima&allowPublicKeyRetrieval=true
+    username: ${EC_PAGO_MS_DB_USERNAME}
+    password: ${EC_PAGO_MS_DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+
+

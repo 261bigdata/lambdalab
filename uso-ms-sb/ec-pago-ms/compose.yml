@@ -1,0 +1,53 @@
+name: lambdalab-ec-pago-ms
+
+services:
+  mysql-ec-pago-ms:
+    image: mysql:8.4
+    container_name: lambdalab-mysql-ec-pago-ms
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${EC_PAGO_MS_MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${EC_PAGO_MS_MYSQL_DATABASE:-db_ec_pago_ms}
+    ports:
+      - "49030:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$${MYSQL_ROOT_PASSWORD} || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    volumes:
+      - lambdalab_mysql_ec_pago_ms_data:/var/lib/mysql
+    networks:
+      - lambdalab-ec-pago-ms-net
+
+  ec-pago-ms:
+    build: .
+    container_name: lambdalab-ec-pago-ms
+    restart: unless-stopped
+    depends_on:
+      mysql-ec-pago-ms:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+      EC_KAFKA_BOOTSTRAP_SERVERS: ${EC_KAFKA_BOOTSTRAP_SERVERS:-kafka:9092}
+      EC_PAGO_MS_DB_HOST: ${EC_PAGO_MS_DB_HOST:-mysql-ec-pago-ms}
+      EC_PAGO_MS_DB_PORT: ${EC_PAGO_MS_DB_PORT:-3306}
+      EC_PAGO_MS_DB_NAME: ${EC_PAGO_MS_DB_NAME:-db_ec_pago_ms}
+      EC_PAGO_MS_DB_USERNAME: ${EC_PAGO_MS_DB_USERNAME:-root}
+      EC_PAGO_MS_DB_PASSWORD: ${EC_PAGO_MS_DB_PASSWORD:-root}
+    ports:
+      - "49031:9031"
+    networks:
+      - lambdalab-ec-pago-ms-net
+      - lambdalab-kafka-net
+
+volumes:
+  lambdalab_mysql_ec_pago_ms_data:
+
+networks:
+  lambdalab-ec-pago-ms-net:
+    name: lambdalab-ec-pago-ms-net
+  lambdalab-kafka-net:
+    external: true
+    name: lambdalab-kafka-net

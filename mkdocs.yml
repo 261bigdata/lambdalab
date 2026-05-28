@@ -1,0 +1,59 @@
+site_name: LambdaLab
+site_description: Curso de Big Data con Spark, Kafka, streaming y ML distribuido.
+site_author: UPeU
+copyright: Angel Sullon @asullom - UPeU 2026
+
+theme:
+  name: material
+  language: es
+  palette:
+    - scheme: default
+      primary: blue grey
+      accent: amber
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - toc.follow
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra_javascript:
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+
+nav:
+  - Inicio: index.md
+  - U1 Arquitecturas Big Data y ETL distribuido:
+      - 1. Arquitectura Big Data: unidad-1/01_arquitecturas_big_data.md
+      - 2. Fundamentos Apache Spark: unidad-1/02_fundamentos_spark.md
+      - 3. ETL distribuido en batch: unidad-1/03_etl_spark.md
+      - 4. HDFS y formatos: unidad-1/04_hdfs_formatos.md
+      - 5. Evaluacion U1: unidad-1/05_evaluacion_u1.md
+  - U2 Streaming, operacion y ML a escala:
+      - 6. Ingesta en tiempo real con Kafka: unidad-2/06_ingesta_kafka.md
+      - 7. Streaming con Spark: unidad-2/07_spark_streaming.md
+      - 8. Observabilidad y costos: unidad-2/08_observabilidad_costos.md
+      - 9. ML distribuido con MLlib: unidad-2/09_ml_distribuido_regresion_mllib.md
+      - 10. Series de tiempo e inferencia: unidad-2/10_series_tiempo_inferencia_spark.md
+      - 11. Tuning y experimentacion distribuida: unidad-2/11_tuning_experimentacion_distribuida.md
+      - 12. Evaluacion U2: unidad-2/12_evaluacion_u2.md

@@ -1,0 +1,53 @@
+name: lambdalab-ec-orden-ms
+
+services:
+  mysql-ec-orden-ms:
+    image: mysql:8.4
+    container_name: lambdalab-mysql-ec-orden-ms
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${EC_ORDEN_MS_MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${EC_ORDEN_MS_MYSQL_DATABASE:-db_ec_orden_ms}
+    ports:
+      - "49020:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$${MYSQL_ROOT_PASSWORD} || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    volumes:
+      - lambdalab_mysql_ec_orden_ms_data:/var/lib/mysql
+    networks:
+      - lambdalab-ec-orden-ms-net
+
+  ec-orden-ms:
+    build: .
+    container_name: lambdalab-ec-orden-ms
+    restart: unless-stopped
+    depends_on:
+      mysql-ec-orden-ms:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+      EC_KAFKA_BOOTSTRAP_SERVERS: ${EC_KAFKA_BOOTSTRAP_SERVERS:-kafka:9092}
+      EC_ORDEN_MS_DB_HOST: ${EC_ORDEN_MS_DB_HOST:-mysql-ec-orden-ms}
+      EC_ORDEN_MS_DB_PORT: ${EC_ORDEN_MS_DB_PORT:-3306}
+      EC_ORDEN_MS_DB_NAME: ${EC_ORDEN_MS_DB_NAME:-db_ec_orden_ms}
+      EC_ORDEN_MS_DB_USERNAME: ${EC_ORDEN_MS_DB_USERNAME:-root}
+      EC_ORDEN_MS_DB_PASSWORD: ${EC_ORDEN_MS_DB_PASSWORD:-root}
+    ports:
+      - "49021:9021"
+    networks:
+      - lambdalab-ec-orden-ms-net
+      - lambdalab-kafka-net
+
+volumes:
+  lambdalab_mysql_ec_orden_ms_data:
+
+networks:
+  lambdalab-ec-orden-ms-net:
+    name: lambdalab-ec-orden-ms-net
+  lambdalab-kafka-net:
+    external: true
+    name: lambdalab-kafka-net

@@ -1,0 +1,17 @@
+name: lambdalab-pyspark
+
+services:
+  pyspark:
+    container_name: lambdalab-pyspark
+    build:
+      context: .
+    restart: unless-stopped
+    ports:
+      - "4488:8888"
+      - "4040:4040"
+    volumes:
+      - ./notebooks:/opt/notebooks
+      - ./data:/opt/data
+      - ./artifacts:/opt/artifacts
+    environment:
+      - JUPYTER_TOKEN=sintoken
