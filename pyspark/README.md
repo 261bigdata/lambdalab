@@ -37,7 +37,6 @@ http://localhost:4488
 ```
 
 Los notebooks quedan montados dentro del contenedor en:
-
 ```text
 /opt/notebooks
 ```
@@ -52,6 +51,37 @@ Los artefactos generados se escriben en:
 
 ```text
 /opt/artifacts
+```
+
+### Alternativa con imagen oficial de Jupyter
+
+Tambien puedes levantar un entorno PySpark directamente con la imagen oficial
+`jupyter/pyspark-notebook`:
+
+```yaml
+# compose.yml
+services:
+    pyspark:
+        image: jupyter/pyspark-notebook
+        ports:
+            - 8000:8888
+            - 4040:4040
+        environment:
+            - JUPYTER_TOKEN=sintoken
+        volumes:
+            - ./:/home/jovyan
+```
+
+Para levantar este entorno:
+
+```powershell
+docker compose up -d
+```
+
+Luego accede a Jupyter en:
+
+```text
+http://localhost:8000/?token=sintoken
 ```
 
 ## Notebooks principales

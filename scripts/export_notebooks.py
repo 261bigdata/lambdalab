@@ -27,18 +27,18 @@ NOTEBOOKS = {
 
 STATIC_PAGES = {
     "index.md": None,
-    "unidad-1/05_evaluacion_u1.md": (
-        "# Evaluacion U1\n\n"
-        "Producto: pipeline batch en Spark con dataset listo para BI/ML.\n"
-    ),
-    "unidad-2/06_ingesta_kafka.md": (
-        "# Ingesta en tiempo real con Kafka\n\n"
-        "Contenido pendiente de integrar desde el modulo Kafka.\n"
-    ),
-    "unidad-2/12_evaluacion_u2.md": (
-        "# Evaluacion U2\n\n"
-        "Producto: pipeline streaming en Spark para ML/BI a escala y en tiempo real.\n"
-    ),
+    "unidad-1/05_evaluacion_u1.md": "# Evaluacion U1\n\nProducto: pipeline batch en Spark con dataset listo para BI/ML.\n",
+    "unidad-2/06_ingesta_kafka.md": "06_ingesta_kafka.md",
+    "unidad-2/12_evaluacion_u2.md": "12_evaluacion_u2.md",
+}
+
+APPEND_PAGES = {
+    "unidad-2/07_spark_streaming.md": [
+        "07_spark_streaming_guia.md",
+    ],
+    "unidad-2/08_observabilidad_costos.md": [
+        "08_costos_escalado.md",
+    ],
 }
 
 
@@ -87,8 +87,26 @@ def main() -> None:
             if not INDEX_SOURCE.exists():
                 raise FileNotFoundError(f"No existe {INDEX_SOURCE}")
             content = INDEX_SOURCE.read_text(encoding="utf-8")
+        elif content.endswith(".md"):
+            source_path = NOTEBOOKS_DIR / content
+            if not source_path.exists():
+                raise FileNotFoundError(f"No existe {source_path}")
+            content = source_path.read_text(encoding="utf-8")
         output_path.write_text(content, encoding="utf-8")
         print(f"Generado {output_path.relative_to(ROOT)}")
+
+    for relative_path, source_names in APPEND_PAGES.items():
+        output_path = DOCS_DIR / relative_path
+        if not output_path.exists():
+            raise FileNotFoundError(f"No existe {output_path}")
+        chunks = [output_path.read_text(encoding="utf-8").rstrip()]
+        for source_name in source_names:
+            source_path = NOTEBOOKS_DIR / source_name
+            if not source_path.exists():
+                raise FileNotFoundError(f"No existe {source_path}")
+            chunks.append(source_path.read_text(encoding="utf-8").strip())
+        output_path.write_text("\n\n".join(chunks) + "\n", encoding="utf-8")
+        print(f"Actualizado {output_path.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":
