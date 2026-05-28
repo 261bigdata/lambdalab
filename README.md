@@ -27,10 +27,16 @@ Levanta el entorno desde la raiz del repositorio:
 docker compose -f pyspark/compose.yml up --build
 ```
 
-Luego abre:
+Luego abre JupyterLab:
 
 ```text
-http://localhost:8000/?token=sintoken
+http://localhost:4488/lab?token=sintoken
+```
+
+Tambien puedes entrar a Jupyter Notebook:
+
+```text
+http://localhost:4488/?token=sintoken
 ```
 
 Spark UI queda disponible en:
@@ -77,7 +83,7 @@ Servicios disponibles:
 
 | Modulo | Servicio | Host | Contenedor |
 |---|---|---:|---:|
-| `pyspark` | Jupyter | 8000 | 8888 |
+| `pyspark` | Jupyter | 4488 | 8888 |
 | `pyspark` | Spark UI | 4040 | 4040 |
 | `kafka` | Kafka externo | 49092 | 49092 |
 | `kafka` | Kafka Exporter | 49308 | 9308 |

@@ -9,7 +9,7 @@ flowchart LR
     subgraph PySparkModule["pyspark"]
         direction TB
         Notebooks["notebooks/*.ipynb"]
-        Jupyter["Jupyter<br/>localhost:8000"]
+        Jupyter["Jupyter<br/>localhost:4488"]
         Spark["Spark / PySpark<br/>localhost:4040"]
         Data["data/*.csv"]
         Artifacts["artifacts/"]

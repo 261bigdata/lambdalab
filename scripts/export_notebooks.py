@@ -30,6 +30,7 @@ STATIC_PAGES = {
     "unidad-1/05_evaluacion_u1.md": "# Evaluacion U1\n\nProducto: pipeline batch en Spark con dataset listo para BI/ML.\n",
     "unidad-2/06_ingesta_kafka.md": "06_ingesta_kafka.md",
     "unidad-2/12_evaluacion_u2.md": "12_evaluacion_u2.md",
+    "unidad-2/12_plantilla_entregable_u2.md": "12_plantilla_entregable_u2.md",
 }
 
 APPEND_PAGES = {

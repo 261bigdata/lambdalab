@@ -30,10 +30,16 @@ En modo Kafka, el broker interno queda disponible como:
 kafka:9092
 ```
 
-Luego abre Jupyter en:
+Luego abre JupyterLab:
 
 ```text
-http://localhost:8000/?token=sintoken
+http://localhost:4488/lab?token=sintoken
+```
+
+Tambien puedes entrar a Jupyter Notebook:
+
+```text
+http://localhost:4488/?token=sintoken
 ```
 
 Los notebooks quedan montados dentro del contenedor en:
@@ -64,7 +70,7 @@ services:
     pyspark:
         image: jupyter/pyspark-notebook
         ports:
-            - 8000:8888
+            - 4488:8888
             - 4040:4040
         environment:
             - JUPYTER_TOKEN=sintoken
@@ -78,10 +84,16 @@ Para levantar este entorno:
 docker compose up -d
 ```
 
-Luego accede a Jupyter en:
+Luego accede a JupyterLab:
 
 ```text
-http://localhost:8000/?token=sintoken
+http://localhost:4488/lab?token=sintoken
+```
+
+O usa Jupyter Notebook:
+
+```text
+http://localhost:4488/?token=sintoken
 ```
 
 ## Notebooks principales
