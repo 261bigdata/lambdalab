@@ -1,4 +1,4 @@
-# Propuesta Silabo Big data 2026-2 
+# LambdaLab
 
 Curso practico de Big Data con procesamiento distribuido, streaming, observabilidad y BI/ML distribuido.
 
@@ -12,23 +12,22 @@ laboratorios ejecutables, servicios Docker y documentacion publicada.
 Producto del curso = Producto U3:
 
 ```text
-Sistema Big Data distribuido end-to-end que integra procesamiento batch,
-procesamiento streaming, analitica/ML, observabilidad y visualizacion BI para
-la toma de decisiones.
+Sistema Big Data distribuido end-to-end para procesamiento batch y streaming,
+analitica/ML, observabilidad y visualizacion BI para la toma de decisiones.
 ```
 
 Resultado esperado del curso:
 
 Al finalizar el curso, el estudiante implementa, integra y sustenta una solucion
-Big Data end-to-end que combina pipelines batch distribuidos, ingesta y
+Big Data end-to-end que combina procesamiento batch distribuido, ingesta y
 procesamiento de eventos en tiempo real, analitica/ML a escala, observabilidad
-tecnica y visualizacion BI. La solucion debe ejecutarse de forma reproducible,
-mostrar evidencias de ejecucion, reportar metricas tecnicas y del modelo, y
-demostrar valor para la toma de decisiones.
+tecnica y una capa de visualizacion BI. La solucion debe poder ejecutarse de
+forma reproducible, mostrar evidencias de ejecucion, reportar metricas tecnicas
+y del modelo, y demostrar valor para la toma de decisiones.
 
 ## Contenido
 
-### U1: Arquitecturas Big Data y ETL batch distribuido
+### U1: Arquitecturas Big Data, ETL batch distribuido y ML a escala
 
 Producto U1: pipeline batch de ETL distribuido con salidas analiticas en
 Parquet listas para BI/ML.
@@ -39,41 +38,43 @@ valida la calidad basica de los datos, organiza salidas en formatos analiticos
 como Parquet y deja un dataset preparado para consumo BI/ML.
 
 - Sesion 1: Arquitectura Big Data.
-- Sesion 2: Fundamentos Apache Spark.
-- Sesion 3: Procesamiento batch con Spark: ETL distribuido.
-- Sesion 4: Almacenamiento, HDFS y formatos.
+- Sesion 2:  Fundamentos PySpark: extracción, transformaciones, funciones, agrupaciones, agregaciones y RDD.
+- Sesion 3: Procesamiento distribuido y carga de datos particionada en HDFS y formatos analíticos.
+- Sesion 4: ML distribuido con Spark MLlib (Regresión).
 - Sesion 5: Evaluacion U1.
 
-### U2: Sistema Big Data en tiempo real: streaming, operacion y ML a escala
+### U2: Procesamiento distribuido de eventos y BI/ML en tiempo real
 
-Producto U2: pipeline streaming en Spark para ML/BI a escala y en tiempo real.
+Producto U2: pipeline streaming con multiples patrones de ingesta y Spark,
+observabilidad, estimacion de recursos/costos y modelo predictivo de
+analitica/ML entrenado y evaluado.
 
-Resultado esperado U2: el estudiante implementa un pipeline Big Data en tiempo
-real que integra ingesta de eventos mediante Kafka, procesamiento distribuido
-con Spark Structured Streaming, observabilidad y estimacion de costos
-operacionales. Ademas, entrena, evalua, guarda y reutiliza modelos distribuidos
-con Spark MLlib para inferencia batch y/o streaming, seleccionando mejores
-configuraciones mediante experimentacion distribuida.
+Resultado esperado U2: el estudiante implementa un pipeline streaming con un
+sistema de mensajeria/event streaming y Spark, trabaja eventos de negocio, CDC o
+sensores, procesa eventos en tiempo real, mide latencia y throughput, propone
+observabilidad, estima recursos/costos y entrega un modelo predictivo de
+analitica/ML entrenado y evaluado, listo para integrarse y desplegarse en la U3
+mediante practicas de DataOps/DevOps.
 
-- Sesion 6: Ingesta en tiempo real (Kafka).
-- Sesion 7: Procesamiento en Streaming con Spark.
-- Sesion 8: Observabilidad (Grafana) y Costos.
-- Sesion 9: ML distribuido: regresion con MLlib (modelo entrenado, evaluado y guardado).
-- Sesion 10: Series de tiempo e inferencia en streaming (aplicacion del modelo guardado sobre datos batch y/o Kafka streaming).
-- Sesion 11: Tuning y experimentacion distribuida (mejor modelo seleccionado con validacion distribuida).
+- Sesion 6: Ingesta de eventos empresariales en tiempo real.
+- Sesion 7: Ingesta de eventos IoT/sensores en tiempo real.
+- Sesion 8: Procesamiento en streaming con Spark.
+- Sesion 9: Observabilidad con Grafana y costos.
+- Sesion 10: BI/ML distribuido con Spark.
+- Sesion 11: Series de tiempo e inferencia en streaming.
 - Sesion 12: Evaluacion U2.
 
 ### U3: Integracion, DataOps y despliegue del sistema final
 
-Producto U3 / producto del curso: sistema Big Data distribuido end-to-end que
-integra procesamiento batch, procesamiento streaming, analitica/ML,
-observabilidad y visualizacion BI para la toma de decisiones.
+Producto U3 / producto del curso: sistema Big Data distribuido end-to-end para
+procesamiento batch y streaming, analitica/ML, observabilidad y visualizacion BI
+para la toma de decisiones.
 
 Resultado esperado U3: el estudiante integra los componentes desarrollados en
 las unidades anteriores, despliega o empaqueta el sistema mediante practicas de
 DataOps/DevOps, prepara una demo end-to-end, documenta la operacion del sistema,
-valida resultados tecnicos, analiticos y operacionales, y sustenta una solucion
-final orientada a la toma de decisiones.
+valida resultados tecnicos y analiticos, y sustenta una solucion final orientada
+a la toma de decisiones.
 
 - Sesion 13: Integracion del sistema, DataOps y BI.
 - Sesion 14: Revision tecnica final y hardening.
