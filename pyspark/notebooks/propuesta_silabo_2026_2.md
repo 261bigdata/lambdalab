@@ -4,11 +4,11 @@ Curso práctico de Big Data con procesamiento distribuido, streaming, observabil
 
 Usaremos [LambdaLab](https://github.com/261bigdata/lambdalab), un entorno
 integrado de procesamiento distribuido en batch y streaming con Spark y Kafka,
-que permite construir pipelines de datos, gestionar almacenamiento analítico en
-Parquet, aplicar observabilidad y desarrollar soluciones de BI/ML distribuido
-mediante laboratorios reproducibles basados en Docker. El entorno incluye
-documentación publicada y puede ser personalizado por cada equipo para adaptarlo
-a su proyecto específico.
+[al estilo Uber](#arquitectura-uber), que permite construir pipelines de datos,
+gestionar almacenamiento analítico en Parquet, aplicar observabilidad y
+desarrollar soluciones de BI/ML distribuido mediante laboratorios reproducibles
+basados en Docker. El entorno incluye documentación publicada y puede ser
+personalizado por cada equipo para adaptarlo a su proyecto específico.
 
 ## Producto del curso
 

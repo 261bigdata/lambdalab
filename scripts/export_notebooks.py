@@ -36,7 +36,7 @@ STATIC_PAGES = {
 
 APPEND_PAGES = {
     "unidad-2/07_spark_streaming.md": [
-        "07_spark_streaming_guía.md",
+        "07_spark_streaming_guia.md",
     ],
     "unidad-2/08_observabilidad_costos.md": [
         "08_costos_escalado.md",
