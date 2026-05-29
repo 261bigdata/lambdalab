@@ -316,10 +316,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#u2-sistema-big-data-en-tiempo-real-y-etl-streaming-distribuido" class="md-nav__link">
+  <a href="#u2-sistema-big-data-en-tiempo-real-streaming-operacion-y-ml-a-escala" class="md-nav__link">
     <span class="md-ellipsis">
       
-        U2: Sistema Big Data en tiempo real y ETL streaming distribuido
+        U2: Sistema Big Data en tiempo real: streaming, operacion y ML a escala
       
     </span>
   </a>
@@ -616,7 +616,7 @@
   <span class="md-ellipsis">
     
   
-    U2 Streaming, operacion y ML a escala
+    U2 Sistema Big Data en tiempo real
   
 
     
@@ -632,7 +632,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    U2 Streaming, operacion y ML a escala
+    U2 Sistema Big Data en tiempo real
   
 
           </label>
@@ -652,7 +652,7 @@
   <span class="md-ellipsis">
     
   
-    6. Ingesta de eventos empresariales
+    6. Ingesta en tiempo real (Kafka)
   
 
     
@@ -673,14 +673,14 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-2/07_ingesta_sensores/" class="md-nav__link">
+      <a href="unidad-2/07_spark_streaming.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    7. Ingesta de eventos IoT/sensores
+    7. Procesamiento en Streaming con Spark
   
 
     
@@ -701,14 +701,14 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-2/08_spark_streaming/" class="md-nav__link">
+      <a href="unidad-2/08_observabilidad_costos.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    8. Procesamiento streaming con Spark
+    8. Observabilidad (Grafana) y Costos
   
 
     
@@ -729,14 +729,14 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-2/09_observabilidad_costos/" class="md-nav__link">
+      <a href="unidad-2/09_ml_distribuido_regresion_mllib.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    9. Observabilidad y costos
+    9. ML distribuido con MLlib
   
 
     
@@ -757,14 +757,14 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-2/10_bi_ml_distribuido_spark/" class="md-nav__link">
+      <a href="unidad-2/10_series_tiempo_inferencia_spark.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    10. BI/ML distribuido con Spark
+    10. Series de tiempo e inferencia
   
 
     
@@ -785,14 +785,14 @@
   
   
     <li class="md-nav__item">
-      <a href="unidad-2/11_series_tiempo_inferencia_spark/" class="md-nav__link">
+      <a href="unidad-2/11_tuning_experimentacion_distribuida.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    11. Series de tiempo e inferencia
+    11. Tuning y experimentacion distribuida
   
 
     
@@ -902,10 +902,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#u2-sistema-big-data-en-tiempo-real-y-etl-streaming-distribuido" class="md-nav__link">
+  <a href="#u2-sistema-big-data-en-tiempo-real-streaming-operacion-y-ml-a-escala" class="md-nav__link">
     <span class="md-ellipsis">
       
-        U2: Sistema Big Data en tiempo real y ETL streaming distribuido
+        U2: Sistema Big Data en tiempo real: streaming, operacion y ML a escala
       
     </span>
   </a>
@@ -986,16 +986,17 @@ Parquet, aplicar observabilidad y desarrollar BI/ML distribuido. Integra
 laboratorios ejecutables, servicios Docker y documentacion publicada.</p>
 <h2 id="producto-del-curso">Producto del curso<a class="headerlink" href="#producto-del-curso" title="Permanent link">&para;</a></h2>
 <p>Producto del curso = Producto U3:</p>
-<div class="highlight"><pre><span></span><code>Sistema Big Data distribuido end-to-end para procesamiento batch y streaming,
-analitica/ML, observabilidad y visualizacion BI para la toma de decisiones.
+<div class="highlight"><pre><span></span><code>Sistema Big Data distribuido end-to-end que integra procesamiento batch,
+procesamiento streaming, analitica/ML, observabilidad y visualizacion BI para
+la toma de decisiones.
 </code></pre></div>
 <p>Resultado esperado del curso:</p>
 <p>Al finalizar el curso, el estudiante implementa, integra y sustenta una solucion
-Big Data end-to-end que combina procesamiento batch distribuido, ingesta y
+Big Data end-to-end que combina pipelines batch distribuidos, ingesta y
 procesamiento de eventos en tiempo real, analitica/ML a escala, observabilidad
-tecnica y una capa de visualizacion BI. La solucion debe poder ejecutarse de
-forma reproducible, mostrar evidencias de ejecucion, reportar metricas tecnicas
-y del modelo, y demostrar valor para la toma de decisiones.</p>
+tecnica y visualizacion BI. La solucion debe ejecutarse de forma reproducible,
+mostrar evidencias de ejecucion, reportar metricas tecnicas y del modelo, y
+demostrar valor para la toma de decisiones.</p>
 <h2 id="contenido">Contenido<a class="headerlink" href="#contenido" title="Permanent link">&para;</a></h2>
 <h3 id="u1-arquitecturas-big-data-y-etl-batch-distribuido">U1: Arquitecturas Big Data y ETL batch distribuido<a class="headerlink" href="#u1-arquitecturas-big-data-y-etl-batch-distribuido" title="Permanent link">&para;</a></h3>
 <p>Producto U1: pipeline batch de ETL distribuido con salidas analiticas en
@@ -1011,34 +1012,32 @@ como Parquet y deja un dataset preparado para consumo BI/ML.</p>
 <li>Sesion 4: Almacenamiento, HDFS y formatos.</li>
 <li>Sesion 5: Evaluacion U1.</li>
 </ul>
-<h3 id="u2-sistema-big-data-en-tiempo-real-y-etl-streaming-distribuido">U2: Sistema Big Data en tiempo real y ETL streaming distribuido<a class="headerlink" href="#u2-sistema-big-data-en-tiempo-real-y-etl-streaming-distribuido" title="Permanent link">&para;</a></h3>
-<p>Producto U2: pipeline streaming con multiples patrones de ingesta y Spark,
-observabilidad, estimacion de recursos/costos y modelo predictivo de
-analitica/ML entrenado y evaluado.</p>
-<p>Resultado esperado U2: el estudiante implementa un pipeline streaming con un
-sistema de mensajeria/event streaming y Spark, trabaja eventos de negocio, CDC o
-sensores, procesa eventos en tiempo real, mide latencia y throughput, propone
-observabilidad, estima recursos/costos y entrega un modelo predictivo de
-analitica/ML entrenado y evaluado, listo para integrarse y desplegarse en la U3
-mediante practicas de DataOps/DevOps.</p>
+<h3 id="u2-sistema-big-data-en-tiempo-real-streaming-operacion-y-ml-a-escala">U2: Sistema Big Data en tiempo real: streaming, operacion y ML a escala<a class="headerlink" href="#u2-sistema-big-data-en-tiempo-real-streaming-operacion-y-ml-a-escala" title="Permanent link">&para;</a></h3>
+<p>Producto U2: pipeline streaming en Spark para ML/BI a escala y en tiempo real.</p>
+<p>Resultado esperado U2: el estudiante implementa un pipeline Big Data en tiempo
+real que integra ingesta de eventos mediante Kafka, procesamiento distribuido
+con Spark Structured Streaming, observabilidad y estimacion de costos
+operacionales. Ademas, entrena, evalua, guarda y reutiliza modelos distribuidos
+con Spark MLlib para inferencia batch y/o streaming, seleccionando mejores
+configuraciones mediante experimentacion distribuida.</p>
 <ul>
-<li>Sesion 6: Ingesta de eventos empresariales en tiempo real.</li>
-<li>Sesion 7: Ingesta de eventos IoT/sensores en tiempo real.</li>
-<li>Sesion 8: Procesamiento en streaming con Spark.</li>
-<li>Sesion 9: Observabilidad con Grafana y costos.</li>
-<li>Sesion 10: BI/ML distribuido con Spark.</li>
-<li>Sesion 11: Series de tiempo e inferencia en streaming.</li>
+<li>Sesion 6: Ingesta en tiempo real (Kafka).</li>
+<li>Sesion 7: Procesamiento en Streaming con Spark.</li>
+<li>Sesion 8: Observabilidad (Grafana) y Costos.</li>
+<li>Sesion 9: ML distribuido: regresion con MLlib (modelo entrenado, evaluado y guardado).</li>
+<li>Sesion 10: Series de tiempo e inferencia en streaming (aplicacion del modelo guardado sobre datos batch y/o Kafka streaming).</li>
+<li>Sesion 11: Tuning y experimentacion distribuida (mejor modelo seleccionado con validacion distribuida).</li>
 <li>Sesion 12: Evaluacion U2.</li>
 </ul>
 <h3 id="u3-integracion-dataops-y-despliegue-del-sistema-final">U3: Integracion, DataOps y despliegue del sistema final<a class="headerlink" href="#u3-integracion-dataops-y-despliegue-del-sistema-final" title="Permanent link">&para;</a></h3>
-<p>Producto U3 / producto del curso: sistema Big Data distribuido end-to-end para
-procesamiento batch y streaming, analitica/ML, observabilidad y visualizacion BI
-para la toma de decisiones.</p>
+<p>Producto U3 / producto del curso: sistema Big Data distribuido end-to-end que
+integra procesamiento batch, procesamiento streaming, analitica/ML,
+observabilidad y visualizacion BI para la toma de decisiones.</p>
 <p>Resultado esperado U3: el estudiante integra los componentes desarrollados en
 las unidades anteriores, despliega o empaqueta el sistema mediante practicas de
 DataOps/DevOps, prepara una demo end-to-end, documenta la operacion del sistema,
-valida resultados tecnicos y analiticos, y sustenta una solucion final orientada
-a la toma de decisiones.</p>
+valida resultados tecnicos, analiticos y operacionales, y sustenta una solucion
+final orientada a la toma de decisiones.</p>
 <ul>
 <li>Sesion 13: Integracion del sistema, DataOps y BI.</li>
 <li>Sesion 14: Revision tecnica final y hardening.</li>

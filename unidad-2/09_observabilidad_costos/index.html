@@ -13,10 +13,6 @@
       
       
       
-        <link rel="prev" href="../08_spark_streaming/">
-      
-      
-        <link rel="next" href="../10_bi_ml_distribuido_spark/">
       
       
         
@@ -27,7 +23,7 @@
     
     
       
-        <title>9. Observabilidad y costos - LambdaLab</title>
+        <title>Observabilidad de pipeline Kafka + Spark - LambdaLab</title>
       
     
     
@@ -114,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              9. Observabilidad y costos
+              Observabilidad de pipeline Kafka + Spark
             
           </span>
         </div>
@@ -449,8 +445,6 @@
       
   
   
-    
-  
   
   
     
@@ -463,11 +457,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -477,7 +473,7 @@
   <span class="md-ellipsis">
     
   
-    U2 Streaming, operacion y ML a escala
+    U2 Sistema Big Data en tiempo real
   
 
     
@@ -488,12 +484,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
   
-    U2 Streaming, operacion y ML a escala
+    U2 Sistema Big Data en tiempo real
   
 
           </label>
@@ -513,7 +509,7 @@
   <span class="md-ellipsis">
     
   
-    6. Ingesta de eventos empresariales
+    6. Ingesta en tiempo real (Kafka)
   
 
     
@@ -534,14 +530,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../07_ingesta_sensores/" class="md-nav__link">
+      <a href="../07_spark_streaming.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    7. Ingesta de eventos IoT/sensores
+    7. Procesamiento en Streaming con Spark
   
 
     
@@ -562,366 +558,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../08_spark_streaming/" class="md-nav__link">
+      <a href="../08_observabilidad_costos.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    8. Procesamiento streaming con Spark
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    9. Observabilidad y costos
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    9. Observabilidad y costos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Tabla de contenidos
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#objetivo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Objetivo
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#datos-del-entorno" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Datos del entorno
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-1-crear-sparksession" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 1. Crear SparkSession
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-2-definir-parametros-y-helper-de-streams" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 2. Definir parametros y helper de streams
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-3-leer-eventos-desde-kafka" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 3. Leer eventos desde Kafka
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-4-parsear-json-y-conservar-metadata-kafka" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 4. Parsear JSON y conservar metadata Kafka
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-5-crear-dataframe-observable" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 5. Crear dataframe observable
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-6-salida-a-consola" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 6. Salida a consola
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-7-revisar-throughput-y-lag-desde-spark" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 7. Revisar throughput y lag desde Spark
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Paso 7. Revisar throughput y lag desde Spark">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#interpretacion-del-resultado-del-paso-7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interpretacion del resultado del Paso 7
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#evidencia-alternativa-spark-ui" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Evidencia alternativa: Spark UI
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-8-persistir-evidencia-observable-en-parquet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 8. Persistir evidencia observable en Parquet
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-81-producir-eventos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 8.1. Producir eventos
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-9-leer-evidencia-guardada" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 9. Leer evidencia guardada
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-10-prometheus" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 10. Prometheus
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-11-grafana" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 11. Grafana
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Paso 11. Grafana">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#interpretacion-del-panel-consumer-lag" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interpretacion del panel Consumer Lag
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-12-alertas-propuestas" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 12. Alertas propuestas
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Paso 12. Alertas propuestas">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#crear-una-alerta-en-grafana" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Crear una alerta en Grafana
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ejemplo-2-opcional-latencia-calculada-en-spark" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ejemplo 2 opcional: latencia calculada en Spark
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#paso-13-detener-streams" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Paso 13. Detener streams
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../10_bi_ml_distribuido_spark/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    10. BI/ML distribuido con Spark
+    8. Observabilidad (Grafana) y Costos
   
 
     
@@ -942,14 +586,70 @@
   
   
     <li class="md-nav__item">
-      <a href="../11_series_tiempo_inferencia_spark/" class="md-nav__link">
+      <a href="../09_ml_distribuido_regresion_mllib.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    11. Series de tiempo e inferencia
+    9. ML distribuido con MLlib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_series_tiempo_inferencia_spark.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Series de tiempo e inferencia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_tuning_experimentacion_distribuida.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Tuning y experimentacion distribuida
   
 
     

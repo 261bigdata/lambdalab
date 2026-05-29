@@ -13,10 +13,6 @@
       
       
       
-        <link rel="prev" href="../09_observabilidad_costos/">
-      
-      
-        <link rel="next" href="../11_series_tiempo_inferencia_spark/">
       
       
         
@@ -27,7 +23,7 @@
     
     
       
-        <title>10. BI/ML distribuido con Spark - LambdaLab</title>
+        <title>Sesion 09 - ML distribuido: regresion con Spark MLlib - LambdaLab</title>
       
     
     
@@ -114,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              10. BI/ML distribuido con Spark
+              Sesion 09 - ML distribuido: regresion con Spark MLlib
             
           </span>
         </div>
@@ -449,8 +445,6 @@
       
   
   
-    
-  
   
   
     
@@ -463,11 +457,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -477,7 +473,7 @@
   <span class="md-ellipsis">
     
   
-    U2 Streaming, operacion y ML a escala
+    U2 Sistema Big Data en tiempo real
   
 
     
@@ -488,12 +484,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
   
-    U2 Streaming, operacion y ML a escala
+    U2 Sistema Big Data en tiempo real
   
 
           </label>
@@ -513,7 +509,7 @@
   <span class="md-ellipsis">
     
   
-    6. Ingesta de eventos empresariales
+    6. Ingesta en tiempo real (Kafka)
   
 
     
@@ -534,14 +530,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../07_ingesta_sensores/" class="md-nav__link">
+      <a href="../07_spark_streaming.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    7. Ingesta de eventos IoT/sensores
+    7. Procesamiento en Streaming con Spark
   
 
     
@@ -562,14 +558,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../08_spark_streaming/" class="md-nav__link">
+      <a href="../08_observabilidad_costos.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    8. Procesamiento streaming con Spark
+    8. Observabilidad (Grafana) y Costos
   
 
     
@@ -590,14 +586,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../09_observabilidad_costos/" class="md-nav__link">
+      <a href="../09_ml_distribuido_regresion_mllib.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    9. Observabilidad y costos
+    9. ML distribuido con MLlib
   
 
     
@@ -606,257 +602,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    10. BI/ML distribuido con Spark
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    10. BI/ML distribuido con Spark
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Tabla de contenidos
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-idea-general" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Idea general
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-crear-sparksession" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Crear SparkSession
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-leer-datos-del-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Leer datos del pipeline
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-construir-serie-temporal-de-latencia" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Construir serie temporal de latencia
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-preparar-features-y-label" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Preparar features y label
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-separar-entrenamiento-y-prueba" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Separar entrenamiento y prueba
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-crear-pipeline-de-spark-ml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. Crear Pipeline de Spark ML
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#8-entrenar-el-modelo-distribuido" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8. Entrenar el modelo distribuido
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#9-evaluar-el-modelo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9. Evaluar el modelo
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#10-interpretar-resultados" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10. Interpretar resultados
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#11-ver-parametros-aprendidos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11. Ver parametros aprendidos
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#12-guardar-y-cargar-el-modelo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12. Guardar y cargar el modelo
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#13-reutilizar-el-modelo-sobre-nuevos-datos-batch" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        13. Reutilizar el modelo sobre nuevos datos batch
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#14-que-observar-en-spark-ui" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        14. Que observar en Spark UI
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#15-cierre" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        15. Cierre
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ejercicios-sugeridos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ejercicios sugeridos
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -869,14 +614,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../11_series_tiempo_inferencia_spark/" class="md-nav__link">
+      <a href="../10_series_tiempo_inferencia_spark.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    11. Series de tiempo e inferencia
+    10. Series de tiempo e inferencia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_tuning_experimentacion_distribuida.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Tuning y experimentacion distribuida
   
 
     
