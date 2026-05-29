@@ -43,7 +43,6 @@ extra_javascript:
 
 nav:
   - Sílabo 2026-1: index.md
-  - Sílabo 2026-2: propuesta_silabo_2026_2.md
   - U1 Arquitecturas Big Data y ETL distribuido:
       - 1. Arquitectura Big Data: unidad-1/01_arquitecturas_big_data.md
       - 2. Fundamentos Apache Spark: unidad-1/02_fundamentos_spark.md
@@ -58,3 +57,4 @@ nav:
       - 10. Series de tiempo e inferencia: unidad-2/10_series_tiempo_inferencia_spark.md
       - 11. Tuning y experimentación distribuida: unidad-2/11_tuning_experimentacion_distribuida.md
       - 12. Evaluación U2: unidad-2/12_evaluacion_u2.md
+  - Sílabo 2026-2: propuesta_silabo_2026_2.md
