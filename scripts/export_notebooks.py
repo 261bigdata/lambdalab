@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import json
 from pathlib import Path
@@ -27,7 +27,7 @@ NOTEBOOKS = {
 
 STATIC_PAGES = {
     "index.md": None,
-    "unidad-1/05_evaluacion_u1.md": "# Evaluacion U1\n\nProducto: pipeline batch en Spark con dataset listo para BI/ML.\n",
+    "unidad-1/05_evaluacion_u1.md": "# Evaluación U1\n\nProducto: pipeline batch en Spark con dataset listo para BI/ML.\n",
     "unidad-2/06_ingesta_kafka.md": "06_ingesta_kafka.md",
     "unidad-2/12_evaluacion_u2.md": "12_evaluacion_u2.md",
     "unidad-2/12_plantilla_entregable_u2.md": "12_plantilla_entregable_u2.md",
@@ -36,7 +36,7 @@ STATIC_PAGES = {
 
 APPEND_PAGES = {
     "unidad-2/07_spark_streaming.md": [
-        "07_spark_streaming_guia.md",
+        "07_spark_streaming_guía.md",
     ],
     "unidad-2/08_observabilidad_costos.md": [
         "08_costos_escalado.md",

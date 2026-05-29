@@ -1,8 +1,8 @@
-# Ingesta de eventos IoT/sensores en tiempo real
+﻿# Ingesta de eventos IoT/sensores en tiempo real
 
-## Proposito de la sesion
+## Propósito de la sesion
 
-Implementar un segundo patron de ingesta en tiempo real usando eventos de
+Implementar un segundo patrón de ingesta en tiempo real usando eventos de
 sensores. Esta sesion complementa el caso empresarial de la sesion 6 y prepara
 datos IoT para ser consumidos posteriormente con Spark Structured Streaming.
 
@@ -15,14 +15,14 @@ consumer.
 ## Flujo de referencia
 
 ```text
-sensor o simulador -> producer/bridge -> Kafka -> consumer de validacion
+sensor o simulador -> producer/bridge -> Kafka -> consumer de validación
 ```
 
 Para el laboratorio se puede usar una de estas alternativas:
 
 - simulador local en Python;
 - Wokwi como entorno de sensores;
-- puente MQTT/HTTP hacia Kafka, si la practica lo requiere.
+- puente MQTT/HTTP hacia Kafka, si la práctica lo requiere.
 
 ## Topic sugerido
 
@@ -50,7 +50,7 @@ sensor-eventos
 2. Generar eventos desde el simulador o entorno Wokwi.
 3. Validar los mensajes con un consumer.
 4. Documentar el contrato del evento.
-5. Registrar evidencias para la evaluacion U2.
+5. Registrar evidencias para la evalúacion U2.
 
 ## Evidencias
 

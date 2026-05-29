@@ -1,29 +1,29 @@
-# Costos y escalado de pipelines streaming
+﻿# Costos y escalado de pipelines streaming
 
-## Proposito
+## Propósito
 
-Esta seccion completa la sesion de observabilidad con una estimacion cloud-agnostic de recursos, costos y escalado para el pipeline:
+Esta sección completa la sesion de observabilidad con una estimación cloud-agnostic de recursos, costos y escalado para el pipeline:
 
 ```text
 Producer -> Kafka -> Spark Structured Streaming
 ```
 
-La idea no es elegir un proveedor cloud, sino justificar capacidad usando unidades tecnicas: vCPU, memoria, almacenamiento, red, particiones Kafka, ejecutores Spark, retencion y replicas.
+La idea no es elegir un proveedor cloud, sino justificar capacidad usando unidades técnicas: vCPU, memoria, almacenamiento, red, particiones Kafka, ejecutores Spark, retención y réplicas.
 
 ## Resultado esperado
 
-Entrega una propuesta tecnica que incluya:
+Entrega una propuesta técnica que incluya:
 
 - volumen esperado de eventos;
 - throughput promedio y de pico;
-- numero inicial de particiones Kafka;
+- número inicial de particiones Kafka;
 - recursos estimados para Kafka;
 - recursos estimados para Spark;
 - estrategia de escalado horizontal o vertical;
-- impacto de retencion de mensajes y logs;
+- impacto de retención de mensajes y logs;
 - riesgos de lag, backpressure o saturacion;
-- buenas practicas para optimizar costos;
-- comparacion de escenarios pequeno, medio y alto.
+- buenas prácticas para optimizar costos;
+- comparacion de escenarios pequeño, medio y alto.
 
 ## Caso base
 
@@ -50,7 +50,7 @@ Supuestos iniciales:
 
 | Supuesto | Valor inicial |
 |---|---:|
-| Tamano promedio del evento | 1 KB |
+| Tamaño promedio del evento | 1 KB |
 | Topic principal | `orden-eventos` |
 | Retencion inicial | 7 dias |
 | Ambiente dev | 1 broker, replication factor 1 |
@@ -61,14 +61,14 @@ Supuestos iniciales:
 Formula:
 
 ```text
-volumen_diario = cantidad_eventos_dia * tamano_promedio_evento
+volumen_diario = cantidad_eventos_dia * tamaño_promedio_evento
 ```
 
 Ejemplos:
 
-| Escenario | Eventos por dia | Tamano evento | Volumen diario |
+| Escenario | Eventos por dia | Tamaño evento | Volumen diario |
 |---|---:|---:|---:|
-| Pequeno | 10 000 | 1 KB | 10 MB/dia |
+| Pequeño | 10 000 | 1 KB | 10 MB/dia |
 | Medio | 1 000 000 | 1 KB | 1 GB/dia |
 | Alto | 10 000 000 | 1 KB | 10 GB/dia |
 
@@ -90,51 +90,51 @@ Si el factor pico es 25, el pico aproximado es 289 eventos/s
 
 ## 3. Definir particiones Kafka
 
-Mas particiones permiten mas paralelismo, pero tambien aumentan el overhead operativo.
+Más particiones permiten mas paralelismo, pero también aumentan el overhead operativo.
 
-Regla practica para la propuesta:
+Regla práctica para la propuesta:
 
 | Escenario | Particiones sugeridas | Criterio |
 |---|---:|---|
-| Pequeno | 1 | Bajo volumen y laboratorio |
+| Pequeño | 1 | Bajo volumen y laboratorio |
 | Medio | 3 a 6 | Picos moderados y consumidores paralelos |
 | Alto | 12 o mas | Alta concurrencia y crecimiento esperado |
 
-La decision debe justificarse con throughput, paralelismo de consumidores y crecimiento esperado.
+La decisión debe justificarse con throughput, paralelismo de consumidores y crecimiento esperado.
 
-## 4. Estimar almacenamiento con retencion
+## 4. Estimar almacenamiento con retención
 
 Formula:
 
 ```text
-almacenamiento_base = volumen_diario * dias_retencion
-almacenamiento_con_replicas = almacenamiento_base * replication_factor
-almacenamiento_recomendado = almacenamiento_con_replicas * 1.3
+almacenamiento_base = volumen_diario * dias_retención
+almacenamiento_con_réplicas = almacenamiento_base * replication_factor
+almacenamiento_recomendado = almacenamiento_con_réplicas * 1.3
 ```
 
 Ejemplo:
 
 ```text
 volumen diario: 5 GB
-retencion: 7 dias
+retención: 7 dias
 replication factor: 3
 
 almacenamiento_base = 35 GB
-almacenamiento_con_replicas = 105 GB
+almacenamiento_con_réplicas = 105 GB
 almacenamiento_recomendado = 136.5 GB
 ```
 
 ## 5. Escalar Spark
 
-Si aumenta el lag o la latencia, evalua:
+Si aumenta el lag o la latencia, evalúa:
 
 - ajustar el intervalo de trigger;
 - aumentar memoria del driver o executor;
-- aumentar numero de executors;
+- aumentar número de executors;
 - aumentar cores por executor;
 - revisar particiones Kafka;
 - optimizar transformaciones;
-- evitar operaciones costosas por micro-batch;
+- evitar operaciónes costosas por micro-batch;
 - persistir resultados solo cuando sea necesario.
 
 Ejemplo operativo:
@@ -161,21 +161,21 @@ Observa:
 
 Completa y ajusta esta tabla:
 
-| Escenario | Eventos/dia | Pico eventos/s | Tamano evento | Particiones | Kafka | Spark | Riesgo principal |
+| Escenario | Eventos/dia | Pico eventos/s | Tamaño evento | Particiones | Kafka | Spark | Riesgo principal |
 |---|---:|---:|---:|---:|---|---|---|
-| Pequeno | 10 000 | 20 | 1 KB | 1 | 1 broker dev | local/notebook | bajo |
-| Medio | 1 000 000 | 300 | 1 KB | 3-6 | 3 brokers | cluster pequeno | lag en picos |
+| Pequeño | 10 000 | 20 | 1 KB | 1 | 1 broker dev | local/notebook | bajo |
+| Medio | 1 000 000 | 300 | 1 KB | 3-6 | 3 brokers | cluster pequeño | lag en picos |
 | Alto | 10 000 000 | 3000 | 1 KB | 12+ | 3+ brokers | cluster escalable | backpressure/costo |
 
-## 8. Buenas practicas
+## 8. Buenas prácticas
 
 - Iniciar con particiones suficientes para el crecimiento esperado.
-- No aumentar particiones sin una razon medible.
+- No aumentar particiones sin una razón medible.
 - Definir claves de particionado estables.
 - Medir lag antes de escalar.
-- Ajustar Spark segun la duracion de micro-batches.
+- Ajustar Spark según la duración de micro-batches.
 - Separar ambientes `dev`, `test` y `prod`.
-- Usar retencion acorde al caso de negocio.
+- Usar retención acorde al caso de negocio.
 - Evitar eventos innecesariamente grandes.
 - Monitorear CPU, memoria, disco y red.
 - Definir umbrales de alerta antes de operar en produccion.
@@ -187,9 +187,9 @@ Adjunta:
 - tabla de supuestos;
 - calculo de volumen diario;
 - calculo de throughput promedio y pico;
-- estimacion de almacenamiento por retencion;
+- estimación de almacenamiento por retención;
 - propuesta de particiones Kafka;
 - propuesta de recursos para Kafka y Spark;
-- tabla de escenarios pequeno, medio y alto;
+- tabla de escenarios pequeño, medio y alto;
 - lista de riesgos y mitigaciones;
-- conclusion tecnica de escalado.
+- conclusión técnica de escalado.

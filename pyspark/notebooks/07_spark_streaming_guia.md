@@ -1,10 +1,10 @@
-# Guia de sesion: Spark Structured Streaming
+﻿# Guia de sesion: Spark Structured Streaming
 
-## Proposito
+## Propósito
 
-Consumir eventos Kafka con Spark Structured Streaming, parsear mensajes JSON, validar el contrato del evento y aplicar transformaciones basicas en tiempo real.
+Consumir eventos Kafka con Spark Structured Streaming, parsear mensajes JSON, validar el contrato del evento y aplicar transformaciones básicas en tiempo real.
 
-Esta guia complementa el notebook de la sesion. El notebook contiene la ejecucion paso a paso; esta seccion resume el objetivo pedagogico, las evidencias y la actividad autonoma.
+Esta guía complementa el notebook de la sesion. El notebook contiene la ejecución paso a paso; esta sección resume el objetivo pedagogico, las evidencias y la actividad autónoma.
 
 ## Requisitos previos
 
@@ -52,7 +52,7 @@ En el notebook:
 2. Lee desde `orden-eventos` usando `.format("kafka")`.
 3. Convierte `value` de binario a texto.
 4. Parsea el JSON con un esquema explicito.
-5. Filtra eventos invalidos.
+5. Filtra eventos inválidos.
 6. Aplica una transformacion simple, por ejemplo `total > 100`.
 7. Configura salida a consola y checkpoint.
 8. Observa latencia, volumen y comportamiento del micro-batch.
@@ -74,11 +74,11 @@ Adjunta:
 
 - captura del notebook leyendo desde Kafka;
 - captura del esquema parseado;
-- salida de eventos validos;
+- salida de eventos válidos;
 - evidencia del filtro aplicado;
 - tabla breve con observaciones de latencia y throughput.
 
-## Actividad autonoma
+## Actividad autónoma
 
 Ajusta parametros y registra su efecto:
 

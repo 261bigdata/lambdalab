@@ -1,10 +1,10 @@
-# Plantilla entregable U2
+﻿# Plantilla entregable U2
 
 ## Unidad 2: Sistema Big Data en tiempo real
 
-**Producto de la unidad:** pipeline streaming con multiples patrones de ingesta
-y Spark, observabilidad, estimacion de recursos/costos y modelo
-predictivo de analitica/ML entrenado y evaluado.
+**Producto de la unidad:** pipeline streaming con múltiples patrones de ingesta
+y Spark, observabilidad, estimación de recursos/costos y modelo
+predictivo de analítica/ML entrenado y evaluado.
 
 ---
 
@@ -21,22 +21,23 @@ predictivo de analitica/ML entrenado y evaluado.
 ## Entregable esperado
 
 El estudiante/equipo debe presentar un pipeline streaming funcional basado en un
-sistema de mensajeria/event streaming y procesamiento con Spark, acompanado de
-evidencias tecnicas, metricas operativas, propuesta de observabilidad/costos y
-un modelo predictivo entrenado y evaluado para integrarse en la U3.
+sistema de mensajería/event streaming y procesamiento con Spark, acompañado de
+evidencias técnicas, métricas operativas, propuesta de observabilidad/costos y
+un modelo predictivo entrenado, evaluado y seleccionado mediante experimentación
+distribuida para integrarse en la U3.
 
 ---
 
 ## Sesiones de la Unidad 2
 
-| Sesion | Tema | Actividad practica | Evidencia esperada |
+| Sesión | Tema | Actividad práctica | Evidencia esperada |
 |---|---|---|---|
-| S6 | Ingesta de eventos empresariales en tiempo real | Publicar eventos de negocio desde microservicios o cambios CDC desde una base OLTP. | Topics, producer/consumer, contrato de evento y evidencias del caso elegido. |
-| S7 | Ingesta de eventos IoT/sensores en tiempo real | Publicar eventos de sensores desde simulador, Wokwi o bridge MQTT/HTTP. | Topic de sensores, mensajes publicados, consumer y contrato del evento sensor. |
-| S8 | Procesamiento streaming con Spark | Consumir eventos desde el broker con Spark, parsear JSON, validar esquema y transformar datos. | Notebook/script de streaming, checkpoint, salidas y validaciones. |
-| S9 | Observabilidad, costos y escalado | Medir latencia, throughput, lag, errores; proponer dashboard, alertas y recursos. | Metricas, logs, dashboard, alertas y estimacion de costos/escalado. |
-| S10 | BI/ML distribuido con Spark | Construir datasets analiticos, features, tablas mart o dataset de entrenamiento. | Salidas BI/ML en Parquet, features y/o tablas Gold/Mart. |
-| S11 | Series de tiempo e inferencia en streaming | Entrenar/evaluar modelo predictivo e implementar evidencia de inferencia batch o streaming. | Modelo, metricas, predicciones y evidencia de inferencia. |
+| S6 | Ingesta en tiempo real (Kafka) | Publicar eventos de negocio desde microservicios o cambios CDC desde una base OLTP. | Topics, producer/consumer, contrato de evento y evidencias del caso elegido. |
+| S7 | Procesamiento en Streaming con Spark | Consumir eventos desde el broker con Spark, parsear JSON, validar esquema y transformar datos. | Notebook/script de streaming, checkpoint, salidas y validaciones. |
+| S8 | Observabilidad (Grafana) y Costos | Medir latencia, throughput, lag, errores; proponer dashboard, alertas y recursos. | Métricas, logs, dashboard, alertas y estimación de costos/escalado. |
+| S9 | ML distribuido: regresión con MLlib | Entrenar, evaluar y guardar un modelo distribuido. | Modelo entrenado, métricas y artefacto guardado. |
+| S10 | Series de tiempo e inferencia en streaming | Aplicar el modelo guardado sobre datos batch y/o Kafka streaming. | Predicciones, métricas y evidencia de inferencia. |
+| S11 | Tuning y experimentación distribuida | Comparar configuraciones y seleccionar el mejor modelo con validación distribuida. | Mejor modelo seleccionado y tabla de experimentación. |
 
 ---
 
@@ -51,18 +52,18 @@ obtenido.
 
 Incluye:
 
-- fuente de datos: MS, replica-cdc o sensores;
-- sistema de mensajeria/event streaming como capa de ingesta;
+- fuente de datos: MS o réplica CDC;
+- sistema de mensajería/event streaming como capa de ingesta;
 - Spark como motor de procesamiento;
-- almacenamiento/salidas analiticas;
+- almacenamiento/salidas analíticas;
 - capa BI/ML;
-- observabilidad y supuestos de ejecucion.
+- observabilidad y supuestos de ejecución.
 
 ### 3. Ingesta de eventos en tiempo real
 
 Documenta:
 
-- caso elegido en S6: MS o replica-cdc;
+- caso elegido en S6: MS o réplica CDC;
 - caso sensores en S7;
 - topics, colas o canales utilizados;
 - productores y consumidores;
@@ -71,7 +72,7 @@ Documenta:
 
 #### Contrato de evento
 
-| Campo | Tipo de dato | Descripcion | Ejemplo |
+| Campo | Tipo de dato | Descripción | Ejemplo |
 |---|---|---|---|
 | | | | |
 | | | | |
@@ -83,7 +84,7 @@ Documenta:
 
 - lectura desde el broker/event stream;
 - parseo JSON;
-- validacion de esquema;
+- validación de esquema;
 - filtros y transformaciones;
 - ventanas o watermarking si aplica;
 - checkpoint;
@@ -116,7 +117,7 @@ Estima:
 
 Documenta:
 
-- dataset analitico generado;
+- dataset analítico generado;
 - features construidas;
 - tablas Gold/Mart si aplica;
 - salidas en Parquet;
@@ -129,7 +130,7 @@ Incluye:
 - objetivo del modelo;
 - variables/features;
 - algoritmo usado;
-- metricas de evaluacion;
+- métricas de evaluación;
 - predicciones generadas;
 - evidencia de inferencia batch o streaming;
 - artefactos/modelo listos para integrarse en U3.
@@ -138,23 +139,23 @@ Incluye:
 
 Adjunta o referencia:
 
-- capturas de ejecucion;
+- capturas de ejecución;
 - logs;
 - salidas de consola;
-- fragmentos de codigo;
+- fragmentos de código;
 - notebooks/scripts usados;
-- metricas del pipeline;
-- metricas del modelo;
+- métricas del pipeline;
+- métricas del modelo;
 - archivos Parquet o artefactos generados.
 
 ### 10. Conclusiones
 
 Resume:
 
-- que se logro implementar;
-- que limitaciones se encontraron;
-- que decisiones tecnicas se tomaron;
-- como se integrara el resultado en U3 mediante DataOps/DevOps.
+- qué se logró implementar;
+- qué limitaciones se encontraron;
+- qué decisiones técnicas se tomaron;
+- cómo se integrará el resultado en U3 mediante DataOps/DevOps.
 
 ---
 
@@ -162,22 +163,21 @@ Resume:
 
 | Criterio | Cumple | Observaciones |
 |---|---|---|
-| Se implemento ingesta de eventos para caso MS o replica-cdc. | [ ] | |
-| Se implemento o documento ingesta de eventos para sensores. | [ ] | |
+| Se implementó ingesta de eventos para caso MS o réplica CDC. | [ ] | |
 | Se documentaron contratos de evento. | [ ] | |
-| Se implemento procesamiento streaming con Spark. | [ ] | |
-| Se midio latencia, throughput, lag o errores. | [ ] | |
-| Se propuso observabilidad con dashboard, metricas y alertas. | [ ] | |
+| Se implementó procesamiento streaming con Spark. | [ ] | |
+| Se midió latencia, throughput, lag o errores. | [ ] | |
+| Se propuso observabilidad con dashboard, métricas y alertas. | [ ] | |
 | Se estimaron recursos, costos y escalado. | [ ] | |
-| Se genero dataset BI/ML o tablas mart en Parquet. | [ ] | |
-| Se entreno y evaluo un modelo predictivo. | [ ] | |
-| Se evidencio inferencia batch o streaming. | [ ] | |
-| Se adjuntaron evidencias tecnicas reproducibles. | [ ] | |
+| Se generó dataset BI/ML o tablas mart en Parquet. | [ ] | |
+| Se entrenó y evaluó un modelo predictivo. | [ ] | |
+| Se evidenció inferencia batch o streaming. | [ ] | |
+| Se adjuntaron evidencias técnicas reproducibles. | [ ] | |
 
 ---
 
 ## Producto final de Unidad 2
 
-Pipeline streaming con multiples fuentes de ingesta y Spark,
+Pipeline streaming con Kafka y Spark,
 observabilidad operativa, salidas BI/ML y modelo predictivo listo para integrarse
 y desplegarse en la U3.

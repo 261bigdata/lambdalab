@@ -1,34 +1,34 @@
-# Evaluacion U2
+﻿# Evaluación U2
 
 ## Unidad 2: Sistema Big Data en tiempo real
 
-**Producto de la unidad:** pipeline streaming con multiples patrones de ingesta y Spark, observabilidad, estimacion de recursos/costos y modelo predictivo de analitica/ML entrenado y evaluado.
+**Producto de la unidad:** pipeline streaming en Spark para ML/BI a escala y en tiempo real.
 
-La evaluacion de la Unidad 2 se trabaja con la plantilla oficial del entregable:
+La evaluación de la Unidad 2 se trabaja con la plantilla oficial del entregable:
 
 [Abrir plantilla del entregable U2](12_plantilla_entregable_u2.md)
 
 ## Alcance
 
-La Unidad 2 evalua las sesiones 6 a 11:
+La Unidad 2 evalúa las sesiones 6 a 11:
 
-- Sesion 6: Ingesta de eventos empresariales en tiempo real.
-- Sesion 7: Ingesta de eventos IoT/sensores en tiempo real.
-- Sesion 8: Procesamiento en streaming con Spark.
-- Sesion 9: Observabilidad con Grafana y costos.
-- Sesion 10: BI/ML distribuido con Spark.
-- Sesion 11: Series de tiempo e inferencia en streaming.
+- Sesión 6: Ingesta en tiempo real (Kafka).
+- Sesión 7: Procesamiento en Streaming con Spark.
+- Sesión 8: Observabilidad (Grafana) y Costos.
+- Sesión 9: ML distribuido: regresión con MLlib.
+- Sesión 10: Series de tiempo e inferencia en streaming.
+- Sesión 11: Tuning y experimentación distribuida.
 
-## Indicacion para el estudiante
+## Indicación para el estudiante
 
-Completa la plantilla con evidencias tecnicas del pipeline:
+Completa la plantilla con evidencias técnicas del pipeline:
 
 - topic/canal de eventos, producer, consumer y contrato de evento;
-- eventos de negocio, CDC o sensores segun el caso elegido;
+- eventos de negocio o CDC según el caso elegido;
 - notebook o script de procesamiento streaming con Spark;
-- metricas de latencia, throughput, errores y lag;
+- métricas de latencia, throughput, errores y lag;
 - propuesta de dashboard, alertas y umbrales;
-- estimacion de recursos, costos y estrategia de escalado.
-- dataset analitico, modelo predictivo, metricas del modelo y evidencias de inferencia.
+- estimación de recursos, costos y estrategia de escalado.
+- dataset analítico, modelo predictivo, métricas del modelo y evidencias de inferencia.
 
-Entrega el informe con capturas, logs, fragmentos de codigo y tablas de resultados que permitan verificar la ejecucion.
+Entrega el informe con capturas, logs, fragmentos de código y tablas de resultados que permitan verificar la ejecución.
