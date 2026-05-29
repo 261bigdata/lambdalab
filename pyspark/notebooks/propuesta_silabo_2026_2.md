@@ -1,9 +1,10 @@
-# LambdaLab
+# Propuesta Silabo 2026-2
 
 Curso practico de Big Data con procesamiento distribuido, streaming, observabilidad y BI/ML distribuido.
 
-LambdaLab es un repositorio unico del curso de Big Data para construir pipelines batch y
-streaming con Spark y Kafka, gestionar datos en formatos analiticos como
+Usaremos el mismo ecosistema [LambdaLab](https://github.com/261bigdata/lambdalab), el cual es un repositorio maduro para el
+curso de Big Data que permite construir pipelines batch y streaming con Spark y Kafka,
+gestionar datos en formatos analiticos como
 Parquet, aplicar observabilidad y desarrollar BI/ML distribuido. Integra
 laboratorios ejecutables, servicios Docker y documentacion publicada.
 
