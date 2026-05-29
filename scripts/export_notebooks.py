@@ -17,10 +17,11 @@ NOTEBOOKS = {
         ("04_hdfs_formatos.ipynb", "04_hdfs_formatos.md"),
     ],
     "unidad-2": [
-        ("07_spark_streaming_consumer_ordenes.ipynb", "08_spark_streaming.md"),
-        ("08_observabilidad_pipeline_kafka_spark.ipynb", "09_observabilidad_costos.md"),
-        ("09_ml_distribuido_regresion_mllib.ipynb", "10_bi_ml_distribuido_spark.md"),
-        ("10_series_tiempo_inferencia_spark.ipynb", "11_series_tiempo_inferencia_spark.md"),
+        ("07_spark_streaming_consumer_ordenes.ipynb", "07_spark_streaming.md"),
+        ("08_observabilidad_pipeline_kafka_spark.ipynb", "08_observabilidad_costos.md"),
+        ("09_ml_distribuido_regresion_mllib.ipynb", "09_ml_distribuido_regresion_mllib.md"),
+        ("10_series_tiempo_inferencia_spark.ipynb", "10_series_tiempo_inferencia_spark.md"),
+        ("11_tuning_experimentacion_distribuida.ipynb", "11_tuning_experimentacion_distribuida.md"),
     ],
 }
 
@@ -28,16 +29,15 @@ STATIC_PAGES = {
     "index.md": None,
     "unidad-1/05_evaluacion_u1.md": "# Evaluacion U1\n\nProducto: pipeline batch en Spark con dataset listo para BI/ML.\n",
     "unidad-2/06_ingesta_kafka.md": "06_ingesta_kafka.md",
-    "unidad-2/07_ingesta_sensores.md": "07_ingesta_sensores.md",
     "unidad-2/12_evaluacion_u2.md": "12_evaluacion_u2.md",
     "unidad-2/12_plantilla_entregable_u2.md": "12_plantilla_entregable_u2.md",
 }
 
 APPEND_PAGES = {
-    "unidad-2/08_spark_streaming.md": [
+    "unidad-2/07_spark_streaming.md": [
         "07_spark_streaming_guia.md",
     ],
-    "unidad-2/09_observabilidad_costos.md": [
+    "unidad-2/08_observabilidad_costos.md": [
         "08_costos_escalado.md",
     ],
 }

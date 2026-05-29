@@ -1,4 +1,4 @@
-# LambdaLab
+# Propuesta Silabo Big data 2026-2 
 
 Curso practico de Big Data con procesamiento distribuido, streaming, observabilidad y BI/ML distribuido.
 
