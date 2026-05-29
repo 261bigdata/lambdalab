@@ -83,7 +83,7 @@ final orientada a la toma de decisiones.
 - Sesión 15: Sustentación final con demo end-to-end.
 - Sesión 16: Evaluación final.
 
-## Arquitectura del laboratorio
+## Arquitectura LambdaLab v2026-1
 
 ```mermaid
 flowchart LR
