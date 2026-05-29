@@ -43,6 +43,7 @@ extra_javascript:
 
 nav:
   - Inicio: index.md
+  - Silabo 2026-2: propuesta_silabo_2026_2.md
   - U1 Arquitecturas Big Data y ETL distribuido:
       - 1. Arquitectura Big Data: unidad-1/01_arquitecturas_big_data.md
       - 2. Fundamentos Apache Spark: unidad-1/02_fundamentos_spark.md

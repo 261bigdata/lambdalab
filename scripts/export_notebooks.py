@@ -31,6 +31,7 @@ STATIC_PAGES = {
     "unidad-2/06_ingesta_kafka.md": "06_ingesta_kafka.md",
     "unidad-2/12_evaluacion_u2.md": "12_evaluacion_u2.md",
     "unidad-2/12_plantilla_entregable_u2.md": "12_plantilla_entregable_u2.md",
+    "propuesta_silabo_2026_2.md": "propuesta_silabo_2026_2.md",
 }
 
 APPEND_PAGES = {
