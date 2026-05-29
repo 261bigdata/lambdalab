@@ -13,6 +13,10 @@
       
       
       
+        <link rel="prev" href="../09_ml_distribuido_regresion_mllib/">
+      
+      
+        <link rel="next" href="../11_tuning_experimentacion_distribuida/">
       
       
         
@@ -23,7 +27,7 @@
     
     
       
-        <title>Sesion 10 - Series de tiempo e inferencia en streaming con Spark - LambdaLab</title>
+        <title>10. Series de tiempo e inferencia - LambdaLab</title>
       
     
     
@@ -110,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Sesion 10 - Series de tiempo e inferencia en streaming con Spark
+              10. Series de tiempo e inferencia
             
           </span>
         </div>
@@ -445,8 +449,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -457,13 +463,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -484,7 +488,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -530,7 +534,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../07_spark_streaming.md" class="md-nav__link">
+      <a href="../07_spark_streaming/" class="md-nav__link">
         
   
   
@@ -558,7 +562,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../08_observabilidad_costos.md" class="md-nav__link">
+      <a href="../08_observabilidad_costos/" class="md-nav__link">
         
   
   
@@ -586,7 +590,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../09_ml_distribuido_regresion_mllib.md" class="md-nav__link">
+      <a href="../09_ml_distribuido_regresion_mllib/" class="md-nav__link">
         
   
   
@@ -611,10 +615,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../10_series_tiempo_inferencia_spark.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Series de tiempo e inferencia
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -630,6 +661,246 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#proposito-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proposito de la sesion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resultado-esperado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resultado esperado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-idea-general" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Idea general
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-crear-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Crear SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-parametros-de-trabajo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Parametros de trabajo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-helpers-datos-serie-temporal-y-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Helpers: datos, serie temporal y features
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cargar-datos-batch-y-reconstruir-la-serie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cargar datos batch y reconstruir la serie
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-cargar-el-modelo-guardado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Cargar el modelo guardado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-inferencia-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Inferencia batch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-evaluacion-batch-con-etiqueta-futura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Evaluacion batch con etiqueta futura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-guardar-predicciones-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Guardar predicciones batch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-preparar-lectura-kafka-streaming-opcional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Preparar lectura Kafka streaming opcional
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-construir-features-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Construir features streaming
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-salida-streaming-a-consola" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Salida streaming a consola
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-salida-streaming-a-parquet-con-foreachbatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Salida streaming a Parquet con foreachBatch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-leer-predicciones-streaming-guardadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Leer predicciones streaming guardadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-detener-consultas-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Detener consultas streaming
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-que-observar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Que observar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Cierre
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ejercicios-sugeridos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejercicios sugeridos
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -642,7 +913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../11_tuning_experimentacion_distribuida.md" class="md-nav__link">
+      <a href="../11_tuning_experimentacion_distribuida/" class="md-nav__link">
         
   
   

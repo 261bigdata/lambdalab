@@ -13,6 +13,10 @@
       
       
       
+        <link rel="prev" href="../06_ingesta_kafka/">
+      
+      
+        <link rel="next" href="../08_observabilidad_costos/">
       
       
         
@@ -23,7 +27,7 @@
     
     
       
-        <title>Consumer Kafka con Spark Structured Streaming - LambdaLab</title>
+        <title>7. Procesamiento en Streaming con Spark - LambdaLab</title>
       
     
     
@@ -110,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Consumer Kafka con Spark Structured Streaming
+              7. Procesamiento en Streaming con Spark
             
           </span>
         </div>
@@ -445,8 +449,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -457,13 +463,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -484,7 +488,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -527,10 +531,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../07_spark_streaming.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Procesamiento en Streaming con Spark
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -546,6 +577,192 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datos-del-entorno" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Datos del entorno
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-1-leer-el-stream-desde-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 1. Leer el stream desde Kafka
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-2-convertir-value-a-texto-saltar-al-paso-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 2. Convertir value a texto (Saltar al paso 3)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-3-definir-el-esquema-comun-del-evento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 3. Definir el esquema común del evento
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 3. Definir el esquema común del evento">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evento-esperado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evento esperado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-4-parsear-el-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 4. Parsear el JSON
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-5-validar-registros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 5. Validar registros
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-6-transformacion-de-ejemplo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 6. Transformación de ejemplo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paso-7-salida-a-consola" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 7. Salida a consola
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detener-la-consulta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detener la consulta
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ejemplos-de-productores-compatibles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejemplos de productores compatibles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ejemplos de productores compatibles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -558,7 +775,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../08_observabilidad_costos.md" class="md-nav__link">
+      <a href="../08_observabilidad_costos/" class="md-nav__link">
         
   
   
@@ -586,7 +803,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../09_ml_distribuido_regresion_mllib.md" class="md-nav__link">
+      <a href="../09_ml_distribuido_regresion_mllib/" class="md-nav__link">
         
   
   
@@ -614,7 +831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../10_series_tiempo_inferencia_spark.md" class="md-nav__link">
+      <a href="../10_series_tiempo_inferencia_spark/" class="md-nav__link">
         
   
   
@@ -642,7 +859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../11_tuning_experimentacion_distribuida.md" class="md-nav__link">
+      <a href="../11_tuning_experimentacion_distribuida/" class="md-nav__link">
         
   
   
