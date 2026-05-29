@@ -176,6 +176,14 @@ docker compose up -d
 .\mvnw.cmd spring-boot:run
 ```
 
+Equivalente en bash macOS/Linux:
+
+```bash
+cd uso-ms-sb/ec-orden-ms
+docker compose up -d
+./mvnw spring-boot:run
+```
+
 Publica una orden:
 
 ```powershell
@@ -184,6 +192,28 @@ Invoke-RestMethod `
   -Uri "http://localhost:49021/ordenes" `
   -ContentType "application/json" `
   -Body '{"usuarioId":1,"total":100}'
+```
+
+Equivalente en bash macOS/Linux:
+
+```bash
+curl -s -X POST "http://localhost:49021/ordenes" \
+  -H "Content-Type: application/json" \
+  -d '{"usuarioId":1,"total":100}'
+```
+
+Lista las órdenes registradas:
+
+```powershell
+Invoke-RestMethod `
+  -Method Get `
+  -Uri "http://localhost:49021/ordenes"
+```
+
+Equivalente en bash macOS/Linux:
+
+```bash
+curl -s "http://localhost:49021/ordenes"
 ```
 
 Evento esperado en Kafka:
@@ -207,7 +237,33 @@ docker compose up -d
 .\mvnw.cmd spring-boot:run
 ```
 
+Equivalente en bash macOS/Linux:
+
+```bash
+cd uso-ms-sb/ec-pago-ms
+docker compose up -d
+./mvnw spring-boot:run
+```
+
 Verifica que `ec-pago-ms` consuma `orden-eventos`, procese el pago y publique en `pago-eventos`.
+
+```powershell
+Invoke-RestMethod `
+  -Method Get `
+  -Uri "http://localhost:49031/pagos"
+
+Invoke-RestMethod `
+  -Method Get `
+  -Uri "http://localhost:49031/pagos/1"
+```
+
+Equivalente en bash macOS/Linux:
+
+```bash
+curl -s "http://localhost:49031/pagos"
+
+curl -s "http://localhost:49031/pagos/1"
+```
 
 ## Evidencias
 
