@@ -46,9 +46,9 @@ como Parquet y deja un dataset preparado para consumo BI/ML.
 - Sesión 4: ML distribuido con Spark MLlib (Regresión).
 - Sesión 5: Evaluación U1.
 
-### U2: Sistema Big Data en tiempo real: streaming, operación y ML a escala
+### U2: Sistema Big Data en tiempo real: ETL streaming, operación y BI/ML a escala
 
-Producto U2: pipeline streaming en Spark para ML/BI a escala y en tiempo real.
+Producto U2: pipeline streaming en Spark para BI/ML a escala y en tiempo real.
 
 Resultado esperado U2: el estudiante implementa un pipeline Big Data en tiempo
 real que integra ingesta de eventos mediante Kafka, procesamiento distribuido
