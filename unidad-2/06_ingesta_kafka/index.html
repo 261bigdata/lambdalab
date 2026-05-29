@@ -231,7 +231,7 @@
   <span class="md-ellipsis">
     
   
-    Silabo 2026-1
+    Sílabo 2026-1
   
 
     
@@ -258,7 +258,7 @@
   <span class="md-ellipsis">
     
   
-    Silabo 2026-2
+    Sílabo 2026-2
   
 
     
@@ -451,7 +451,7 @@
   <span class="md-ellipsis">
     
   
-    5. Evaluacion U1
+    5. Evaluación U1
   
 
     
@@ -596,7 +596,7 @@
   <a href="#proposito-de-la-sesion" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Proposito de la sesion
+        Propósito de la sesion
       
     </span>
   </a>
@@ -734,7 +734,7 @@
   <a href="#actividad-autonoma" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Actividad autonoma
+        Actividad autónoma
       
     </span>
   </a>
@@ -876,7 +876,7 @@
   <span class="md-ellipsis">
     
   
-    11. Tuning y experimentacion distribuida
+    11. Tuning y experimentación distribuida
   
 
     
@@ -904,7 +904,7 @@
   <span class="md-ellipsis">
     
   
-    12. Evaluacion U2
+    12. Evaluación U2
   
 
     
@@ -955,7 +955,7 @@
   <a href="#proposito-de-la-sesion" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Proposito de la sesion
+        Propósito de la sesion
       
     </span>
   </a>
@@ -1093,7 +1093,7 @@
   <a href="#actividad-autonoma" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Actividad autonoma
+        Actividad autónoma
       
     </span>
   </a>
@@ -1118,17 +1118,17 @@
 
 
 <h1 id="ingesta-de-eventos-empresariales-en-tiempo-real">Ingesta de eventos empresariales en tiempo real<a class="headerlink" href="#ingesta-de-eventos-empresariales-en-tiempo-real" title="Permanent link">&para;</a></h1>
-<h2 id="proposito-de-la-sesion">Proposito de la sesion<a class="headerlink" href="#proposito-de-la-sesion" title="Permanent link">&para;</a></h2>
+<h2 id="proposito-de-la-sesion">Propósito de la sesion<a class="headerlink" href="#proposito-de-la-sesion" title="Permanent link">&para;</a></h2>
 <p>Implementar y validar un flujo basico de ingesta de eventos empresariales en
 tiempo real. En el laboratorio se usa Kafka como broker principal, pero el
-patron tambien puede implementarse con otras tecnologias de mensajeria o event
+patrón también puede implementarse con otras tecnologías de mensajería o event
 streaming.</p>
-<p>La practica puede trabajarse con uno de dos casos empresariales:</p>
+<p>La práctica puede trabajarse con uno de dos casos empresariales:</p>
 <ul>
 <li><strong>Caso MS:</strong> microservicios que publican y consumen eventos de negocio.</li>
-<li><strong>Caso replica-cdc:</strong> cambios de una base OLTP capturados con Debezium y publicados en Kafka.</li>
+<li><strong>Caso réplica CDC:</strong> cambios de una base OLTP capturados con Debezium y publicados en Kafka.</li>
 </ul>
-<p>En el caso MS, la practica conecta tres niveles de trabajo:</p>
+<p>En el caso MS, la práctica conecta tres niveles de trabajo:</p>
 <ul>
 <li>producer y consumer manuales dentro del broker Kafka;</li>
 <li>producer y consumer en Python para pruebas rapidas;</li>
@@ -1136,7 +1136,7 @@ streaming.</p>
 </ul>
 <h2 id="resultado-esperado">Resultado esperado<a class="headerlink" href="#resultado-esperado" title="Permanent link">&para;</a></h2>
 <p>Al finalizar, debes demostrar que Kafka recibe eventos en el topic <code>orden-eventos</code>, que los productores pueden publicar mensajes y que los consumidores pueden leerlos desde consola, Python o Spring Boot.</p>
-<p>Si el grupo trabaja el caso replica-cdc, el resultado equivalente es demostrar
+<p>Si el grupo trabaja el caso réplica CDC, el resultado equivalente es demostrar
 que los cambios de una tabla OLTP llegan a Kafka como eventos CDC y quedan
 disponibles para consumo posterior con Spark.</p>
 <p>El flujo de referencia es:</p>
@@ -1288,16 +1288,16 @@ disponibles para consumo posterior con Spark.</p>
 <li>captura del producer y consumer manual;</li>
 <li>captura del producer y consumer en Python;</li>
 <li>salida del <code>POST /ordenes</code>;</li>
-<li>evidencia del consumo de <code>ec-pago-ms</code> y publicacion en <code>pago-eventos</code>.</li>
+<li>evidencia del consumo de <code>ec-pago-ms</code> y publicación en <code>pago-eventos</code>.</li>
 </ul>
-<h2 id="actividad-autonoma">Actividad autonoma<a class="headerlink" href="#actividad-autonoma" title="Permanent link">&para;</a></h2>
+<h2 id="actividad-autonoma">Actividad autónoma<a class="headerlink" href="#actividad-autonoma" title="Permanent link">&para;</a></h2>
 <p>Documenta el contrato del evento <code>orden.creada</code>.</p>
 <table>
 <thead>
 <tr>
 <th>Campo</th>
 <th>Tipo</th>
-<th>Descripcion</th>
+<th>Descripción</th>
 <th>Ejemplo</th>
 </tr>
 </thead>
@@ -1340,7 +1340,7 @@ disponibles para consumo posterior con Spark.</p>
 </tr>
 </tbody>
 </table>
-<p>Incluye tambien el topic, productor, consumidor y estrategia inicial de particionado.</p>
+<p>Incluye también el topic, productor, consumidor y estrategia inicial de particionado.</p>
 
 
 

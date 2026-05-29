@@ -227,7 +227,7 @@
   <span class="md-ellipsis">
     
   
-    Silabo 2026-1
+    Sílabo 2026-1
   
 
     
@@ -254,7 +254,7 @@
   <span class="md-ellipsis">
     
   
-    Silabo 2026-2
+    Sílabo 2026-2
   
 
     
@@ -447,7 +447,7 @@
   <span class="md-ellipsis">
     
   
-    5. Evaluacion U1
+    5. Evaluación U1
   
 
     
@@ -676,7 +676,7 @@
   <span class="md-ellipsis">
     
   
-    11. Tuning y experimentacion distribuida
+    11. Tuning y experimentación distribuida
   
 
     
@@ -704,7 +704,7 @@
   <span class="md-ellipsis">
     
   
-    12. Evaluacion U2
+    12. Evaluación U2
   
 
     
@@ -980,9 +980,9 @@
 
 <h1 id="plantilla-entregable-u2">Plantilla entregable U2<a class="headerlink" href="#plantilla-entregable-u2" title="Permanent link">&para;</a></h1>
 <h2 id="unidad-2-sistema-big-data-en-tiempo-real">Unidad 2: Sistema Big Data en tiempo real<a class="headerlink" href="#unidad-2-sistema-big-data-en-tiempo-real" title="Permanent link">&para;</a></h2>
-<p><strong>Producto de la unidad:</strong> pipeline streaming con multiples patrones de ingesta
-y Spark, observabilidad, estimacion de recursos/costos y modelo
-predictivo de analitica/ML entrenado y evaluado.</p>
+<p><strong>Producto de la unidad:</strong> pipeline streaming con múltiples patrones de ingesta
+y Spark, observabilidad, estimación de recursos/costos y modelo
+predictivo de analítica/ML entrenado y evaluado.</p>
 <hr />
 <h2 id="datos-generales">Datos generales<a class="headerlink" href="#datos-generales" title="Permanent link">&para;</a></h2>
 <p><strong>Curso:</strong> Big Data<br />
@@ -993,56 +993,57 @@ predictivo de analitica/ML entrenado y evaluado.</p>
 <hr />
 <h2 id="entregable-esperado">Entregable esperado<a class="headerlink" href="#entregable-esperado" title="Permanent link">&para;</a></h2>
 <p>El estudiante/equipo debe presentar un pipeline streaming funcional basado en un
-sistema de mensajeria/event streaming y procesamiento con Spark, acompanado de
-evidencias tecnicas, metricas operativas, propuesta de observabilidad/costos y
-un modelo predictivo entrenado y evaluado para integrarse en la U3.</p>
+sistema de mensajería/event streaming y procesamiento con Spark, acompañado de
+evidencias técnicas, métricas operativas, propuesta de observabilidad/costos y
+un modelo predictivo entrenado, evaluado y seleccionado mediante experimentación
+distribuida para integrarse en la U3.</p>
 <hr />
 <h2 id="sesiones-de-la-unidad-2">Sesiones de la Unidad 2<a class="headerlink" href="#sesiones-de-la-unidad-2" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Sesion</th>
+<th>Sesión</th>
 <th>Tema</th>
-<th>Actividad practica</th>
+<th>Actividad práctica</th>
 <th>Evidencia esperada</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>S6</td>
-<td>Ingesta de eventos empresariales en tiempo real</td>
+<td>Ingesta en tiempo real (Kafka)</td>
 <td>Publicar eventos de negocio desde microservicios o cambios CDC desde una base OLTP.</td>
 <td>Topics, producer/consumer, contrato de evento y evidencias del caso elegido.</td>
 </tr>
 <tr>
 <td>S7</td>
-<td>Ingesta de eventos IoT/sensores en tiempo real</td>
-<td>Publicar eventos de sensores desde simulador, Wokwi o bridge MQTT/HTTP.</td>
-<td>Topic de sensores, mensajes publicados, consumer y contrato del evento sensor.</td>
-</tr>
-<tr>
-<td>S8</td>
-<td>Procesamiento streaming con Spark</td>
+<td>Procesamiento en Streaming con Spark</td>
 <td>Consumir eventos desde el broker con Spark, parsear JSON, validar esquema y transformar datos.</td>
 <td>Notebook/script de streaming, checkpoint, salidas y validaciones.</td>
 </tr>
 <tr>
-<td>S9</td>
-<td>Observabilidad, costos y escalado</td>
+<td>S8</td>
+<td>Observabilidad (Grafana) y Costos</td>
 <td>Medir latencia, throughput, lag, errores; proponer dashboard, alertas y recursos.</td>
-<td>Metricas, logs, dashboard, alertas y estimacion de costos/escalado.</td>
+<td>Métricas, logs, dashboard, alertas y estimación de costos/escalado.</td>
+</tr>
+<tr>
+<td>S9</td>
+<td>ML distribuido: regresión con MLlib</td>
+<td>Entrenar, evaluar y guardar un modelo distribuido.</td>
+<td>Modelo entrenado, métricas y artefacto guardado.</td>
 </tr>
 <tr>
 <td>S10</td>
-<td>BI/ML distribuido con Spark</td>
-<td>Construir datasets analiticos, features, tablas mart o dataset de entrenamiento.</td>
-<td>Salidas BI/ML en Parquet, features y/o tablas Gold/Mart.</td>
+<td>Series de tiempo e inferencia en streaming</td>
+<td>Aplicar el modelo guardado sobre datos batch y/o Kafka streaming.</td>
+<td>Predicciones, métricas y evidencia de inferencia.</td>
 </tr>
 <tr>
 <td>S11</td>
-<td>Series de tiempo e inferencia en streaming</td>
-<td>Entrenar/evaluar modelo predictivo e implementar evidencia de inferencia batch o streaming.</td>
-<td>Modelo, metricas, predicciones y evidencia de inferencia.</td>
+<td>Tuning y experimentación distribuida</td>
+<td>Comparar configuraciones y seleccionar el mejor modelo con validación distribuida.</td>
+<td>Mejor modelo seleccionado y tabla de experimentación.</td>
 </tr>
 </tbody>
 </table>
@@ -1054,17 +1055,17 @@ obtenido.</p>
 <h3 id="2-arquitectura-del-pipeline">2. Arquitectura del pipeline<a class="headerlink" href="#2-arquitectura-del-pipeline" title="Permanent link">&para;</a></h3>
 <p>Incluye:</p>
 <ul>
-<li>fuente de datos: MS, replica-cdc o sensores;</li>
-<li>sistema de mensajeria/event streaming como capa de ingesta;</li>
+<li>fuente de datos: MS o réplica CDC;</li>
+<li>sistema de mensajería/event streaming como capa de ingesta;</li>
 <li>Spark como motor de procesamiento;</li>
-<li>almacenamiento/salidas analiticas;</li>
+<li>almacenamiento/salidas analíticas;</li>
 <li>capa BI/ML;</li>
-<li>observabilidad y supuestos de ejecucion.</li>
+<li>observabilidad y supuestos de ejecución.</li>
 </ul>
 <h3 id="3-ingesta-de-eventos-en-tiempo-real">3. Ingesta de eventos en tiempo real<a class="headerlink" href="#3-ingesta-de-eventos-en-tiempo-real" title="Permanent link">&para;</a></h3>
 <p>Documenta:</p>
 <ul>
-<li>caso elegido en S6: MS o replica-cdc;</li>
+<li>caso elegido en S6: MS o réplica CDC;</li>
 <li>caso sensores en S7;</li>
 <li>topics, colas o canales utilizados;</li>
 <li>productores y consumidores;</li>
@@ -1077,7 +1078,7 @@ obtenido.</p>
 <tr>
 <th>Campo</th>
 <th>Tipo de dato</th>
-<th>Descripcion</th>
+<th>Descripción</th>
 <th>Ejemplo</th>
 </tr>
 </thead>
@@ -1107,7 +1108,7 @@ obtenido.</p>
 <ul>
 <li>lectura desde el broker/event stream;</li>
 <li>parseo JSON;</li>
-<li>validacion de esquema;</li>
+<li>validación de esquema;</li>
 <li>filtros y transformaciones;</li>
 <li>ventanas o watermarking si aplica;</li>
 <li>checkpoint;</li>
@@ -1172,7 +1173,7 @@ obtenido.</p>
 <h3 id="7-biml-distribuido-con-spark">7. BI/ML distribuido con Spark<a class="headerlink" href="#7-biml-distribuido-con-spark" title="Permanent link">&para;</a></h3>
 <p>Documenta:</p>
 <ul>
-<li>dataset analitico generado;</li>
+<li>dataset analítico generado;</li>
 <li>features construidas;</li>
 <li>tablas Gold/Mart si aplica;</li>
 <li>salidas en Parquet;</li>
@@ -1184,7 +1185,7 @@ obtenido.</p>
 <li>objetivo del modelo;</li>
 <li>variables/features;</li>
 <li>algoritmo usado;</li>
-<li>metricas de evaluacion;</li>
+<li>métricas de evaluación;</li>
 <li>predicciones generadas;</li>
 <li>evidencia de inferencia batch o streaming;</li>
 <li>artefactos/modelo listos para integrarse en U3.</li>
@@ -1192,22 +1193,22 @@ obtenido.</p>
 <h3 id="9-evidencias">9. Evidencias<a class="headerlink" href="#9-evidencias" title="Permanent link">&para;</a></h3>
 <p>Adjunta o referencia:</p>
 <ul>
-<li>capturas de ejecucion;</li>
+<li>capturas de ejecución;</li>
 <li>logs;</li>
 <li>salidas de consola;</li>
-<li>fragmentos de codigo;</li>
+<li>fragmentos de código;</li>
 <li>notebooks/scripts usados;</li>
-<li>metricas del pipeline;</li>
-<li>metricas del modelo;</li>
+<li>métricas del pipeline;</li>
+<li>métricas del modelo;</li>
 <li>archivos Parquet o artefactos generados.</li>
 </ul>
 <h3 id="10-conclusiones">10. Conclusiones<a class="headerlink" href="#10-conclusiones" title="Permanent link">&para;</a></h3>
 <p>Resume:</p>
 <ul>
-<li>que se logro implementar;</li>
-<li>que limitaciones se encontraron;</li>
-<li>que decisiones tecnicas se tomaron;</li>
-<li>como se integrara el resultado en U3 mediante DataOps/DevOps.</li>
+<li>qué se logró implementar;</li>
+<li>qué limitaciones se encontraron;</li>
+<li>qué decisiones técnicas se tomaron;</li>
+<li>cómo se integrará el resultado en U3 mediante DataOps/DevOps.</li>
 </ul>
 <hr />
 <h2 id="checklist-de-entrega">Checklist de entrega<a class="headerlink" href="#checklist-de-entrega" title="Permanent link">&para;</a></h2>
@@ -1221,12 +1222,7 @@ obtenido.</p>
 </thead>
 <tbody>
 <tr>
-<td>Se implemento ingesta de eventos para caso MS o replica-cdc.</td>
-<td>[ ]</td>
-<td></td>
-</tr>
-<tr>
-<td>Se implemento o documento ingesta de eventos para sensores.</td>
+<td>Se implementó ingesta de eventos para caso MS o réplica CDC.</td>
 <td>[ ]</td>
 <td></td>
 </tr>
@@ -1236,17 +1232,17 @@ obtenido.</p>
 <td></td>
 </tr>
 <tr>
-<td>Se implemento procesamiento streaming con Spark.</td>
+<td>Se implementó procesamiento streaming con Spark.</td>
 <td>[ ]</td>
 <td></td>
 </tr>
 <tr>
-<td>Se midio latencia, throughput, lag o errores.</td>
+<td>Se midió latencia, throughput, lag o errores.</td>
 <td>[ ]</td>
 <td></td>
 </tr>
 <tr>
-<td>Se propuso observabilidad con dashboard, metricas y alertas.</td>
+<td>Se propuso observabilidad con dashboard, métricas y alertas.</td>
 <td>[ ]</td>
 <td></td>
 </tr>
@@ -1256,22 +1252,22 @@ obtenido.</p>
 <td></td>
 </tr>
 <tr>
-<td>Se genero dataset BI/ML o tablas mart en Parquet.</td>
+<td>Se generó dataset BI/ML o tablas mart en Parquet.</td>
 <td>[ ]</td>
 <td></td>
 </tr>
 <tr>
-<td>Se entreno y evaluo un modelo predictivo.</td>
+<td>Se entrenó y evaluó un modelo predictivo.</td>
 <td>[ ]</td>
 <td></td>
 </tr>
 <tr>
-<td>Se evidencio inferencia batch o streaming.</td>
+<td>Se evidenció inferencia batch o streaming.</td>
 <td>[ ]</td>
 <td></td>
 </tr>
 <tr>
-<td>Se adjuntaron evidencias tecnicas reproducibles.</td>
+<td>Se adjuntaron evidencias técnicas reproducibles.</td>
 <td>[ ]</td>
 <td></td>
 </tr>
@@ -1279,7 +1275,7 @@ obtenido.</p>
 </table>
 <hr />
 <h2 id="producto-final-de-unidad-2">Producto final de Unidad 2<a class="headerlink" href="#producto-final-de-unidad-2" title="Permanent link">&para;</a></h2>
-<p>Pipeline streaming con multiples fuentes de ingesta y Spark,
+<p>Pipeline streaming con Kafka y Spark,
 observabilidad operativa, salidas BI/ML y modelo predictivo listo para integrarse
 y desplegarse en la U3.</p>
 
