@@ -41,9 +41,9 @@ valida la calidad básica de los datos, organiza salidas en formatos analíticos
 como Parquet y deja un dataset preparado para consumo BI/ML.
 
 - Sesión 1: Arquitectura Big Data.
-- Sesión 2: Fundamentos Apache Spark.
-- Sesión 3: Procesamiento batch con Spark: ETL distribuido.
-- Sesión 4: Almacenamiento, HDFS y formatos.
+- Sesión 2:  Fundamentos PySpark: extracción, transformaciones, funciones, agrupaciones, agregaciones y RDD.
+- Sesión 3: Procesamiento distribuido y carga de datos particionada en HDFS y formatos analíticos.
+- Sesión 4: ML distribuido con Spark MLlib (Regresión).
 - Sesión 5: Evaluación U1.
 
 ### U2: Sistema Big Data en tiempo real: streaming, operación y ML a escala
