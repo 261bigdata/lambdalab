@@ -1257,12 +1257,30 @@ disponibles para consumo posterior con Spark.</p>
 <span class="n">docker</span> <span class="n">compose</span> <span class="n">up</span> <span class="n">-d</span>
 <span class="p">.\</span><span class="n">mvnw</span><span class="p">.</span><span class="n">cmd</span> <span class="n">spring-boot</span><span class="p">:</span><span class="n">run</span>
 </code></pre></div>
+<p>Equivalente en bash macOS/Linux:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>uso-ms-sb/ec-orden-ms
+docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+./mvnw<span class="w"> </span>spring-boot:run
+</code></pre></div>
 <p>Publica una orden:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Invoke-RestMethod</span> <span class="p">`</span>
   <span class="n">-Method</span> <span class="n">Post</span> <span class="p">`</span>
   <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:49021/ordenes&quot;</span> <span class="p">`</span>
   <span class="n">-ContentType</span> <span class="s2">&quot;application/json&quot;</span> <span class="p">`</span>
   <span class="n">-Body</span> <span class="s1">&#39;{&quot;usuarioId&quot;:1,&quot;total&quot;:100}&#39;</span>
+</code></pre></div>
+<p>Equivalente en bash macOS/Linux:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://localhost:49021/ordenes&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;usuarioId&quot;:1,&quot;total&quot;:100}&#39;</span>
+</code></pre></div>
+<p>Lista las órdenes registradas:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">Invoke-RestMethod</span> <span class="p">`</span>
+  <span class="n">-Method</span> <span class="n">Get</span> <span class="p">`</span>
+  <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:49021/ordenes&quot;</span>
+</code></pre></div>
+<p>Equivalente en bash macOS/Linux:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://localhost:49021/ordenes&quot;</span>
 </code></pre></div>
 <p>Evento esperado en Kafka:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1279,7 +1297,25 @@ disponibles para consumo posterior con Spark.</p>
 <span class="n">docker</span> <span class="n">compose</span> <span class="n">up</span> <span class="n">-d</span>
 <span class="p">.\</span><span class="n">mvnw</span><span class="p">.</span><span class="n">cmd</span> <span class="n">spring-boot</span><span class="p">:</span><span class="n">run</span>
 </code></pre></div>
+<p>Equivalente en bash macOS/Linux:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>uso-ms-sb/ec-pago-ms
+docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+./mvnw<span class="w"> </span>spring-boot:run
+</code></pre></div>
 <p>Verifica que <code>ec-pago-ms</code> consuma <code>orden-eventos</code>, procese el pago y publique en <code>pago-eventos</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">Invoke-RestMethod</span> <span class="p">`</span>
+  <span class="n">-Method</span> <span class="n">Get</span> <span class="p">`</span>
+  <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:49031/pagos&quot;</span>
+
+<span class="nb">Invoke-RestMethod</span> <span class="p">`</span>
+  <span class="n">-Method</span> <span class="n">Get</span> <span class="p">`</span>
+  <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:49031/pagos/1&quot;</span>
+</code></pre></div>
+<p>Equivalente en bash macOS/Linux:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://localhost:49031/pagos&quot;</span>
+
+curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://localhost:49031/pagos/1&quot;</span>
+</code></pre></div>
 <h2 id="evidencias">Evidencias<a class="headerlink" href="#evidencias" title="Permanent link">&para;</a></h2>
 <p>Adjunta:</p>
 <ul>
