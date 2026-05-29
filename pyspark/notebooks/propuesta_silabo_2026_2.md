@@ -156,8 +156,8 @@ flowchart LR
 
 1. El alumno ejecuta los notebooks desde `pyspark/notebooks/` usando el laboratorio local.
 2. Spark lee datos desde `pyspark/data/` y escribe resultados temporales en `pyspark/artifacts/`.
-3. En los laboratorios de streaming, Spark consume eventos desde el broker y produce resultados para BI/ML.
-4. Los casos de uso publican y consumen eventos para simular flujos reales.
+3. Los casos de uso publican y consumen eventos para simular flujos reales.Auí, el equipo elige el stack Kafka: `kafka/` para un entorno liviano sin CDC/Debezium, o `kafka-debezium/` si necesita CDC/Debezium, Kafka Connect y mayor integración.
+4. En los laboratorios de streaming, Spark consume eventos desde el broker y produce resultados para BI/ML.
 
 
 ## Arquitectura Uber
