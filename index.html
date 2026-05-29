@@ -1144,8 +1144,8 @@ final orientada a la toma de decisiones.</p>
 <ol>
 <li>El alumno ejecuta los notebooks desde <code>pyspark/notebooks/</code> usando el laboratorio local.</li>
 <li>Spark lee datos desde <code>pyspark/data/</code> y escribe resultados temporales en <code>pyspark/artifacts/</code>.</li>
+<li>Los casos de uso publican y consumen eventos para simular flujos reales. Aquí, el equipo elige el stack Kafka: <code>kafka/</code> para un entorno liviano sin CDC/Debezium, o <code>kafka-debezium/</code> si necesita CDC/Debezium, Kafka Connect y mayor integración.</li>
 <li>En los laboratorios de streaming, Spark consume eventos desde el broker y produce resultados para BI/ML.</li>
-<li>Los casos de uso publican y consumen eventos para simular flujos reales.</li>
 </ol>
 <h2 id="arquitectura-uber">Arquitectura Uber<a class="headerlink" href="#arquitectura-uber" title="Permanent link">&para;</a></h2>
 <p>Uber maneja millones de eventos por segundo en tiempo real usando Kafka como
