@@ -12,10 +12,10 @@ spring:
     kafka:
         bootstrap-servers: localhost:49092
     datasource:
-        url: jdbc:mysql://localhost:49030/db_ec_pago_ms
-        username: root
-        password: root
-        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:postgresql://localhost:49030/db_ec_pago_ms
+        username: ecom
+        password: ecom
+        driver-class-name: org.postgresql.Driver
     flyway:
         enabled: false
 

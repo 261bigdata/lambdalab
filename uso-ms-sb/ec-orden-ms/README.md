@@ -1,19 +1,19 @@
 # ec-orden-ms
 
-Microservicio de ordenes con Spring Boot, MySQL y Kafka.
+Microservicio de ordenes con Spring Boot, PostgreSQL y Kafka.
 
 ## Servicios
 
 | Servicio | URL/Puerto |
 |---|---|
 | App | `http://localhost:49021` |
-| MySQL | `localhost:49020` |
+| PostgreSQL | `localhost:49020` |
 | Kafka interno Docker | `kafka:9092` |
 
 Contenedores:
 
 - `lambdalab-ec-orden-ms`
-- `lambdalab-mysql-ec-orden-ms`
+- `lambdalab-postgres-ec-orden-ms`
 
 ## Requisitos
 
@@ -26,7 +26,15 @@ docker compose up -d
 
 ## Uso
 
-Desde esta carpeta:
+Para desarrollo local, levanta solo PostgreSQL:
+
+```powershell
+docker compose -f compose-dev.yml up -d
+```
+
+Luego ejecuta la aplicacion en tu IDE o con Maven usando el perfil `dev`.
+
+Para ejecutar app y PostgreSQL dentro de Docker:
 
 ```powershell
 docker compose up -d --build

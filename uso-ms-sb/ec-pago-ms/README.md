@@ -1,6 +1,6 @@
 # ec-pago-ms
 
-Microservicio de pagos con Spring Boot, MySQL y Kafka. Consume eventos desde
+Microservicio de pagos con Spring Boot, PostgreSQL y Kafka. Consume eventos desde
 `orden-eventos`, procesa un pago simulado y publica el resultado en
 `pago-eventos`.
 
@@ -9,13 +9,13 @@ Microservicio de pagos con Spring Boot, MySQL y Kafka. Consume eventos desde
 | Servicio | URL/Puerto |
 |---|---|
 | App | `http://localhost:49031` |
-| MySQL | `localhost:49030` |
+| PostgreSQL | `localhost:49030` |
 | Kafka interno Docker | `kafka:9092` |
 
 Contenedores:
 
 - `lambdalab-ec-pago-ms`
-- `lambdalab-mysql-ec-pago-ms`
+- `lambdalab-postgres-ec-pago-ms`
 
 ## Requisitos
 
@@ -28,7 +28,15 @@ docker compose up -d
 
 ## Uso
 
-Desde esta carpeta:
+Para desarrollo local, levanta solo PostgreSQL:
+
+```powershell
+docker compose -f compose-dev.yml up -d
+```
+
+Luego ejecuta la aplicacion en tu IDE o con Maven usando el perfil `dev`.
+
+Para ejecutar app y PostgreSQL dentro de Docker:
 
 ```powershell
 docker compose up -d --build

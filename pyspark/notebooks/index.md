@@ -87,7 +87,7 @@ final orientada a la toma de decisiones.
 
 ```mermaid
 flowchart LR
-    subgraph PySparkModule["pyspark"]
+    subgraph PySparkModule["uso pyspark"]
         direction TB
         Notebooks["notebooks/*.ipynb"]
         Jupyter["Jupyter<br/>localhost:4488"]
