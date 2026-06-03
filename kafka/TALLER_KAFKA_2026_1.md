@@ -13,23 +13,6 @@ Este taller trabaja unicamente con estos modulos del repositorio `lambdalab`:
 - `uso-ms-sb/ec-orden-ms`
 - `uso-ms-sb/ec-pago-ms`
 
-El orden de trabajo sera progresivo, porque los alumnos primero necesitan ubicarse en Docker antes de integrar microservicios:
-
-1. Primero se levanta Kafka con Docker Compose.
-2. Luego se entra al contenedor Kafka para trabajar en Bash:
-
-```powershell
-docker compose -f kafka/compose.yml exec kafka bash
-```
-
-3. Dentro del contenedor Kafka se crean topics y se prueban producer/consumer manuales.
-4. Despues se usa `ec-orden-py` como practica rapida para entender el patron producer/consumer.
-5. Al final se ejecuta el flujo completo con microservicios:
-
-```text
-ec-orden-ms -> orden-eventos -> ec-pago-ms -> pago-eventos
-```
-
 ## 3. Objetivo
 
 Implementar y validar una aplicacion de microservicios orientada a eventos usando Apache Kafka, mediante tres niveles de practica:
@@ -97,25 +80,105 @@ Lectura del diagrama:
 - Los microservicios no tienen puerto fijo en la arquitectura; en esta practica se usan puertos locales solo por el perfil `dev`.
 - Kafka UI permite inspeccionar topics, mensajes y consumer groups desde el navegador.
 
+### 5.1 Caso de uso final
+
+Al final del taller se simula un flujo simple de e-commerce. No se empieza por aqui; primero se valida Kafka manualmente y luego se practica con Python.
+
+1. `ec-orden-ms` registra una orden.
+2. `ec-orden-ms` publica un evento `orden.creada` en el topic `orden-eventos`.
+3. Kafka distribuye el evento.
+4. `ec-pago-ms` consume `orden-eventos`.
+5. `ec-pago-ms` procesa un pago simulado.
+6. `ec-pago-ms` publica `pago.aprobado` o `pago.rechazado` en el topic `pago-eventos`.
+
+### 5.2 Fundamento teorico breve
+
+Ten presentes estos conceptos:
+
+- `topic`: canal logico donde se publican mensajes.
+- `producer`: aplicacion que envia eventos a Kafka.
+- `consumer`: aplicacion que lee eventos desde Kafka.
+- `broker`: servidor Kafka que almacena y distribuye eventos.
+- `consumer group`: grupo que comparte el avance de lectura de un topic.
+- `event`: registro de algo que ya ocurrio en el sistema.
+- `key`: clave usada por Kafka para decidir la particion del mensaje.
+
+El siguiente grafico resume la relacion entre producer, broker, topics, particiones, offsets y consumer:
+
+```mermaid
+flowchart LR
+    OffsetNota["offset = posicion del evento<br/>dentro de una particion"] -.-> OrdenP0
+    KeyOrden["key = ordenId"] -. "define la particion" .-> OrdenTopic
+
+    OrdenProducer["PRODUCER<br/>ec-orden-ms<br/>orden.creada"] -->|"publica en<br/>orden-eventos"| OrdenTopic
+    PythonProducer["PRODUCER<br/>ec-orden-py<br/>orden.creada"] -->|"publica en<br/>orden-eventos"| OrdenTopic
+
+    subgraph BrokerOrden["BROKER KAFKA<br/>kafka:9092"]
+        direction TB
+        OrdenTopic["TOPIC: orden-eventos"]
+        OrdenP0["Particion 0<br/>offsets: 0 -> 1 -> 2 -> 3"]
+        OrdenP1["Particion 1<br/>offsets: 0 -> 1 -> 2"]
+        OrdenTopic --> OrdenP0
+        OrdenTopic --> OrdenP1
+    end
+
+    OrdenP1 -->|"lee desde<br/>orden-eventos"| PythonConsumer["CONSUMER<br/>ec-orden-py<br/>group: ec-orden-py-group"]
+    OrdenP0 -->|"lee desde<br/>orden-eventos"| PagoConsumer
+
+    subgraph PagoService["MICROSERVICIO: ec-pago-ms"]
+        direction LR
+        PagoConsumer["CONSUMER<br/>lee orden.creada<br/>group: ec-pago-ms-group"]
+        PagoProcessor["PROCESADOR<br/>simula y registra pago"]
+        PagoProducer["PRODUCER<br/>publica resultado<br/>pago.aprobado / pago.rechazado"]
+        PagoConsumer --> PagoProcessor --> PagoProducer
+    end
+
+    PagoProducer -->|"publica en<br/>pago-eventos"| PagoTopic
+
+    subgraph BrokerPago["BROKER KAFKA<br/>kafka:9092"]
+        direction TB
+        PagoTopic["TOPIC: pago-eventos"]
+        PagoP0["Particion 0<br/>offsets: 0 -> 1"]
+        PagoP1["Particion 1<br/>offsets: 0 -> 1 -> 2"]
+        PagoTopic --> PagoP0
+        PagoTopic --> PagoP1
+    end
+
+    GroupNota["consumer group guarda<br/>hasta que offset leyo"] -.-> PagoConsumer
+```
+
+Lectura rapida del grafico:
+
+- El grafico separa los topics en dos bloques para facilitar la lectura; en el taller ambos topics viven en el mismo servicio Kafka `kafka:9092`.
+- Un `producer` envia eventos hacia un `topic`.
+- Una aplicacion puede ser `producer` y `consumer` a la vez; en este taller `ec-pago-ms` consume ordenes, procesa el pago internamente y publica el resultado.
+- Un `topic` puede dividirse en `particiones`.
+- Cada evento dentro de una particion recibe un `offset`.
+- La `key`, por ejemplo `ordenId`, ayuda a decidir en que particion cae el evento.
+- Un `consumer group` recuerda hasta que offset avanzo su lectura.
+
 ## 6. Flujo de trabajo del taller
 
 El flujo del taller va de lo simple a lo integrado:
 
-1. El alumno levanta el stack Kafka desde `kafka/compose.yml`.
-2. El alumno entra al contenedor Kafka con Bash usando `docker compose -f kafka/compose.yml exec kafka bash`.
-3. Dentro del contenedor Kafka, el alumno crea topics y prueba producer/consumer manuales.
-4. Luego ejecuta `uso-rapido/ec-orden-py` para publicar y consumir eventos desde Python.
-5. Finalmente levanta `ec-orden-ms` y `ec-pago-ms` para validar el flujo completo de microservicios orientados a eventos.
+1. **Entorno de trabajo:** abrir Docker Desktop, verificar `docker ps` y ubicarse en la carpeta donde se descargo o clono el repositorio `lambdalab`.
+2. **Kafka base:** levantar el stack Kafka desde `kafka/compose.yml`.
+3. **Kafka en consola:** entrar al contenedor Kafka con Bash, crear topics y probar producer/consumer manuales.
+4. **Kafka UI:** verificar topics, mensajes y consumer groups desde el navegador.
+5. **Python rapido:** ejecutar `uso-rapido/ec-orden-py` para publicar y consumir eventos desde Python.
+6. **Microservicios Spring Boot:** ejecutar `ec-orden-ms` y `ec-pago-ms` en perfil `dev` para validar el flujo orientado a eventos.
 
 En este taller se usa el stack `kafka/`, que es el entorno liviano sin CDC/Debezium. Otros modulos del laboratorio, como PySpark, CDC u observabilidad, se revisan en la documentacion completa de LambdaLab.
 
-## 7. Entorno de trabajo
+## 7. Desarrollo 6.1: Entorno de trabajo
 
-Ubicate en la raiz del repositorio:
+Ubicate en la raiz del repositorio `lambdalab`. En este laboratorio la ruta de ejemplo es:
 
 ```powershell
 cd C:\261bigdata\lambdalab
 ```
+
+Si descargaste o clonaste el repositorio en otra ubicacion, usa tu propia ruta.
 
 ### 7.1 Instalacion minima en Windows
 
@@ -135,10 +198,34 @@ Si el comando responde con una tabla de contenedores, Docker esta listo. Si mues
 
 Java 17 y Maven se usan en el paso final para ejecutar los microservicios Spring Boot localmente, desde tu IDE o con `mvn spring-boot:run`. En otros escenarios se puede construir la aplicacion dentro de Docker, pero ese modo `prod` no forma parte del alcance operativo de este taller.
 
+Verifica si tienes Chocolatey:
+
+```powershell
+choco -v
+```
+
+Si no tienes Chocolatey, ejecuta PowerShell como administrador y pega este comando:
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+```
+
+Luego cierra y vuelve a abrir PowerShell. Verifica nuevamente:
+
+```powershell
+choco -v
+```
+
 Instalar Java 17 con Chocolatey:
 
 ```powershell
 choco install temurin17 -y
+```
+
+Verifica la version de Java:
+
+```powershell
+java -version
 ```
 
 Tambien puedes descargar Java 17 desde:
@@ -151,10 +238,10 @@ Instalar Maven 3.x con Chocolatey:
 choco install maven -y
 ```
 
-Si no tienes Chocolatey, ejecuta PowerShell como administrador y pega este comando:
+Verifica la version de Maven:
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+mvn -v
 ```
 
 Uso local de Maven: ubicate en la carpeta donde esta el `pom.xml` del microservicio y ejecuta:
@@ -234,32 +321,7 @@ Topics del taller:
 | `orden-eventos` | Eventos publicados cuando se crea una orden |
 | `pago-eventos` | Eventos publicados cuando se procesa el pago |
 
-## 8. Caso de uso final
-
-Al final del taller se simula un flujo simple de e-commerce. No se empieza por aqui; primero se valida Kafka manualmente y luego se practica con Python.
-
-1. `ec-orden-ms` registra una orden.
-2. `ec-orden-ms` publica un evento `orden.creada` en el topic `orden-eventos`.
-3. Kafka distribuye el evento.
-4. `ec-pago-ms` consume `orden-eventos`.
-5. `ec-pago-ms` procesa un pago simulado.
-6. `ec-pago-ms` publica `pago.aprobado` o `pago.rechazado` en el topic `pago-eventos`.
-
-## 9. Fundamento teorico breve
-
-Ten presentes estos conceptos:
-
-- `topic`: canal logico donde se publican mensajes.
-- `producer`: aplicacion que envia eventos a Kafka.
-- `consumer`: aplicacion que lee eventos desde Kafka.
-- `broker`: servidor Kafka que almacena y distribuye eventos.
-- `consumer group`: grupo que comparte el avance de lectura de un topic.
-- `event`: registro de algo que ya ocurrio en el sistema.
-- `key`: clave usada por Kafka para decidir la particion del mensaje.
-
-## 10. Desarrollo de la practica
-
-### 10.1 Levantar Kafka
+## 8. Desarrollo 6.2: Kafka base
 
 Desde la raiz del repositorio:
 
@@ -287,13 +349,9 @@ Debes tener disponibles:
 - `lambdalab-kafka-ui`
 - `lambdalab-kafka-exporter`
 
-Abre Kafka UI:
+## 9. Desarrollo 6.3: Kafka en consola
 
-```text
-http://localhost:48085
-```
-
-### 10.2 Crear los topics de trabajo
+### 9.1 Crear los topics de trabajo
 
 Desde PowerShell, ingresa al contenedor Kafka:
 
@@ -347,7 +405,7 @@ Para salir del Bash del contenedor y volver a PowerShell:
 exit
 ```
 
-### 10.3 Probar producer y consumer manuales
+### 9.2 Probar producer y consumer manuales
 
 Para esta prueba se necesitan dos terminales.
 
@@ -388,7 +446,22 @@ hola kafka
 
 Verifica que el mensaje aparezca en el consumer.
 
-### 10.4 Practica rapida con Python
+## 10. Desarrollo 6.4: Kafka UI
+
+Abre Kafka UI:
+
+```text
+http://localhost:48085
+```
+
+Verifica:
+
+- el cluster `lambdalab` este disponible
+- el topic `orden-eventos` exista
+- el topic `pago-eventos` exista
+- los mensajes manuales aparezcan en `orden-eventos`
+
+## 11. Desarrollo 6.5: Python rapido
 
 El modulo `ec-orden-py` contiene un producer y un consumer simples para reforzar el flujo Kafka antes de usar Spring Boot.
 
@@ -431,7 +504,9 @@ Verifica que:
 - el consumer registre mensajes con `status=consumed`
 - Kafka UI muestre mensajes en el topic `orden-eventos`
 
-### 10.5 Levantar el microservicio de ordenes
+## 12. Desarrollo 6.6: Microservicios Spring Boot
+
+### 12.1 Levantar el microservicio de ordenes
 
 `ec-orden-ms` registra ordenes en PostgreSQL y publica eventos en `orden-eventos`.
 
@@ -490,7 +565,7 @@ Busca una linea similar:
 service=ec-orden-ms component=producer topic=orden-eventos eventType=orden.creada status=published
 ```
 
-### 10.6 Levantar el microservicio de pagos
+### 12.2 Levantar el microservicio de pagos
 
 `ec-pago-ms` consume `orden-eventos`, registra el pago en PostgreSQL y publica eventos en `pago-eventos`.
 
@@ -540,7 +615,7 @@ service=ec-pago-ms component=producer topic=pago-eventos eventType=pago.aprobado
 
 > El pago es simulado. Por eso el evento puede ser `pago.aprobado` o `pago.rechazado`.
 
-### 10.7 Verificar eventos desde Kafka UI
+### 12.3 Verificar eventos desde Kafka UI
 
 Abre:
 
@@ -554,9 +629,9 @@ Verifica:
 - el topic `pago-eventos` contiene eventos `pago.aprobado` o `pago.rechazado`
 - el consumer group `ec-pago-ms-group` aparece asociado al consumo de `orden-eventos`
 
-## 11. Contratos de eventos
+## 13. Contratos de eventos
 
-### 11.1 Evento `orden.creada`
+### 13.1 Evento `orden.creada`
 
 Topic:
 
@@ -603,7 +678,7 @@ Key recomendada:
 ordenId
 ```
 
-### 11.2 Evento de pago
+### 13.2 Evento de pago
 
 Topic:
 
@@ -658,13 +733,14 @@ Key recomendada:
 ordenId
 ```
 
-## 12. Evidencias a entregar
+## 14. Evidencias a entregar
 
 Adjunta las siguientes evidencias:
 
+- captura de verificacion del entorno con `docker ps`
 - captura de `docker compose -f kafka/compose.yml ps`
-- captura de Kafka UI con los topics `orden-eventos` y `pago-eventos`
 - captura del producer y consumer manual
+- captura de Kafka UI con los topics `orden-eventos` y `pago-eventos`
 - captura del producer y consumer de `ec-orden-py`
 - captura del `POST /ordenes` en `ec-orden-ms`
 - captura de logs de `ec-orden-ms` publicando `orden.creada`
@@ -672,7 +748,7 @@ Adjunta las siguientes evidencias:
 - captura de logs de `ec-pago-ms` publicando `pago.aprobado` o `pago.rechazado`
 - captura de Kafka UI mostrando mensajes en `pago-eventos`
 
-## 13. Actividad de aprendizaje autonomo
+## 15. Actividad de aprendizaje autonomo
 
 Documenta el contrato del evento `orden.creada` en un archivo propio o en tu informe, incluyendo:
 
@@ -692,7 +768,7 @@ Luego responde:
 3. Por que el pago no se invoca directamente desde `ec-orden-ms`?
 4. Que ventaja aporta Kafka si `ec-pago-ms` esta temporalmente detenido?
 
-## 14. Limpieza del entorno
+## 16. Limpieza del entorno
 
 Cuando termines el taller, puedes detener los servicios:
 
@@ -705,7 +781,7 @@ docker compose -f kafka/compose.yml down
 
 Si deseas borrar tambien los volumenes de PostgreSQL y Kafka, agrega `-v` al comando correspondiente.
 
-## 15. Cierre
+## 17. Cierre
 
 Al finalizar, debes haber validado tres formas de trabajar con Kafka:
 
