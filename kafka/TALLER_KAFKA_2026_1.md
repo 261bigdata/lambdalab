@@ -351,7 +351,7 @@ Debes tener disponibles:
 
 ## 9. Desarrollo 6.3: Kafka en consola
 
-### 9.1 Crear los topics de trabajo
+### 9.1 Crear el topic de trabajo
 
 Desde PowerShell, ingresa al contenedor Kafka:
 
@@ -373,16 +373,6 @@ Crea el topic `orden-eventos`:
   --replication-factor 1
 ```
 
-Crea el topic `pago-eventos`:
-
-```bash
-/opt/kafka/bin/kafka-topics.sh --create \
-  --topic pago-eventos \
-  --bootstrap-server kafka:9092 \
-  --partitions 1 \
-  --replication-factor 1
-```
-
 Lista los topics:
 
 ```bash
@@ -394,7 +384,6 @@ Resultado esperado:
 
 ```text
 orden-eventos
-pago-eventos
 ```
 
 > Nota: si un topic ya existe, Kafka mostrara un mensaje de error indicando que ya fue creado. En ese caso continua con el siguiente paso.
@@ -446,6 +435,14 @@ hola kafka
 
 Verifica que el mensaje aparezca en el consumer.
 
+Si quieres limpiar todo al terminar solo la practica manual, primero sal de los contenedores con `exit` y luego ejecuta desde PowerShell:
+
+```powershell
+docker compose -f kafka/compose.yml down -v
+```
+
+> Si vas a continuar con Python y microservicios, no ejecutes este comando todavia. Kafka debe permanecer levantado para los siguientes pasos.
+
 ## 10. Desarrollo 6.4: Kafka UI
 
 Abre Kafka UI:
@@ -458,7 +455,6 @@ Verifica:
 
 - el cluster `lambdalab` este disponible
 - el topic `orden-eventos` exista
-- el topic `pago-eventos` exista
 - los mensajes manuales aparezcan en `orden-eventos`
 
 ## 11. Desarrollo 6.5: Python rapido
@@ -524,6 +520,20 @@ Verifica el contenedor de PostgreSQL:
 docker compose -f uso-ms-sb/ec-orden-ms/compose-dev.yml ps
 ```
 
+Prueba la conexion a la base de datos:
+
+```powershell
+docker exec -it lambdalab-postgres-ec-orden-ms-dev psql -U ecom -d db_ec_orden_ms -c "SELECT current_database();"
+```
+
+Lista las tablas existentes:
+
+```powershell
+docker exec -it lambdalab-postgres-ec-orden-ms-dev psql -U ecom -d db_ec_orden_ms -c "\dt"
+```
+
+> Si aun no ejecutaste la aplicacion, es normal que todavia no aparezca la tabla `ordenes`.
+
 En otra terminal, ubicate en la carpeta del microservicio:
 
 ```powershell
@@ -557,6 +567,18 @@ Respuesta esperada:
 }
 ```
 
+Vuelve a listar las tablas para confirmar que la aplicacion creo la tabla `ordenes`:
+
+```powershell
+docker exec -it lambdalab-postgres-ec-orden-ms-dev psql -U ecom -d db_ec_orden_ms -c "\dt"
+```
+
+Consulta los datos registrados en la tabla `ordenes`:
+
+```powershell
+docker exec -it lambdalab-postgres-ec-orden-ms-dev psql -U ecom -d db_ec_orden_ms -c "SELECT * FROM ordenes;"
+```
+
 Revisa la terminal donde esta corriendo `mvn spring-boot:run`. Ahi aparecen los logs del productor.
 
 Busca una linea similar:
@@ -571,6 +593,8 @@ service=ec-orden-ms component=producer topic=orden-eventos eventType=orden.cread
 
 En el alcance del taller se trabaja con el perfil `dev`. El puerto `49031` corresponde a este perfil de practica; `prod` queda fuera del alcance operativo.
 
+En la practica manual solo se creo `orden-eventos`. El topic `pago-eventos` aparecera cuando `ec-pago-ms` publique el primer evento de pago, porque el stack Kafka del taller tiene habilitada la creacion automatica de topics.
+
 Desde la raiz del repositorio, levanta PostgreSQL de desarrollo:
 
 ```powershell
@@ -582,6 +606,20 @@ Verifica el contenedor de PostgreSQL:
 ```powershell
 docker compose -f uso-ms-sb/ec-pago-ms/compose-dev.yml ps
 ```
+
+Prueba la conexion a la base de datos:
+
+```powershell
+docker exec -it lambdalab-postgres-ec-pago-ms-dev psql -U ecom -d db_ec_pago_ms -c "SELECT current_database();"
+```
+
+Lista las tablas existentes:
+
+```powershell
+docker exec -it lambdalab-postgres-ec-pago-ms-dev psql -U ecom -d db_ec_pago_ms -c "\dt"
+```
+
+> Si aun no ejecutaste la aplicacion, es normal que todavia no aparezca la tabla `pagos`.
 
 En otra terminal, ubicate en la carpeta del microservicio:
 
@@ -614,6 +652,18 @@ service=ec-pago-ms component=producer topic=pago-eventos eventType=pago.aprobado
 ```
 
 > El pago es simulado. Por eso el evento puede ser `pago.aprobado` o `pago.rechazado`.
+
+Vuelve a listar las tablas para confirmar que la aplicacion creo la tabla `pagos`:
+
+```powershell
+docker exec -it lambdalab-postgres-ec-pago-ms-dev psql -U ecom -d db_ec_pago_ms -c "\dt"
+```
+
+Consulta los datos registrados en la tabla `pagos`:
+
+```powershell
+docker exec -it lambdalab-postgres-ec-pago-ms-dev psql -U ecom -d db_ec_pago_ms -c "SELECT * FROM pagos;"
+```
 
 ### 12.3 Verificar eventos desde Kafka UI
 
