@@ -37,53 +37,42 @@ En la practica manual solo se crea `orden-eventos`. El topic `pago-eventos` apar
 La `key` no tiene que ser siempre una primary key relacional. Puede ser `ordenId`, `_id` de MongoDB, `deviceId`, `sessionId`, `correlationId` o un UUID generado por la aplicacion.
 
 ```mermaid
-flowchart TB
-    subgraph Productores["PRODUCTORES"]
-        direction LR
-        OrdenProducer["PRODUCER<br/>ec-orden-ms<br/>orden.creada"]
-        PythonProducer["PRODUCER<br/>ec-orden-py<br/>orden.creada"]
-        PagoProducer["PRODUCER<br/>ec-pago-ms<br/>pago.aprobado / pago.rechazado"]
-    end
+flowchart LR
+    OffsetNota["offset = posicion del evento<br/>dentro de una particion"]
+    OrdenProducer["PRODUCER<br/>ec-orden-ms<br/>orden.creada"]
+    PythonProducer["PRODUCER<br/>ec-orden-py<br/>orden.creada"]
+    KeyOrden["key = ordenId"]
 
-    subgraph KafkaCluster["BROKER DE KAFKA - kafka:9092"]
-        direction LR
-        subgraph OrdenBox["TOPIC: orden-eventos"]
-            direction TB
-            OrdenTopic["entrada del topic"]
-            OrdenP0["Particion 0<br/>offsets: 0 | 1 | 2 | 3"]
-            OrdenP1["Particion 1<br/>offsets: 0 | 1 | 2"]
-            OrdenTopic -->|"key decide"| OrdenP0
-            OrdenTopic -->|"key decide"| OrdenP1
-        end
-
-        subgraph PagoBox["TOPIC: pago-eventos"]
-            direction TB
-            PagoTopic["entrada del topic"]
-            PagoP0["Particion 0<br/>offsets: 0 | 1"]
-            PagoP1["Particion 1<br/>offsets: 0 | 1 | 2"]
-            PagoTopic -->|"key decide"| PagoP0
-            PagoTopic -->|"key decide"| PagoP1
+    subgraph KafkaOrden["BROKER KAFKA (kafka:9092)"]
+        direction TB
+        subgraph OrdenTopic["TOPIC: orden-eventos"]
+            OrdenP0["Particion 0<br/>offsets: 0 -> 1 -> 2 -> 3"]
         end
     end
 
-    subgraph Consumidores["CONSUMIDORES"]
-        direction LR
-        PythonConsumer["CONSUMER<br/>ec-orden-py<br/>group: ec-orden-py-group"]
-        PagoConsumer["CONSUMER<br/>ec-pago-ms<br/>group: ec-pago-ms-group"]
+    PythonConsumer["CONSUMER<br/>ec-orden-py<br/>group: ec-orden-py-group"]
+    PagoConsumer["CONSUMER<br/>ec-pago-ms<br/>group: ec-pago-ms-group"]
+    GroupNota["consumer group guarda<br/>hasta que offset leyo"]
+    PagoProducer["PRODUCER<br/>ec-pago-ms<br/>pago.aprobado / pago.rechazado"]
+
+    subgraph KafkaPago["BROKER KAFKA (kafka:9092)"]
+        direction TB
+        subgraph PagoTopic["TOPIC: pago-eventos"]
+            PagoP0["Particion 0<br/>offsets: 0 -> 1"]
+        end
     end
 
-    OrdenProducer -->|"publica en<br/>orden-eventos"| OrdenTopic
-    PythonProducer -->|"publica en<br/>orden-eventos"| OrdenTopic
-    PagoProducer -->|"publica en<br/>pago-eventos"| PagoTopic
+    OffsetNota -.-> OrdenP0
+    OrdenProducer -->|"publica en topic<br/>orden-eventos"| OrdenTopic
+    PythonProducer -->|"publica en topic<br/>orden-eventos"| OrdenTopic
+    KeyOrden -.->|"ayuda a elegir<br/>particion"| OrdenTopic
 
-    OrdenP1 -->|"lee eventos<br/>desde particiones"| PythonConsumer
-    OrdenP0 -->|"lee orden.creada<br/>desde particiones"| PagoConsumer
-    PagoConsumer -->|"procesa pago"| PagoProcessor["PROCESADOR<br/>ec-pago-ms<br/>simula y registra pago"]
-    PagoProcessor -->|"genera resultado"| PagoProducer
+    OrdenP0 -->|"lee desde<br/>orden-eventos"| PythonConsumer
+    OrdenP0 -->|"lee desde<br/>orden-eventos"| PagoConsumer
+    GroupNota -.-> PagoConsumer
 
-    OffsetNota["offset = posicion del evento<br/>dentro de una particion"] -.-> OrdenP0
-    KeyOrden["key, por ejemplo ordenId<br/>ayuda a elegir particion"] -.-> OrdenTopic
-    GroupNota["consumer group guarda<br/>hasta que offset leyo"] -.-> PagoConsumer
+    PagoConsumer -->|"procesa pago"| PagoProducer
+    PagoProducer -->|"publica en topic<br/>pago-eventos"| PagoTopic
 ```
 
 ## Flujo de trabajo
