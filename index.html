@@ -1093,10 +1093,10 @@ final orientada a la toma de decisiones.</p>
 
     subgraph UseMS["uso-ms-sb"]
         direction TB
-        OrdenMS["ec-orden-ms&lt;br/&gt;API localhost:49021&lt;br/&gt;publica orden-eventos"]
-        OrdenDB["mysql ordenes&lt;br/&gt;localhost:49020"]
-        PagoMS["ec-pago-ms&lt;br/&gt;API localhost:49031&lt;br/&gt;consume orden-eventos&lt;br/&gt;publica pago-eventos"]
-        PagoDB["mysql pagos&lt;br/&gt;localhost:49030"]
+        OrdenMS["ec-orden-ms&lt;br/&gt;API de ordenes&lt;br/&gt;publica orden-eventos"]
+        OrdenDB["postgres ordenes dev&lt;br/&gt;localhost:49020"]
+        PagoMS["ec-pago-ms&lt;br/&gt;API de pagos&lt;br/&gt;consume orden-eventos&lt;br/&gt;publica pago-eventos"]
+        PagoDB["postgres pagos dev&lt;br/&gt;localhost:49030"]
         OrdenMS --&gt; OrdenDB
         PagoMS --&gt; PagoDB
     end

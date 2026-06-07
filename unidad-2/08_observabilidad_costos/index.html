@@ -1605,12 +1605,11 @@
 <li>Salida Parquet: <code>/opt/artifacts/output/orden_eventos_observabilidad_p1</code></li>
 </ul>
 <h2 id="paso-1-crear-sparksession">Paso 1. Crear SparkSession<a class="headerlink" href="#paso-1-crear-sparksession" title="Permanent link">&para;</a></h2>
-<p>Se carga el conector Kafka para Spark Structured Streaming.</p>
+<p>Se crea la <code>SparkSession</code>. El conector Kafka ya debe estar disponible en el entorno Spark.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
 
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
     <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;observabilidad-pipeline-kafka-spark&quot;</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.jars.packages&quot;</span><span class="p">,</span> <span class="s2">&quot;org.apache.spark:spark-sql-kafka-0-10_2.13:4.1.1&quot;</span><span class="p">)</span> \
     <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 
 <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">setLogLevel</span><span class="p">(</span><span class="s2">&quot;WARN&quot;</span><span class="p">)</span>
@@ -1757,7 +1756,7 @@
 <li><code>inputRowsPerSecond</code>: velocidad de entrada de eventos.</li>
 <li><code>processedRowsPerSecond</code>: velocidad de procesamiento de Spark.</li>
 <li><code>avgOffsetsBehindLatest</code> y <code>maxOffsetsBehindLatest</code>: atraso respecto al ultimo offset disponible en Kafka.</li>
-<li><code>status</code>: estado calculado para el micro-batch. <code>idle</code> significa sin eventos nuevos; <code>processed</code> significa que Spark procesó eventos.</li>
+<li><code>status</code>: estado calculado para el micro-batch. <code>idle</code> significa sin eventos nuevos; <code>processed</code> significa que Spark procesÃ³ eventos.</li>
 </ul>
 <p>Ejemplo: si <code>numInputRows</code>, <code>inputRowsPerSecond</code> y <code>processedRowsPerSecond</code> salen <code>0</code>, significa que no llegaron eventos nuevos en ese intervalo. Si ademas <code>maxOffsetsBehindLatest</code> es <code>0</code>, el consumer esta al dia.</p>
 <h3 id="evidencia-alternativa-spark-ui">Evidencia alternativa: Spark UI<a class="headerlink" href="#evidencia-alternativa-spark-ui" title="Permanent link">&para;</a></h3>
@@ -1970,7 +1969,7 @@
 <p>Resumen: Grafana/Prometheus cubre <code>up</code>, <code>kafka_brokers</code> y <code>kafka_consumergroup_lag</code>; Spark/Parquet cubre <code>latencyMs</code>, eventos invalidos y throughput del micro-batch.</p>
 <div class="highlight"><pre><span></span><code><span class="n">df_final</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;latencyMs &gt; 100&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1">#Próxima clase: ML</span>
+<div class="highlight"><pre><span></span><code><span class="c1">#PrÃ³xima clase: ML</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">avg</span><span class="p">,</span> <span class="nb">min</span> <span class="k">as</span> <span class="n">spark_min</span><span class="p">,</span> <span class="nb">max</span> <span class="k">as</span> <span class="n">spark_max</span><span class="p">,</span> <span class="n">count</span>
 
@@ -1999,7 +1998,7 @@
 <span class="n">serie_latency_limpia</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1">#avgLatencyMs = latencia real promedio del minuto</span>
-<span class="c1">#predictedLatencyMs = predicción usando los 3 minutos anteriores</span>
+<span class="c1">#predictedLatencyMs = predicciÃ³n usando los 3 minutos anteriores</span>
 <span class="c1">#errorMs = diferencia entre real y predicho</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">avg</span><span class="p">,</span> <span class="n">count</span>

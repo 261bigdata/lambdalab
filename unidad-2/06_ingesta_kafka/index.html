@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ingesta-de-eventos-empresariales-en-tiempo-real" class="md-skip">
+        <a href="#ingesta-de-eventos-en-tiempo-real-con-kafka" class="md-skip">
           Saltar a contenido
         </a>
       
@@ -569,7 +569,7 @@
   <a href="#proposito-de-la-sesion" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Propósito de la sesion
+        Proposito de la sesion
       
     </span>
   </a>
@@ -577,10 +577,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#resultado-esperado" class="md-nav__link">
+  <a href="#arquitectura-de-la-practica" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Resultado esperado
+        Arquitectura de la practica
       
     </span>
   </a>
@@ -588,10 +588,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#herramientas" class="md-nav__link">
+  <a href="#conceptos-clave" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Herramientas
+        Conceptos clave
       
     </span>
   </a>
@@ -599,10 +599,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#entorno-de-trabajo" class="md-nav__link">
+  <a href="#flujo-de-trabajo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Entorno de trabajo
+        Flujo de trabajo
       
     </span>
   </a>
@@ -610,10 +610,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-levantar-kafka" class="md-nav__link">
+  <a href="#1-entorno-de-trabajo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Levantar Kafka
+        1. Entorno de trabajo
       
     </span>
   </a>
@@ -621,10 +621,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-crear-el-topic-de-trabajo" class="md-nav__link">
+  <a href="#2-levantar-kafka" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Crear el topic de trabajo
+        2. Levantar Kafka
       
     </span>
   </a>
@@ -632,44 +632,72 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-probar-producer-y-consumer-manuales" class="md-nav__link">
+  <a href="#3-kafka-en-consola" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Probar producer y consumer manuales
+        3. Kafka en consola
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-probar-producer-y-consumer-en-python" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Probar producer y consumer en Python
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-integrar-con-microservicios-spring-boot" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Integrar con microservicios Spring Boot
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="5. Integrar con microservicios Spring Boot">
+    <nav class="md-nav" aria-label="3. Kafka en consola">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#ordenes-como-producer" class="md-nav__link">
+  <a href="#producer-y-consumer-manuales" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ordenes como producer
+        Producer y consumer manuales
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kafka-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Kafka UI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-python-rapido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Python rapido
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-microservicios-spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Microservicios Spring Boot
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Microservicios Spring Boot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-ordenes-como-producer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Ordenes como producer
       
     </span>
   </a>
@@ -677,10 +705,49 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pagos-como-consumer-y-producer" class="md-nav__link">
+  <a href="#62-pagos-como-consumer-y-producer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pagos como consumer y producer
+        6.2 Pagos como consumer y producer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contratos-de-eventos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contratos de eventos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Contratos de eventos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ordencreada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        orden.creada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evento-de-pago" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evento de pago
       
     </span>
   </a>
@@ -704,10 +771,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#actividad-autonoma" class="md-nav__link">
+  <a href="#limpieza" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Actividad autónoma
+        Limpieza
       
     </span>
   </a>
@@ -955,7 +1022,7 @@
   <a href="#proposito-de-la-sesion" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Propósito de la sesion
+        Proposito de la sesion
       
     </span>
   </a>
@@ -963,10 +1030,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#resultado-esperado" class="md-nav__link">
+  <a href="#arquitectura-de-la-practica" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Resultado esperado
+        Arquitectura de la practica
       
     </span>
   </a>
@@ -974,10 +1041,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#herramientas" class="md-nav__link">
+  <a href="#conceptos-clave" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Herramientas
+        Conceptos clave
       
     </span>
   </a>
@@ -985,10 +1052,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#entorno-de-trabajo" class="md-nav__link">
+  <a href="#flujo-de-trabajo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Entorno de trabajo
+        Flujo de trabajo
       
     </span>
   </a>
@@ -996,10 +1063,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-levantar-kafka" class="md-nav__link">
+  <a href="#1-entorno-de-trabajo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Levantar Kafka
+        1. Entorno de trabajo
       
     </span>
   </a>
@@ -1007,10 +1074,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-crear-el-topic-de-trabajo" class="md-nav__link">
+  <a href="#2-levantar-kafka" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Crear el topic de trabajo
+        2. Levantar Kafka
       
     </span>
   </a>
@@ -1018,44 +1085,72 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-probar-producer-y-consumer-manuales" class="md-nav__link">
+  <a href="#3-kafka-en-consola" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Probar producer y consumer manuales
+        3. Kafka en consola
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-probar-producer-y-consumer-en-python" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Probar producer y consumer en Python
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-integrar-con-microservicios-spring-boot" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Integrar con microservicios Spring Boot
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="5. Integrar con microservicios Spring Boot">
+    <nav class="md-nav" aria-label="3. Kafka en consola">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#ordenes-como-producer" class="md-nav__link">
+  <a href="#producer-y-consumer-manuales" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ordenes como producer
+        Producer y consumer manuales
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kafka-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Kafka UI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-python-rapido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Python rapido
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-microservicios-spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Microservicios Spring Boot
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Microservicios Spring Boot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-ordenes-como-producer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Ordenes como producer
       
     </span>
   </a>
@@ -1063,10 +1158,49 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pagos-como-consumer-y-producer" class="md-nav__link">
+  <a href="#62-pagos-como-consumer-y-producer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pagos como consumer y producer
+        6.2 Pagos como consumer y producer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contratos-de-eventos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contratos de eventos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Contratos de eventos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ordencreada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        orden.creada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evento-de-pago" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evento de pago
       
     </span>
   </a>
@@ -1090,10 +1224,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#actividad-autonoma" class="md-nav__link">
+  <a href="#limpieza" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Actividad autónoma
+        Limpieza
       
     </span>
   </a>
@@ -1117,131 +1251,185 @@
 
 
 
-<h1 id="ingesta-de-eventos-empresariales-en-tiempo-real">Ingesta de eventos empresariales en tiempo real<a class="headerlink" href="#ingesta-de-eventos-empresariales-en-tiempo-real" title="Permanent link">&para;</a></h1>
-<h2 id="proposito-de-la-sesion">Propósito de la sesion<a class="headerlink" href="#proposito-de-la-sesion" title="Permanent link">&para;</a></h2>
-<p>Implementar y validar un flujo basico de ingesta de eventos empresariales en
-tiempo real. En el laboratorio se usa Kafka como broker principal, pero el
-patrón también puede implementarse con otras tecnologías de mensajería o event
-streaming.</p>
-<p>La práctica puede trabajarse con uno de dos casos empresariales:</p>
+<h1 id="ingesta-de-eventos-en-tiempo-real-con-kafka">Ingesta de eventos en tiempo real con Kafka<a class="headerlink" href="#ingesta-de-eventos-en-tiempo-real-con-kafka" title="Permanent link">&para;</a></h1>
+<h2 id="proposito-de-la-sesion">Proposito de la sesion<a class="headerlink" href="#proposito-de-la-sesion" title="Permanent link">&para;</a></h2>
+<p>Implementar y validar un flujo de eventos con Apache Kafka usando tres niveles de practica:</p>
 <ul>
-<li><strong>Caso MS:</strong> microservicios que publican y consumen eventos de negocio.</li>
-<li><strong>Caso réplica CDC:</strong> cambios de una base OLTP capturados con Debezium y publicados en Kafka.</li>
-</ul>
-<p>En el caso MS, la práctica conecta tres niveles de trabajo:</p>
-<ul>
-<li>producer y consumer manuales dentro del broker Kafka;</li>
+<li>producer y consumer manuales dentro del contenedor Kafka;</li>
 <li>producer y consumer en Python para pruebas rapidas;</li>
-<li>microservicios Spring Boot que publican y consumen eventos de negocio.</li>
+<li>microservicios Spring Boot en perfil <code>dev</code>, donde ordenes publica eventos y pagos los consume.</li>
 </ul>
-<h2 id="resultado-esperado">Resultado esperado<a class="headerlink" href="#resultado-esperado" title="Permanent link">&para;</a></h2>
-<p>Al finalizar, debes demostrar que Kafka recibe eventos en el topic <code>orden-eventos</code>, que los productores pueden publicar mensajes y que los consumidores pueden leerlos desde consola, Python o Spring Boot.</p>
-<p>Si el grupo trabaja el caso réplica CDC, el resultado equivalente es demostrar
-que los cambios de una tabla OLTP llegan a Kafka como eventos CDC y quedan
-disponibles para consumo posterior con Spark.</p>
-<p>El flujo de referencia es:</p>
+<p>El taller trabaja unicamente con estos modulos:</p>
+<ul>
+<li><code>kafka</code></li>
+<li><code>uso-rapido/ec-orden-py</code></li>
+<li><code>uso-ms-sb/ec-orden-ms</code></li>
+<li><code>uso-ms-sb/ec-pago-ms</code></li>
+</ul>
+<h2 id="arquitectura-de-la-practica">Arquitectura de la practica<a class="headerlink" href="#arquitectura-de-la-practica" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>ec-orden-ms -&gt; orden-eventos -&gt; ec-pago-ms -&gt; pago-eventos
 </code></pre></div>
-<h2 id="herramientas">Herramientas<a class="headerlink" href="#herramientas" title="Permanent link">&para;</a></h2>
+<p>En la practica manual solo se crea <code>orden-eventos</code>. El topic <code>pago-eventos</code> aparece despues, cuando <code>ec-pago-ms</code> publica el primer resultado de pago.</p>
+<h2 id="conceptos-clave">Conceptos clave<a class="headerlink" href="#conceptos-clave" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Apache Kafka</li>
-<li>Docker Compose</li>
-<li>Kafka UI</li>
-<li>Python</li>
-<li>Spring Boot</li>
-<li>Java 17</li>
-<li>PowerShell</li>
+<li><code>topic</code>: canal logico donde se publican mensajes.</li>
+<li><code>producer</code>: aplicacion que envia eventos a Kafka.</li>
+<li><code>consumer</code>: aplicacion que lee eventos desde Kafka.</li>
+<li><code>broker</code>: servidor Kafka que almacena y distribuye eventos.</li>
+<li><code>partition</code>: division interna de un topic.</li>
+<li><code>offset</code>: posicion de un evento dentro de una particion.</li>
+<li><code>consumer group</code>: grupo que coordina consumidores y guarda hasta que offset leyeron.</li>
+<li><code>key</code>: valor que ayuda a Kafka a decidir en que particion cae el evento.</li>
 </ul>
-<h2 id="entorno-de-trabajo">Entorno de trabajo<a class="headerlink" href="#entorno-de-trabajo" title="Permanent link">&para;</a></h2>
-<p>En LambdaLab, usa estos modulos:</p>
-<ul>
-<li>Kafka: <code>kafka/</code></li>
-<li>Python rapido: <code>uso-rapido/ec-orden-py/</code></li>
-<li>Microservicio de ordenes: <code>uso-ms-sb/ec-orden-ms/</code></li>
-<li>Microservicio de pagos: <code>uso-ms-sb/ec-pago-ms/</code></li>
-</ul>
-<p>Servicios principales:</p>
-<table>
-<thead>
-<tr>
-<th>Servicio</th>
-<th>URL o host</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Kafka externo</td>
-<td><code>localhost:49092</code></td>
-</tr>
-<tr>
-<td>Kafka interno Docker</td>
-<td><code>ec-kafka:9092</code></td>
-</tr>
-<tr>
-<td>Kafka UI</td>
-<td><code>http://localhost:48085</code></td>
-</tr>
-<tr>
-<td>Red Docker</td>
-<td><code>lambdalab-kafka-net</code></td>
-</tr>
-</tbody>
-</table>
-<h2 id="1-levantar-kafka">1. Levantar Kafka<a class="headerlink" href="#1-levantar-kafka" title="Permanent link">&para;</a></h2>
+<p>La <code>key</code> no tiene que ser siempre una primary key relacional. Puede ser <code>ordenId</code>, <code>_id</code> de MongoDB, <code>deviceId</code>, <code>sessionId</code>, <code>correlationId</code> o un UUID generado por la aplicacion.</p>
+<pre class="mermaid"><code>flowchart TB
+    subgraph Productores["PRODUCTORES"]
+        direction LR
+        OrdenProducer["PRODUCER&lt;br/&gt;ec-orden-ms&lt;br/&gt;orden.creada"]
+        PythonProducer["PRODUCER&lt;br/&gt;ec-orden-py&lt;br/&gt;orden.creada"]
+        PagoProducer["PRODUCER&lt;br/&gt;ec-pago-ms&lt;br/&gt;pago.aprobado / pago.rechazado"]
+    end
+
+    subgraph KafkaCluster["BROKER DE KAFKA - kafka:9092"]
+        direction LR
+        subgraph OrdenBox["TOPIC: orden-eventos"]
+            direction TB
+            OrdenTopic["entrada del topic"]
+            OrdenP0["Particion 0&lt;br/&gt;offsets: 0 | 1 | 2 | 3"]
+            OrdenP1["Particion 1&lt;br/&gt;offsets: 0 | 1 | 2"]
+            OrdenTopic --&gt;|"key decide"| OrdenP0
+            OrdenTopic --&gt;|"key decide"| OrdenP1
+        end
+
+        subgraph PagoBox["TOPIC: pago-eventos"]
+            direction TB
+            PagoTopic["entrada del topic"]
+            PagoP0["Particion 0&lt;br/&gt;offsets: 0 | 1"]
+            PagoP1["Particion 1&lt;br/&gt;offsets: 0 | 1 | 2"]
+            PagoTopic --&gt;|"key decide"| PagoP0
+            PagoTopic --&gt;|"key decide"| PagoP1
+        end
+    end
+
+    subgraph Consumidores["CONSUMIDORES"]
+        direction LR
+        PythonConsumer["CONSUMER&lt;br/&gt;ec-orden-py&lt;br/&gt;group: ec-orden-py-group"]
+        PagoConsumer["CONSUMER&lt;br/&gt;ec-pago-ms&lt;br/&gt;group: ec-pago-ms-group"]
+    end
+
+    OrdenProducer --&gt;|"publica en&lt;br/&gt;orden-eventos"| OrdenTopic
+    PythonProducer --&gt;|"publica en&lt;br/&gt;orden-eventos"| OrdenTopic
+    PagoProducer --&gt;|"publica en&lt;br/&gt;pago-eventos"| PagoTopic
+
+    OrdenP1 --&gt;|"lee eventos&lt;br/&gt;desde particiones"| PythonConsumer
+    OrdenP0 --&gt;|"lee orden.creada&lt;br/&gt;desde particiones"| PagoConsumer
+    PagoConsumer --&gt;|"procesa pago"| PagoProcessor["PROCESADOR&lt;br/&gt;ec-pago-ms&lt;br/&gt;simula y registra pago"]
+    PagoProcessor --&gt;|"genera resultado"| PagoProducer
+
+    OffsetNota["offset = posicion del evento&lt;br/&gt;dentro de una particion"] -.-&gt; OrdenP0
+    KeyOrden["key, por ejemplo ordenId&lt;br/&gt;ayuda a elegir particion"] -.-&gt; OrdenTopic
+    GroupNota["consumer group guarda&lt;br/&gt;hasta que offset leyo"] -.-&gt; PagoConsumer</code></pre>
+<h2 id="flujo-de-trabajo">Flujo de trabajo<a class="headerlink" href="#flujo-de-trabajo" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Preparar entorno de trabajo.</li>
+<li>Levantar Kafka.</li>
+<li>Probar Kafka en consola.</li>
+<li>Verificar con Kafka UI.</li>
+<li>Probar Python rapido.</li>
+<li>Probar microservicios Spring Boot.</li>
+</ol>
+<h2 id="1-entorno-de-trabajo">1. Entorno de trabajo<a class="headerlink" href="#1-entorno-de-trabajo" title="Permanent link">&para;</a></h2>
+<p>Ubicate en la raiz del repositorio <code>lambdalab</code>. Si lo descargaste en otra ubicacion, usa tu propia ruta.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd </span><span class="n">C</span><span class="p">:\</span><span class="n">261bigdata</span><span class="p">\</span><span class="n">lambdalab</span>
+</code></pre></div>
+<p>Verifica Docker:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="nb">ps</span>
+</code></pre></div>
+<p>Para el paso de microservicios se usa Java 17 y Maven local:</p>
+<div class="highlight"><pre><span></span><code><span class="n">java</span> <span class="n">-version</span>
+<span class="n">mvn</span> <span class="n">-v</span>
+</code></pre></div>
+<p>Si necesitas instalar con Chocolatey:</p>
+<div class="highlight"><pre><span></span><code><span class="n">choco</span> <span class="n">install</span> <span class="n">temurin17</span> <span class="n">-y</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">maven</span> <span class="n">-y</span>
+</code></pre></div>
+<h2 id="2-levantar-kafka">2. Levantar Kafka<a class="headerlink" href="#2-levantar-kafka" title="Permanent link">&para;</a></h2>
 <p>Desde la raiz del repositorio:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd </span><span class="n">kafka</span>
-<span class="n">docker</span> <span class="n">compose</span> <span class="n">up</span> <span class="n">-d</span>
-<span class="n">docker</span> <span class="n">compose</span> <span class="nb">ps</span>
-<span class="nb">cd </span><span class="p">..</span>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">kafka</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">up</span> <span class="n">-d</span>
+<span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">kafka</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="nb">ps</span>
 </code></pre></div>
-<p>Verifica que esten activos el broker Kafka, Kafka UI y Kafka Exporter.</p>
-<h2 id="2-crear-el-topic-de-trabajo">2. Crear el topic de trabajo<a class="headerlink" href="#2-crear-el-topic-de-trabajo" title="Permanent link">&para;</a></h2>
-<p>Entra al contenedor del broker:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd </span><span class="n">kafka</span>
-<span class="n">docker</span> <span class="n">compose</span> <span class="n">exec</span> <span class="n">ec-kafka</span> <span class="n">bash</span>
+<p>Servicios esperados:</p>
+<ul>
+<li><code>lambdalab-kafka</code></li>
+<li><code>lambdalab-kafka-ui</code></li>
+<li><code>lambdalab-kafka-exporter</code></li>
+</ul>
+<h2 id="3-kafka-en-consola">3. Kafka en consola<a class="headerlink" href="#3-kafka-en-consola" title="Permanent link">&para;</a></h2>
+<p>Entra al contenedor Kafka:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">kafka</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">exec</span> <span class="n">kafka</span> <span class="n">bash</span>
 </code></pre></div>
-<p>Crea el topic <code>orden-eventos</code>:</p>
+<p>Crea solo el topic manual <code>orden-eventos</code>:</p>
 <div class="highlight"><pre><span></span><code>/opt/kafka/bin/kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--topic<span class="w"> </span>orden-eventos<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--bootstrap-server<span class="w"> </span>ec-kafka:9092<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--bootstrap-server<span class="w"> </span>kafka:9092<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--partitions<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--replication-factor<span class="w"> </span><span class="m">1</span>
 </code></pre></div>
-<p>Lista los topics:</p>
+<p>Lista topics:</p>
 <div class="highlight"><pre><span></span><code>/opt/kafka/bin/kafka-topics.sh<span class="w"> </span>--list<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--bootstrap-server<span class="w"> </span>ec-kafka:9092
+<span class="w">  </span>--bootstrap-server<span class="w"> </span>kafka:9092
 </code></pre></div>
-<p>Resultado esperado:</p>
+<p>Resultado esperado en esta etapa:</p>
 <div class="highlight"><pre><span></span><code>orden-eventos
 </code></pre></div>
-<h2 id="3-probar-producer-y-consumer-manuales">3. Probar producer y consumer manuales<a class="headerlink" href="#3-probar-producer-y-consumer-manuales" title="Permanent link">&para;</a></h2>
-<p>Dentro del contenedor del broker, abre un producer:</p>
-<div class="highlight"><pre><span></span><code>/opt/kafka/bin/kafka-console-producer.sh<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--topic<span class="w"> </span>orden-eventos<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--bootstrap-server<span class="w"> </span>ec-kafka:9092
+<h3 id="producer-y-consumer-manuales">Producer y consumer manuales<a class="headerlink" href="#producer-y-consumer-manuales" title="Permanent link">&para;</a></h3>
+<p>Terminal 1:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">kafka</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">exec</span> <span class="n">kafka</span> <span class="n">bash</span>
 </code></pre></div>
-<p>Escribe un mensaje de prueba:</p>
-<div class="highlight"><pre><span></span><code>hola
-</code></pre></div>
-<p>En otra terminal, abre un consumer:</p>
 <div class="highlight"><pre><span></span><code>/opt/kafka/bin/kafka-console-consumer.sh<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--topic<span class="w"> </span>orden-eventos<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--bootstrap-server<span class="w"> </span>ec-kafka:9092<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--bootstrap-server<span class="w"> </span>kafka:9092<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--from-beginning
 </code></pre></div>
-<p>Verifica que el mensaje aparezca en el consumer.</p>
-<h2 id="4-probar-producer-y-consumer-en-python">4. Probar producer y consumer en Python<a class="headerlink" href="#4-probar-producer-y-consumer-en-python" title="Permanent link">&para;</a></h2>
-<p>Usa el caso rapido:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd </span><span class="n">uso-rapido</span><span class="p">/</span><span class="n">ec-orden-py</span>
-<span class="n">docker</span> <span class="n">compose</span> <span class="n">up</span> <span class="n">-d</span> <span class="p">-</span><span class="n">-build</span>
+<p>Terminal 2:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">kafka</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">exec</span> <span class="n">kafka</span> <span class="n">bash</span>
 </code></pre></div>
-<p>Ejecuta el producer:</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="n">exec</span> <span class="n">ec-orden-py</span> <span class="n">python</span> <span class="p">/</span><span class="n">app</span><span class="p">/</span><span class="n">producer_ordenes</span><span class="p">.</span><span class="n">py</span>
+<div class="highlight"><pre><span></span><code>/opt/kafka/bin/kafka-console-producer.sh<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--topic<span class="w"> </span>orden-eventos<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--bootstrap-server<span class="w"> </span>kafka:9092
+</code></pre></div>
+<p>Escribe un mensaje:</p>
+<div class="highlight"><pre><span></span><code>hola kafka
+</code></pre></div>
+<p>El consumer manual debe mostrar el mensaje.</p>
+<p>Si solo hiciste la practica manual y quieres limpiar todo:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">kafka</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">down</span> <span class="n">-v</span>
+</code></pre></div>
+<p>Si continuaras con Python y microservicios, no ejecutes ese comando todavia.</p>
+<h2 id="4-kafka-ui">4. Kafka UI<a class="headerlink" href="#4-kafka-ui" title="Permanent link">&para;</a></h2>
+<p>Abre:</p>
+<div class="highlight"><pre><span></span><code>http://localhost:48085
+</code></pre></div>
+<p>Verifica:</p>
+<ul>
+<li>cluster <code>lambdalab</code>;</li>
+<li>topic <code>orden-eventos</code>;</li>
+<li>mensajes manuales;</li>
+<li>columnas <code>partition</code> y <code>offset</code>.</li>
+</ul>
+<p>Los offsets tambien se observan en <code>Consumers</code>, donde Kafka UI muestra el avance del consumer group y el lag.</p>
+<h2 id="5-python-rapido">5. Python rapido<a class="headerlink" href="#5-python-rapido" title="Permanent link">&para;</a></h2>
+<p>Levanta el contenedor:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-rapido</span><span class="p">/</span><span class="n">ec-orden-py</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">up</span> <span class="n">-d</span> <span class="p">-</span><span class="n">-build</span>
 </code></pre></div>
 <p>Ejecuta el consumer:</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="n">exec</span> <span class="n">ec-orden-py</span> <span class="n">python</span> <span class="p">/</span><span class="n">app</span><span class="p">/</span><span class="n">consumer_ordenes</span><span class="p">.</span><span class="n">py</span>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-rapido</span><span class="p">/</span><span class="n">ec-orden-py</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">exec</span> <span class="n">ec-orden-py</span> <span class="n">python</span> <span class="p">/</span><span class="n">app</span><span class="p">/</span><span class="n">consumer_ordenes</span><span class="p">.</span><span class="n">py</span>
 </code></pre></div>
-<p>Ejemplo de evento:</p>
+<p>En otra terminal, ejecuta el producer:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-rapido</span><span class="p">/</span><span class="n">ec-orden-py</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">exec</span> <span class="n">ec-orden-py</span> <span class="n">python</span> <span class="p">/</span><span class="n">app</span><span class="p">/</span><span class="n">producer_ordenes</span><span class="p">.</span><span class="n">py</span>
+</code></pre></div>
+<p>El consumer Python muestra <code>topic</code>, <code>partition</code>, <code>offset</code>, <code>origen</code>, <code>estado</code>, <code>total</code> y <code>payload</code>. Si llega un mensaje manual no JSON, no debe caerse: lo marca como <code>invalid</code> y muestra <code>rawPayload</code>.</p>
+<p>Ejemplo de evento JSON:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;tipoEvento&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orden.creada&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;ordenId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">321</span><span class="p">,</span>
@@ -1251,38 +1439,83 @@ disponibles para consumo posterior con Spark.</p>
 <span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1713350000000</span>
 <span class="p">}</span>
 </code></pre></div>
-<h2 id="5-integrar-con-microservicios-spring-boot">5. Integrar con microservicios Spring Boot<a class="headerlink" href="#5-integrar-con-microservicios-spring-boot" title="Permanent link">&para;</a></h2>
-<h3 id="ordenes-como-producer">Ordenes como producer<a class="headerlink" href="#ordenes-como-producer" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nb">cd </span><span class="n">uso-ms-sb</span><span class="p">/</span><span class="n">ec-orden-ms</span>
-<span class="n">docker</span> <span class="n">compose</span> <span class="n">up</span> <span class="n">-d</span>
-<span class="p">.\</span><span class="n">mvnw</span><span class="p">.</span><span class="n">cmd</span> <span class="n">spring-boot</span><span class="p">:</span><span class="n">run</span>
+<h2 id="6-microservicios-spring-boot">6. Microservicios Spring Boot<a class="headerlink" href="#6-microservicios-spring-boot" title="Permanent link">&para;</a></h2>
+<p>El taller usa perfil <code>dev</code>. Docker Compose levanta solo PostgreSQL y la aplicacion se ejecuta localmente con Maven. El perfil <code>prod</code> no forma parte del alcance operativo de esta sesion.</p>
+<h3 id="61-ordenes-como-producer">6.1 Ordenes como producer<a class="headerlink" href="#61-ordenes-como-producer" title="Permanent link">&para;</a></h3>
+<p>Levanta PostgreSQL:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-ms-sb</span><span class="p">/</span><span class="n">ec-orden-ms</span><span class="p">/</span><span class="n">compose-dev</span><span class="p">.</span><span class="n">yml</span> <span class="n">up</span> <span class="n">-d</span>
+<span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-ms-sb</span><span class="p">/</span><span class="n">ec-orden-ms</span><span class="p">/</span><span class="n">compose-dev</span><span class="p">.</span><span class="n">yml</span> <span class="nb">ps</span>
 </code></pre></div>
-<p>Equivalente en bash macOS/Linux:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>uso-ms-sb/ec-orden-ms
-docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
-./mvnw<span class="w"> </span>spring-boot:run
+<p>Prueba la DB:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">exec</span> <span class="n">-it</span> <span class="n">lambdalab-postgres-ec-orden-ms-dev</span> <span class="n">psql</span> <span class="n">-U</span> <span class="n">ecom</span> <span class="n">-d</span> <span class="n">db_ec_orden_ms</span> <span class="n">-c</span> <span class="s2">&quot;SELECT current_database();&quot;</span>
+<span class="n">docker</span> <span class="n">exec</span> <span class="n">-it</span> <span class="n">lambdalab-postgres-ec-orden-ms-dev</span> <span class="n">psql</span> <span class="n">-U</span> <span class="n">ecom</span> <span class="n">-d</span> <span class="n">db_ec_orden_ms</span> <span class="n">-c</span> <span class="s2">&quot;\dt&quot;</span>
 </code></pre></div>
-<p>Publica una orden:</p>
+<p>Ejecuta la aplicacion:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd </span><span class="n">C</span><span class="p">:\</span><span class="n">261bigdata</span><span class="p">\</span><span class="n">lambdalab</span><span class="p">\</span><span class="n">uso-ms-sb</span><span class="p">\</span><span class="n">ec-orden-ms</span>
+<span class="n">mvn</span> <span class="n">spring-boot</span><span class="p">:</span><span class="n">run</span>
+</code></pre></div>
+<p>Crea una orden:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Invoke-RestMethod</span> <span class="p">`</span>
   <span class="n">-Method</span> <span class="n">Post</span> <span class="p">`</span>
   <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:49021/ordenes&quot;</span> <span class="p">`</span>
   <span class="n">-ContentType</span> <span class="s2">&quot;application/json&quot;</span> <span class="p">`</span>
   <span class="n">-Body</span> <span class="s1">&#39;{&quot;usuarioId&quot;:1,&quot;total&quot;:100}&#39;</span>
 </code></pre></div>
-<p>Equivalente en bash macOS/Linux:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://localhost:49021/ordenes&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;usuarioId&quot;:1,&quot;total&quot;:100}&#39;</span>
+<p>Consulta datos:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">exec</span> <span class="n">-it</span> <span class="n">lambdalab-postgres-ec-orden-ms-dev</span> <span class="n">psql</span> <span class="n">-U</span> <span class="n">ecom</span> <span class="n">-d</span> <span class="n">db_ec_orden_ms</span> <span class="n">-c</span> <span class="s2">&quot;\dt&quot;</span>
+<span class="n">docker</span> <span class="n">exec</span> <span class="n">-it</span> <span class="n">lambdalab-postgres-ec-orden-ms-dev</span> <span class="n">psql</span> <span class="n">-U</span> <span class="n">ecom</span> <span class="n">-d</span> <span class="n">db_ec_orden_ms</span> <span class="n">-c</span> <span class="s2">&quot;SELECT * FROM ordenes;&quot;</span>
 </code></pre></div>
-<p>Lista las órdenes registradas:</p>
+<p>Busca en logs:</p>
+<div class="highlight"><pre><span></span><code>service=ec-orden-ms component=producer topic=orden-eventos eventType=orden.creada status=published
+</code></pre></div>
+<h3 id="62-pagos-como-consumer-y-producer">6.2 Pagos como consumer y producer<a class="headerlink" href="#62-pagos-como-consumer-y-producer" title="Permanent link">&para;</a></h3>
+<p>Levanta PostgreSQL:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-ms-sb</span><span class="p">/</span><span class="n">ec-pago-ms</span><span class="p">/</span><span class="n">compose-dev</span><span class="p">.</span><span class="n">yml</span> <span class="n">up</span> <span class="n">-d</span>
+<span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-ms-sb</span><span class="p">/</span><span class="n">ec-pago-ms</span><span class="p">/</span><span class="n">compose-dev</span><span class="p">.</span><span class="n">yml</span> <span class="nb">ps</span>
+</code></pre></div>
+<p>Prueba la DB:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">exec</span> <span class="n">-it</span> <span class="n">lambdalab-postgres-ec-pago-ms-dev</span> <span class="n">psql</span> <span class="n">-U</span> <span class="n">ecom</span> <span class="n">-d</span> <span class="n">db_ec_pago_ms</span> <span class="n">-c</span> <span class="s2">&quot;SELECT current_database();&quot;</span>
+<span class="n">docker</span> <span class="n">exec</span> <span class="n">-it</span> <span class="n">lambdalab-postgres-ec-pago-ms-dev</span> <span class="n">psql</span> <span class="n">-U</span> <span class="n">ecom</span> <span class="n">-d</span> <span class="n">db_ec_pago_ms</span> <span class="n">-c</span> <span class="s2">&quot;\dt&quot;</span>
+</code></pre></div>
+<p>Ejecuta la aplicacion:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd </span><span class="n">C</span><span class="p">:\</span><span class="n">261bigdata</span><span class="p">\</span><span class="n">lambdalab</span><span class="p">\</span><span class="n">uso-ms-sb</span><span class="p">\</span><span class="n">ec-pago-ms</span>
+<span class="n">mvn</span> <span class="n">spring-boot</span><span class="p">:</span><span class="n">run</span>
+</code></pre></div>
+<p>Crea otra orden para disparar el flujo:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Invoke-RestMethod</span> <span class="p">`</span>
-  <span class="n">-Method</span> <span class="n">Get</span> <span class="p">`</span>
-  <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:49021/ordenes&quot;</span>
+  <span class="n">-Method</span> <span class="n">Post</span> <span class="p">`</span>
+  <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:49021/ordenes&quot;</span> <span class="p">`</span>
+  <span class="n">-ContentType</span> <span class="s2">&quot;application/json&quot;</span> <span class="p">`</span>
+  <span class="n">-Body</span> <span class="s1">&#39;{&quot;usuarioId&quot;:2,&quot;total&quot;:150}&#39;</span>
 </code></pre></div>
-<p>Equivalente en bash macOS/Linux:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://localhost:49021/ordenes&quot;</span>
+<p>Busca en logs:</p>
+<div class="highlight"><pre><span></span><code>service=ec-pago-ms component=consumer topic=orden-eventos eventType=orden.creada status=consumed
+service=ec-pago-ms component=processor ordenId=&lt;id-generado&gt; estadoPago=APROBADO status=processed
+service=ec-pago-ms component=producer topic=pago-eventos eventType=pago.aprobado status=published
 </code></pre></div>
-<p>Evento esperado en Kafka:</p>
+<p>Consulta datos:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">exec</span> <span class="n">-it</span> <span class="n">lambdalab-postgres-ec-pago-ms-dev</span> <span class="n">psql</span> <span class="n">-U</span> <span class="n">ecom</span> <span class="n">-d</span> <span class="n">db_ec_pago_ms</span> <span class="n">-c</span> <span class="s2">&quot;\dt&quot;</span>
+<span class="n">docker</span> <span class="n">exec</span> <span class="n">-it</span> <span class="n">lambdalab-postgres-ec-pago-ms-dev</span> <span class="n">psql</span> <span class="n">-U</span> <span class="n">ecom</span> <span class="n">-d</span> <span class="n">db_ec_pago_ms</span> <span class="n">-c</span> <span class="s2">&quot;SELECT * FROM pagos;&quot;</span>
+</code></pre></div>
+<p>En Kafka UI verifica:</p>
+<ul>
+<li><code>orden-eventos</code> con eventos <code>orden.creada</code>;</li>
+<li><code>pago-eventos</code> con eventos <code>pago.aprobado</code> o <code>pago.rechazado</code>;</li>
+<li>consumer group <code>ec-pago-ms-group</code>.</li>
+</ul>
+<h2 id="contratos-de-eventos">Contratos de eventos<a class="headerlink" href="#contratos-de-eventos" title="Permanent link">&para;</a></h2>
+<h3 id="ordencreada"><code>orden.creada</code><a class="headerlink" href="#ordencreada" title="Permanent link">&para;</a></h3>
+<p>Topic: <code>orden-eventos</code></p>
+<p>Productores:</p>
+<ul>
+<li><code>ec-orden-py</code></li>
+<li><code>ec-orden-ms</code></li>
+</ul>
+<p>Consumidores:</p>
+<ul>
+<li><code>ec-orden-py</code></li>
+<li><code>ec-pago-ms</code></li>
+</ul>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;tipoEvento&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orden.creada&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;ordenId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
@@ -1292,91 +1525,47 @@ docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> 
 <span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1713350000000</span>
 <span class="p">}</span>
 </code></pre></div>
-<h3 id="pagos-como-consumer-y-producer">Pagos como consumer y producer<a class="headerlink" href="#pagos-como-consumer-y-producer" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nb">cd </span><span class="n">uso-ms-sb</span><span class="p">/</span><span class="n">ec-pago-ms</span>
-<span class="n">docker</span> <span class="n">compose</span> <span class="n">up</span> <span class="n">-d</span>
-<span class="p">.\</span><span class="n">mvnw</span><span class="p">.</span><span class="n">cmd</span> <span class="n">spring-boot</span><span class="p">:</span><span class="n">run</span>
-</code></pre></div>
-<p>Equivalente en bash macOS/Linux:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>uso-ms-sb/ec-pago-ms
-docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
-./mvnw<span class="w"> </span>spring-boot:run
-</code></pre></div>
-<p>Verifica que <code>ec-pago-ms</code> consuma <code>orden-eventos</code>, procese el pago y publique en <code>pago-eventos</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">Invoke-RestMethod</span> <span class="p">`</span>
-  <span class="n">-Method</span> <span class="n">Get</span> <span class="p">`</span>
-  <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:49031/pagos&quot;</span>
-
-<span class="nb">Invoke-RestMethod</span> <span class="p">`</span>
-  <span class="n">-Method</span> <span class="n">Get</span> <span class="p">`</span>
-  <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:49031/pagos/1&quot;</span>
-</code></pre></div>
-<p>Equivalente en bash macOS/Linux:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://localhost:49031/pagos&quot;</span>
-
-curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://localhost:49031/pagos/1&quot;</span>
+<h3 id="evento-de-pago">Evento de pago<a class="headerlink" href="#evento-de-pago" title="Permanent link">&para;</a></h3>
+<p>Topic: <code>pago-eventos</code></p>
+<p>Productor:</p>
+<ul>
+<li><code>ec-pago-ms</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;tipoEvento&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pago.aprobado&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;ordenId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;monto&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">100.0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;estado&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APROBADO&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;origen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ec-pago-ms&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1713350000000</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="evidencias">Evidencias<a class="headerlink" href="#evidencias" title="Permanent link">&para;</a></h2>
 <p>Adjunta:</p>
 <ul>
-<li>captura de <code>docker compose ps</code> del entorno Kafka;</li>
-<li>captura de Kafka UI con el topic <code>orden-eventos</code>;</li>
-<li>captura del producer y consumer manual;</li>
-<li>captura del producer y consumer en Python;</li>
-<li>salida del <code>POST /ordenes</code>;</li>
-<li>evidencia del consumo de <code>ec-pago-ms</code> y publicación en <code>pago-eventos</code>.</li>
+<li><code>docker ps</code>;</li>
+<li><code>docker compose -f kafka/compose.yml ps</code>;</li>
+<li>producer y consumer manual;</li>
+<li>Kafka UI con <code>orden-eventos</code>;</li>
+<li>producer y consumer Python;</li>
+<li><code>POST /ordenes</code>;</li>
+<li>consulta <code>SELECT * FROM ordenes</code>;</li>
+<li>logs de <code>ec-orden-ms</code> publicando;</li>
+<li>logs de <code>ec-pago-ms</code> consumiendo y publicando;</li>
+<li>consulta <code>SELECT * FROM pagos</code>;</li>
+<li>Kafka UI con <code>pago-eventos</code>.</li>
 </ul>
-<h2 id="actividad-autonoma">Actividad autónoma<a class="headerlink" href="#actividad-autonoma" title="Permanent link">&para;</a></h2>
-<p>Documenta el contrato del evento <code>orden.creada</code>.</p>
-<table>
-<thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Descripción</th>
-<th>Ejemplo</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>tipoEvento</code></td>
-<td>string</td>
-<td>Tipo de evento publicado</td>
-<td><code>orden.creada</code></td>
-</tr>
-<tr>
-<td><code>ordenId</code></td>
-<td>number</td>
-<td>Identificador de la orden</td>
-<td><code>321</code></td>
-</tr>
-<tr>
-<td><code>total</code></td>
-<td>number</td>
-<td>Monto de la orden</td>
-<td><code>180.0</code></td>
-</tr>
-<tr>
-<td><code>estado</code></td>
-<td>string</td>
-<td>Estado de la orden</td>
-<td><code>PENDIENTE</code></td>
-</tr>
-<tr>
-<td><code>origen</code></td>
-<td>string</td>
-<td>Aplicacion productora</td>
-<td><code>ec-orden-ms</code></td>
-</tr>
-<tr>
-<td><code>timestamp</code></td>
-<td>number</td>
-<td>Unix timestamp en milisegundos</td>
-<td><code>1713350000000</code></td>
-</tr>
-</tbody>
-</table>
-<p>Incluye también el topic, productor, consumidor y estrategia inicial de particionado.</p>
+<h2 id="limpieza">Limpieza<a class="headerlink" href="#limpieza" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-ms-sb</span><span class="p">/</span><span class="n">ec-pago-ms</span><span class="p">/</span><span class="n">compose-dev</span><span class="p">.</span><span class="n">yml</span> <span class="n">down</span>
+<span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-ms-sb</span><span class="p">/</span><span class="n">ec-orden-ms</span><span class="p">/</span><span class="n">compose-dev</span><span class="p">.</span><span class="n">yml</span> <span class="n">down</span>
+<span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-rapido</span><span class="p">/</span><span class="n">ec-orden-py</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">down</span>
+<span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">kafka</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">down</span>
+</code></pre></div>
+<p>Si deseas borrar volumenes:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-ms-sb</span><span class="p">/</span><span class="n">ec-pago-ms</span><span class="p">/</span><span class="n">compose-dev</span><span class="p">.</span><span class="n">yml</span> <span class="n">down</span> <span class="n">-v</span>
+<span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-ms-sb</span><span class="p">/</span><span class="n">ec-orden-ms</span><span class="p">/</span><span class="n">compose-dev</span><span class="p">.</span><span class="n">yml</span> <span class="n">down</span> <span class="n">-v</span>
+<span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">kafka</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">down</span> <span class="n">-v</span>
+</code></pre></div>
 
 
 

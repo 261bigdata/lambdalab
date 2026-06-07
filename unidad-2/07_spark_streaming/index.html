@@ -638,15 +638,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#paso-3-definir-el-esquema-comun-del-evento" class="md-nav__link">
+  <a href="#paso-3-definir-el-esquema-comaon-del-evento" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Paso 3. Definir el esquema común del evento
+        Paso 3. Definir el esquema comÃºn del evento
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Paso 3. Definir el esquema común del evento">
+    <nav class="md-nav" aria-label="Paso 3. Definir el esquema comÃºn del evento">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -688,10 +688,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#paso-6-transformacion-de-ejemplo" class="md-nav__link">
+  <a href="#paso-6-transformacia3n-de-ejemplo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Paso 6. Transformación de ejemplo
+        Paso 6. TransformaciÃ³n de ejemplo
       
     </span>
   </a>
@@ -1090,15 +1090,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#paso-3-definir-el-esquema-comun-del-evento" class="md-nav__link">
+  <a href="#paso-3-definir-el-esquema-comaon-del-evento" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Paso 3. Definir el esquema común del evento
+        Paso 3. Definir el esquema comÃºn del evento
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Paso 3. Definir el esquema común del evento">
+    <nav class="md-nav" aria-label="Paso 3. Definir el esquema comÃºn del evento">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1140,10 +1140,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#paso-6-transformacion-de-ejemplo" class="md-nav__link">
+  <a href="#paso-6-transformacia3n-de-ejemplo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Paso 6. Transformación de ejemplo
+        Paso 6. TransformaciÃ³n de ejemplo
       
     </span>
   </a>
@@ -1307,30 +1307,26 @@
 
 <h1 id="consumer-kafka-con-spark-structured-streaming">Consumer Kafka con Spark Structured Streaming<a class="headerlink" href="#consumer-kafka-con-spark-structured-streaming" title="Permanent link">&para;</a></h1>
 <p>Cuaderno base para consumir el topic <code>orden-eventos</code> desde Spark y parsear el JSON
-con un esquema común que funcione tanto si el productor fue hecho en <strong>Java</strong> como en <strong>Python</strong>.</p>
+con un esquema comÃºn que funcione tanto si el productor fue hecho en <strong>Java</strong> como en <strong>Python</strong>.</p>
 <h2 id="objetivo">Objetivo<a class="headerlink" href="#objetivo" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Conectarse a Kafka</li>
 <li>Leer mensajes del topic <code>orden-eventos</code></li>
 <li>Convertir <code>value</code> a texto</li>
 <li>Parsear el JSON</li>
-<li>Filtrar eventos válidos</li>
+<li>Filtrar eventos vÃ¡lidos</li>
 <li>Mostrar en consola los eventos con <code>total &gt; 100</code></li>
 </ol>
 <h2 id="datos-del-entorno">Datos del entorno<a class="headerlink" href="#datos-del-entorno" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Kafka broker interno: <code>ec-kafka:9092</code></li>
 <li>Topic: <code>orden-eventos</code></li>
-<li>Spark: paquete Kafka para Spark SQL</li>
+<li>Spark: conector Kafka disponible desde el entorno</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
 
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
     <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;KafkaSparkOrdenes&quot;</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">config</span><span class="p">(</span>
-        <span class="s2">&quot;spark.jars.packages&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;org.apache.spark:spark-sql-kafka-0-10_2.13:4.1.1&quot;</span>
-    <span class="p">)</span> \
     <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 
 <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">setLogLevel</span><span class="p">(</span><span class="s2">&quot;WARN&quot;</span><span class="p">)</span>
@@ -1339,7 +1335,7 @@ con un esquema común que funcione tanto si el productor fue hecho en <strong>Ja
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Scala JVM:&quot;</span><span class="p">,</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">_jvm</span><span class="o">.</span><span class="n">scala</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">Properties</span><span class="o">.</span><span class="n">versionNumberString</span><span class="p">())</span>
 </code></pre></div>
 <h2 id="paso-1-leer-el-stream-desde-kafka">Paso 1. Leer el stream desde Kafka<a class="headerlink" href="#paso-1-leer-el-stream-desde-kafka" title="Permanent link">&para;</a></h2>
-<p>Aquí todavía no parseamos el JSON. Solo leemos los mensajes crudos del topic.</p>
+<p>AquÃ­ todavÃ­a no parseamos el JSON. Solo leemos los mensajes crudos del topic.</p>
 <div class="highlight"><pre><span></span><code><span class="n">df_kafka</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span> \
     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;kafka&quot;</span><span class="p">)</span> \
     <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;kafka.bootstrap.servers&quot;</span><span class="p">,</span> <span class="s2">&quot;ec-kafka:9092&quot;</span><span class="p">)</span> \
@@ -1354,7 +1350,7 @@ con un esquema común que funcione tanto si el productor fue hecho en <strong>Ja
 <div class="highlight"><pre><span></span><code><span class="n">df_texto</span> <span class="o">=</span> <span class="n">df_kafka</span><span class="o">.</span><span class="n">selectExpr</span><span class="p">(</span><span class="s2">&quot;CAST(value AS STRING) AS mensaje&quot;</span><span class="p">)</span>
 <span class="n">df_texto</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># Vista rápida del mensaje en texto</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Vista rÃ¡pida del mensaje en texto</span>
 <span class="c1"># Si quieres depurar primero sin parsear JSON, ejecuta esta celda.</span>
 <span class="n">query_texto</span> <span class="o">=</span> <span class="n">df_texto</span><span class="o">.</span><span class="n">writeStream</span> \
     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;console&quot;</span><span class="p">)</span> \
@@ -1362,10 +1358,10 @@ con un esquema común que funcione tanto si el productor fue hecho en <strong>Ja
     <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;truncate&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> \
     <span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </code></pre></div>
-<p>Cuando termines de ver mensajes crudos, detén la consulta antes de seguir:</p>
+<p>Cuando termines de ver mensajes crudos, detÃ©n la consulta antes de seguir:</p>
 <div class="highlight"><pre><span></span><code><span class="n">query_texto</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </code></pre></div>
-<h2 id="paso-3-definir-el-esquema-comun-del-evento">Paso 3. Definir el esquema común del evento<a class="headerlink" href="#paso-3-definir-el-esquema-comun-del-evento" title="Permanent link">&para;</a></h2>
+<h2 id="paso-3-definir-el-esquema-comaon-del-evento">Paso 3. Definir el esquema comÃºn del evento<a class="headerlink" href="#paso-3-definir-el-esquema-comaon-del-evento" title="Permanent link">&para;</a></h2>
 <p>Este contrato permite que Spark interprete igual los mensajes vengan de Java o de Python.</p>
 <h3 id="evento-esperado">Evento esperado<a class="headerlink" href="#evento-esperado" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1400,7 +1396,7 @@ con un esquema común que funcione tanto si el productor fue hecho en <strong>Ja
 <div class="highlight"><pre><span></span><code><span class="n">df_parsed</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="paso-5-validar-registros">Paso 5. Validar registros<a class="headerlink" href="#paso-5-validar-registros" title="Permanent link">&para;</a></h2>
-<p>Filtramos mensajes que sí tengan al menos el contrato básico:
+<p>Filtramos mensajes que sÃ­ tengan al menos el contrato bÃ¡sico:
 - <code>tipoEvento</code>
 - <code>ordenId</code>
 - <code>total</code>
@@ -1412,8 +1408,8 @@ con un esquema común que funcione tanto si el productor fue hecho en <strong>Ja
     <span class="n">col</span><span class="p">(</span><span class="s2">&quot;estado&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">()</span>
 <span class="p">)</span>
 </code></pre></div>
-<h2 id="paso-6-transformacion-de-ejemplo">Paso 6. Transformación de ejemplo<a class="headerlink" href="#paso-6-transformacion-de-ejemplo" title="Permanent link">&para;</a></h2>
-<p>En este caso, solo dejamos órdenes con <code>total &gt; 100</code>.</p>
+<h2 id="paso-6-transformacia3n-de-ejemplo">Paso 6. TransformaciÃ³n de ejemplo<a class="headerlink" href="#paso-6-transformacia3n-de-ejemplo" title="Permanent link">&para;</a></h2>
+<p>En este caso, solo dejamos Ã³rdenes con <code>total &gt; 100</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="n">df_transformed</span> <span class="o">=</span> <span class="n">df_validado</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;total&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="paso-7-salida-a-consola">Paso 7. Salida a consola<a class="headerlink" href="#paso-7-salida-a-consola" title="Permanent link">&para;</a></h2>
@@ -1427,7 +1423,7 @@ con un esquema común que funcione tanto si el productor fue hecho en <strong>Ja
 <span class="c1">#query_console.awaitTermination()</span>
 </code></pre></div>
 <h2 id="detener-la-consulta">Detener la consulta<a class="headerlink" href="#detener-la-consulta" title="Permanent link">&para;</a></h2>
-<p>Si necesitas detener manualmente la ejecución, puedes usar:</p>
+<p>Si necesitas detener manualmente la ejecuciÃ³n, puedes usar:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">#query_console.stop()</span>
 </code></pre></div>
 <h2 id="ejemplos-de-productores-compatibles">Ejemplos de productores compatibles<a class="headerlink" href="#ejemplos-de-productores-compatibles" title="Permanent link">&para;</a></h2>
