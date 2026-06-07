@@ -1282,53 +1282,42 @@
 <li><code>key</code>: valor que ayuda a Kafka a decidir en que particion cae el evento.</li>
 </ul>
 <p>La <code>key</code> no tiene que ser siempre una primary key relacional. Puede ser <code>ordenId</code>, <code>_id</code> de MongoDB, <code>deviceId</code>, <code>sessionId</code>, <code>correlationId</code> o un UUID generado por la aplicacion.</p>
-<pre class="mermaid"><code>flowchart TB
-    subgraph Productores["PRODUCTORES"]
-        direction LR
-        OrdenProducer["PRODUCER&lt;br/&gt;ec-orden-ms&lt;br/&gt;orden.creada"]
-        PythonProducer["PRODUCER&lt;br/&gt;ec-orden-py&lt;br/&gt;orden.creada"]
-        PagoProducer["PRODUCER&lt;br/&gt;ec-pago-ms&lt;br/&gt;pago.aprobado / pago.rechazado"]
-    end
+<pre class="mermaid"><code>flowchart LR
+    OffsetNota["offset = posicion del evento&lt;br/&gt;dentro de una particion"]
+    OrdenProducer["PRODUCER&lt;br/&gt;ec-orden-ms&lt;br/&gt;orden.creada"]
+    PythonProducer["PRODUCER&lt;br/&gt;ec-orden-py&lt;br/&gt;orden.creada"]
+    KeyOrden["key = ordenId"]
 
-    subgraph KafkaCluster["BROKER DE KAFKA - kafka:9092"]
-        direction LR
-        subgraph OrdenBox["TOPIC: orden-eventos"]
-            direction TB
-            OrdenTopic["entrada del topic"]
-            OrdenP0["Particion 0&lt;br/&gt;offsets: 0 | 1 | 2 | 3"]
-            OrdenP1["Particion 1&lt;br/&gt;offsets: 0 | 1 | 2"]
-            OrdenTopic --&gt;|"key decide"| OrdenP0
-            OrdenTopic --&gt;|"key decide"| OrdenP1
-        end
-
-        subgraph PagoBox["TOPIC: pago-eventos"]
-            direction TB
-            PagoTopic["entrada del topic"]
-            PagoP0["Particion 0&lt;br/&gt;offsets: 0 | 1"]
-            PagoP1["Particion 1&lt;br/&gt;offsets: 0 | 1 | 2"]
-            PagoTopic --&gt;|"key decide"| PagoP0
-            PagoTopic --&gt;|"key decide"| PagoP1
+    subgraph KafkaOrden["BROKER KAFKA (kafka:9092)"]
+        direction TB
+        subgraph OrdenTopic["TOPIC: orden-eventos"]
+            OrdenP0["Particion 0&lt;br/&gt;offsets: 0 -&gt; 1 -&gt; 2 -&gt; 3"]
         end
     end
 
-    subgraph Consumidores["CONSUMIDORES"]
-        direction LR
-        PythonConsumer["CONSUMER&lt;br/&gt;ec-orden-py&lt;br/&gt;group: ec-orden-py-group"]
-        PagoConsumer["CONSUMER&lt;br/&gt;ec-pago-ms&lt;br/&gt;group: ec-pago-ms-group"]
+    PythonConsumer["CONSUMER&lt;br/&gt;ec-orden-py&lt;br/&gt;group: ec-orden-py-group"]
+    PagoConsumer["CONSUMER&lt;br/&gt;ec-pago-ms&lt;br/&gt;group: ec-pago-ms-group"]
+    GroupNota["consumer group guarda&lt;br/&gt;hasta que offset leyo"]
+    PagoProducer["PRODUCER&lt;br/&gt;ec-pago-ms&lt;br/&gt;pago.aprobado / pago.rechazado"]
+
+    subgraph KafkaPago["BROKER KAFKA (kafka:9092)"]
+        direction TB
+        subgraph PagoTopic["TOPIC: pago-eventos"]
+            PagoP0["Particion 0&lt;br/&gt;offsets: 0 -&gt; 1"]
+        end
     end
 
-    OrdenProducer --&gt;|"publica en&lt;br/&gt;orden-eventos"| OrdenTopic
-    PythonProducer --&gt;|"publica en&lt;br/&gt;orden-eventos"| OrdenTopic
-    PagoProducer --&gt;|"publica en&lt;br/&gt;pago-eventos"| PagoTopic
+    OffsetNota -.-&gt; OrdenP0
+    OrdenProducer --&gt;|"publica en topic&lt;br/&gt;orden-eventos"| OrdenTopic
+    PythonProducer --&gt;|"publica en topic&lt;br/&gt;orden-eventos"| OrdenTopic
+    KeyOrden -.-&gt;|"ayuda a elegir&lt;br/&gt;particion"| OrdenTopic
 
-    OrdenP1 --&gt;|"lee eventos&lt;br/&gt;desde particiones"| PythonConsumer
-    OrdenP0 --&gt;|"lee orden.creada&lt;br/&gt;desde particiones"| PagoConsumer
-    PagoConsumer --&gt;|"procesa pago"| PagoProcessor["PROCESADOR&lt;br/&gt;ec-pago-ms&lt;br/&gt;simula y registra pago"]
-    PagoProcessor --&gt;|"genera resultado"| PagoProducer
+    OrdenP0 --&gt;|"lee desde&lt;br/&gt;orden-eventos"| PythonConsumer
+    OrdenP0 --&gt;|"lee desde&lt;br/&gt;orden-eventos"| PagoConsumer
+    GroupNota -.-&gt; PagoConsumer
 
-    OffsetNota["offset = posicion del evento&lt;br/&gt;dentro de una particion"] -.-&gt; OrdenP0
-    KeyOrden["key, por ejemplo ordenId&lt;br/&gt;ayuda a elegir particion"] -.-&gt; OrdenTopic
-    GroupNota["consumer group guarda&lt;br/&gt;hasta que offset leyo"] -.-&gt; PagoConsumer</code></pre>
+    PagoConsumer --&gt;|"procesa pago"| PagoProducer
+    PagoProducer --&gt;|"publica en topic&lt;br/&gt;pago-eventos"| PagoTopic</code></pre>
 <h2 id="flujo-de-trabajo">Flujo de trabajo<a class="headerlink" href="#flujo-de-trabajo" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Preparar entorno de trabajo.</li>
