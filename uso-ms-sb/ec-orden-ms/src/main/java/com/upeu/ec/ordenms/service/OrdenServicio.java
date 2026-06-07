@@ -1,8 +1,8 @@
-package com.upeu.ec.ordenms.servicio;
+package com.upeu.ec.ordenms.service;
 
-import com.upeu.ec.ordenms.entidad.Orden;
-import com.upeu.ec.ordenms.evento.EventoOrden;
-import com.upeu.ec.ordenms.repositorio.OrdenRepositorio;
+import com.upeu.ec.ordenms.entity.Orden;
+import com.upeu.ec.ordenms.event.EventoOrden;
+import com.upeu.ec.ordenms.repository.OrdenRepositorio;
 import java.time.Instant;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.upeu.ec.pagoms.entidad;
+package com.upeu.ec.ordenms.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,20 +11,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "pagos")
+@Table(name = "ordenes")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Pago {
+public class Orden {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long ordenId;
+    private Long usuarioId;
 
-    private Double monto;
+    private Double total;
 
     private String estado;
 }

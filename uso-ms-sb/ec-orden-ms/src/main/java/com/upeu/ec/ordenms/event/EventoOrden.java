@@ -1,4 +1,4 @@
-package com.upeu.ec.pagoms.evento;
+package com.upeu.ec.ordenms.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

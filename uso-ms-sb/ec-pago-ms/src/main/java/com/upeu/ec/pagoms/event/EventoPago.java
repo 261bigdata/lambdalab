@@ -1,4 +1,4 @@
-package com.upeu.ec.ordenms.evento;
+package com.upeu.ec.pagoms.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventoOrden {
+public class EventoPago {
 
     private String tipoEvento;
     private Long ordenId;
-    private Double total;
+    private Double monto;
     private String estado;
     private String origen;
     private Long timestamp;

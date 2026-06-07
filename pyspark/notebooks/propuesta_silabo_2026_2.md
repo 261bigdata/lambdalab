@@ -103,10 +103,10 @@ flowchart LR
 
     subgraph UseMS["uso-ms-sb"]
         direction TB
-        OrdenMS["ec-orden-ms<br/>API localhost:49021<br/>publica orden-eventos"]
-        OrdenDB["mysql ordenes<br/>localhost:49020"]
-        PagoMS["ec-pago-ms<br/>API localhost:49031<br/>consume orden-eventos<br/>publica pago-eventos"]
-        PagoDB["mysql pagos<br/>localhost:49030"]
+        OrdenMS["ec-orden-ms<br/>API de ordenes<br/>publica orden-eventos"]
+        OrdenDB["postgres ordenes dev<br/>localhost:49020"]
+        PagoMS["ec-pago-ms<br/>API de pagos<br/>consume orden-eventos<br/>publica pago-eventos"]
+        PagoDB["postgres pagos dev<br/>localhost:49030"]
         OrdenMS --> OrdenDB
         PagoMS --> PagoDB
     end

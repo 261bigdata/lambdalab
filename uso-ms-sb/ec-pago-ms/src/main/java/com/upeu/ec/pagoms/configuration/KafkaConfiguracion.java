@@ -1,7 +1,7 @@
-package com.upeu.ec.pagoms.configuracion;
+package com.upeu.ec.pagoms.configuration;
 
-import com.upeu.ec.pagoms.evento.EventoOrden;
-import com.upeu.ec.pagoms.evento.EventoPago;
+import com.upeu.ec.pagoms.event.EventoOrden;
+import com.upeu.ec.pagoms.event.EventoPago;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;

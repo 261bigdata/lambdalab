@@ -164,10 +164,10 @@ Servicios disponibles:
 | `obs` | Prometheus | 49090 | 9090 |
 | `obs` | Grafana | 43000 | 3000 |
 | `obs` | Loki, comentado | 43100 | 3100 |
-| `uso-ms-sb/ec-orden-ms` | MySQL ordenes | 49020 | 3306 |
-| `uso-ms-sb/ec-orden-ms` | API ordenes | 49021 | 9021 |
-| `uso-ms-sb/ec-pago-ms` | MySQL pagos | 49030 | 3306 |
-| `uso-ms-sb/ec-pago-ms` | API pagos | 49031 | 9031 |
+| `uso-ms-sb/ec-orden-ms` | PostgreSQL ordenes dev | 49020 | 5432 |
+| `uso-ms-sb/ec-orden-ms` | API ordenes dev | 49021 | 49021 |
+| `uso-ms-sb/ec-pago-ms` | PostgreSQL pagos dev | 49030 | 5432 |
+| `uso-ms-sb/ec-pago-ms` | API pagos dev | 49031 | 49031 |
 | `uso-rapido/ec-orden-py` | Python producer/consumer | - | - |
 
 ## Casos de uso

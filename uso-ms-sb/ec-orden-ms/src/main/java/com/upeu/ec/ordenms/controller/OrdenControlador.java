@@ -1,7 +1,7 @@
-package com.upeu.ec.ordenms.controlador;
+package com.upeu.ec.ordenms.controller;
 
-import com.upeu.ec.ordenms.entidad.Orden;
-import com.upeu.ec.ordenms.servicio.OrdenServicio;
+import com.upeu.ec.ordenms.entity.Orden;
+import com.upeu.ec.ordenms.service.OrdenServicio;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

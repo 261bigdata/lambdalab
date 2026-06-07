@@ -1,6 +1,6 @@
-package com.upeu.ec.ordenms.configuracion;
+package com.upeu.ec.ordenms.configuration;
 
-import com.upeu.ec.ordenms.evento.EventoOrden;
+import com.upeu.ec.ordenms.event.EventoOrden;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.producer.ProducerConfig;

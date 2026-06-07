@@ -1,7 +1,7 @@
-package com.upeu.ec.pagoms.controlador;
+package com.upeu.ec.pagoms.controller;
 
-import com.upeu.ec.pagoms.entidad.Pago;
-import com.upeu.ec.pagoms.servicio.PagoServicio;
+import com.upeu.ec.pagoms.entity.Pago;
+import com.upeu.ec.pagoms.service.PagoServicio;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

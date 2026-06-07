@@ -1,6 +1,6 @@
-package com.upeu.ec.ordenms.servicio;
+package com.upeu.ec.ordenms.service;
 
-import com.upeu.ec.ordenms.evento.EventoOrden;
+import com.upeu.ec.ordenms.event.EventoOrden;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

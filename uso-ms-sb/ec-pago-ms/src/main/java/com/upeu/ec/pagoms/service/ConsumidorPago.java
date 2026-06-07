@@ -1,9 +1,9 @@
-package com.upeu.ec.pagoms.servicio;
+package com.upeu.ec.pagoms.service;
 
-import com.upeu.ec.pagoms.entidad.Pago;
-import com.upeu.ec.pagoms.evento.EventoOrden;
-import com.upeu.ec.pagoms.evento.EventoPago;
-import com.upeu.ec.pagoms.repositorio.PagoRepositorio;
+import com.upeu.ec.pagoms.entity.Pago;
+import com.upeu.ec.pagoms.event.EventoOrden;
+import com.upeu.ec.pagoms.event.EventoPago;
+import com.upeu.ec.pagoms.repository.PagoRepositorio;
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

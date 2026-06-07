@@ -1,7 +1,7 @@
-package com.upeu.ec.pagoms.servicio;
+package com.upeu.ec.pagoms.service;
 
-import com.upeu.ec.pagoms.entidad.Pago;
-import com.upeu.ec.pagoms.repositorio.PagoRepositorio;
+import com.upeu.ec.pagoms.entity.Pago;
+import com.upeu.ec.pagoms.repository.PagoRepositorio;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
