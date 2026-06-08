@@ -60,7 +60,8 @@ configuraciones mediante experimentación distribuida.
 
 - Sesión 6: Ingesta en tiempo real (Kafka).
 - Sesión 7: Procesamiento en Streaming con Spark.
-- Sesión 8: Observabilidad (Grafana) y Costos.
+- Sesión 8: Observabilidad (Grafana) y Costos:
+  `08_obs_basico.ipynb` como previo, `08_observabilidad_pipeline_kafka_spark.ipynb` como práctica principal y `08_costos_escalado.md` como segunda parte.
 - Sesión 9: ML distribuido: regresión con MLlib (modelo entrenado, evaluado y guardado).
 - Sesión 10: Series de tiempo e inferencia en streaming (aplicación del modelo guardado sobre datos batch y/o Kafka streaming).
 - Sesión 11: Tuning y experimentación distribuida (mejor modelo seleccionado con validación distribuida).
@@ -158,7 +159,7 @@ flowchart LR
 1. El alumno ejecuta los notebooks desde `pyspark/notebooks/` usando el laboratorio local.
 2. Spark lee datos desde `pyspark/data/` y escribe resultados temporales en `pyspark/artifacts/`.
 3. Los casos de uso publican y consumen eventos para simular flujos reales. Aquí, el equipo elige el stack Kafka: `kafka/` para un entorno liviano sin CDC/Debezium, o `kafka-debezium/` si necesita CDC/Debezium, Kafka Connect y mayor integración.
-4. En los laboratorios de streaming, Spark consume eventos desde el broker y produce resultados para BI/ML.
+4. En los laboratorios de streaming, Spark consume eventos desde el broker `kafka:9092` dentro de la red Docker y produce resultados para BI/ML. Desde el host, el mismo broker se accede como `localhost:49092`.
 
 
 ## Arquitectura Uber

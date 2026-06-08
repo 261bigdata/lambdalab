@@ -41,28 +41,30 @@ valida la calidad básica de los datos, organiza salidas en formatos analíticos
 como Parquet y deja un dataset preparado para consumo BI/ML.
 
 - Sesión 1: Arquitectura Big Data.
-- Sesión 2:  Fundamentos PySpark: extracción, transformaciones, funciones, agrupaciones, agregaciones y RDD.
+- Sesión 2: Fundamentos PySpark: extracción, transformaciones, funciones, agrupaciones, agregaciones y RDD.
 - Sesión 3: Procesamiento distribuido y carga de datos particionada en HDFS y formatos analíticos.
 - Sesión 4: ML distribuido con Spark MLlib (Regresión).
 - Sesión 5: Evaluación U1.
 
-### U2: Sistema Big Data en tiempo real: ETL streaming, operación y BI/ML a escala
+### U2: Sistema Big Data en tiempo real: ingesta, streaming, observabilidad y BI/ML
 
-Producto U2: pipeline streaming en Spark para BI/ML a escala y en tiempo real.
+Producto U2: pipeline en tiempo real con ingesta de eventos empresariales e
+IoT/sensores, procesamiento streaming con Spark, observabilidad/costos y
+salidas BI/ML distribuidas.
 
 Resultado esperado U2: el estudiante implementa un pipeline Big Data en tiempo
-real que integra ingesta de eventos mediante Kafka, procesamiento distribuido
-con Spark Structured Streaming, observabilidad y estimación de costos
-operacionales. Además, entrena, evalúa, guarda y reutiliza modelos distribuidos
-con Spark MLlib para inferencia batch y/o streaming, seleccionando mejores
-configuraciones mediante experimentación distribuida.
+real que integra ingesta de eventos empresariales e IoT/sensores mediante
+Kafka, procesamiento distribuido con Spark Structured Streaming,
+observabilidad con Grafana y estimación de costos operacionales. Además,
+prepara salidas BI/ML distribuidas y reutiliza modelos para series de tiempo e
+inferencia batch y/o streaming.
 
-- Sesión 6: Ingesta en tiempo real (Kafka).
-- Sesión 7: Procesamiento en Streaming con Spark.
-- Sesión 8: Observabilidad (Grafana) y Costos.
-- Sesión 9: ML distribuido: regresión con MLlib (modelo entrenado, evaluado y guardado).
-- Sesión 10: Series de tiempo e inferencia en streaming (aplicación del modelo guardado sobre datos batch y/o Kafka streaming).
-- Sesión 11: Tuning y experimentación distribuida (mejor modelo seleccionado con validación distribuida).
+- Sesión 6: Ingesta de eventos empresariales en tiempo real.
+- Sesión 7: Ingesta de eventos IoT/sensores en tiempo real.
+- Sesión 8: Procesamiento en streaming con Spark.
+- Sesión 9: Observabilidad con Grafana y costos.
+- Sesión 10: BI/ML distribuido con Spark.
+- Sesión 11: Series de tiempo e inferencia en streaming.
 - Sesión 12: Evaluación U2.
 
 ### U3: Integración, DataOps y despliegue del sistema final
@@ -82,7 +84,7 @@ a la toma de decisiones.
 - Sesión 15: Sustentación final con demo end-to-end.
 - Sesión 16: Evaluación final.
 
-## Arquitectura LambdaLab v2026-1
+## Arquitectura LambdaLab v2026-2
 
 ```mermaid
 flowchart LR
@@ -156,7 +158,7 @@ flowchart LR
 
 1. El alumno ejecuta los notebooks desde `pyspark/notebooks/` usando el laboratorio local.
 2. Spark lee datos desde `pyspark/data/` y escribe resultados temporales en `pyspark/artifacts/`.
-3. Los casos de uso publican y consumen eventos para simular flujos reales.Auí, el equipo elige el stack Kafka: `kafka/` para un entorno liviano sin CDC/Debezium, o `kafka-debezium/` si necesita CDC/Debezium, Kafka Connect y mayor integración.
+3. Los casos de uso publican y consumen eventos para simular flujos reales. Aquí, el equipo elige el stack Kafka: `kafka/` para un entorno liviano sin CDC/Debezium, o `kafka-debezium/` si necesita CDC/Debezium, Kafka Connect y mayor integración.
 4. En los laboratorios de streaming, Spark consume eventos desde el broker y produce resultados para BI/ML.
 
 

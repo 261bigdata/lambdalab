@@ -13,11 +13,18 @@ Antes de empezar:
 - levantar Kafka desde `kafka/`;
 - verificar que exista el topic `orden-eventos`;
 - generar eventos desde `uso-rapido/ec-orden-py` o `uso-ms-sb/ec-orden-ms`;
-- levantar Spark/Jupyter con el override de Kafka.
+- levantar Spark/Jupyter con el override Kafka.
 
 ```powershell
-docker compose -f pyspark/compose.yml -f pyspark/compose.kafka.yml up --build
+docker compose -f kafka/compose.yml up -d
+docker compose -f pyspark/compose.yml -f pyspark/compose.kafka.yml up -d --build
 ```
+
+Dentro de Docker, Spark debe usar el broker `kafka:9092`. Desde Windows/host,
+el broker expuesto es `localhost:49092`.
+
+El override `pyspark/compose.kafka.yml` conecta PySpark a la red de Kafka. El
+conector `spark-sql-kafka` se declara en la `SparkSession` del notebook.
 
 ## Evento esperado
 
@@ -48,7 +55,7 @@ Campos recomendados:
 
 En el notebook:
 
-1. Crea una `SparkSession` con el conector Kafka.
+1. Crea una `SparkSession`.
 2. Lee desde `orden-eventos` usando `.format("kafka")`.
 3. Convierte `value` de binario a texto.
 4. Parsea el JSON con un esquema explicito.

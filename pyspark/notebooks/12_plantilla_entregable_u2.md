@@ -34,7 +34,7 @@ distribuida para integrarse en la U3.
 |---|---|---|---|
 | S6 | Ingesta en tiempo real (Kafka) | Publicar eventos de negocio desde microservicios o cambios CDC desde una base OLTP. | Topics, producer/consumer, contrato de evento y evidencias del caso elegido. |
 | S7 | Procesamiento en Streaming con Spark | Consumir eventos desde el broker con Spark, parsear JSON, validar esquema y transformar datos. | Notebook/script de streaming, checkpoint, salidas y validaciones. |
-| S8 | Observabilidad (Grafana) y Costos | Medir latencia, throughput, lag, errores; proponer dashboard, alertas y recursos. | Métricas, logs, dashboard, alertas y estimación de costos/escalado. |
+| S8 | Observabilidad (Grafana) y Costos | Ejecutar el previo `08_obs_basico`, la práctica principal de observabilidad y la segunda parte de costos/escalado. | Métricas, logs, dashboard, alertas y estimación de costos/escalado. |
 | S9 | ML distribuido: regresión con MLlib | Entrenar, evaluar y guardar un modelo distribuido. | Modelo entrenado, métricas y artefacto guardado. |
 | S10 | Series de tiempo e inferencia en streaming | Aplicar el modelo guardado sobre datos batch y/o Kafka streaming. | Predicciones, métricas y evidencia de inferencia. |
 | S11 | Tuning y experimentación distribuida | Comparar configuraciones y seleccionar el mejor modelo con validación distribuida. | Mejor modelo seleccionado y tabla de experimentación. |

@@ -1,12 +1,14 @@
-﻿# Costos y escalado de pipelines streaming
+﻿# Sesion 08 - Costos y escalado de pipelines streaming
 
 ## Propósito
 
-Esta sección completa la sesion de observabilidad con una estimación cloud-agnostic de recursos, costos y escalado para el pipeline:
+Esta segunda parte completa la sesion 08 de observabilidad con una estimación cloud-agnostic de recursos, costos y escalado para el pipeline:
 
 ```text
 Producer -> Kafka -> Spark Structured Streaming
 ```
+
+Debe trabajarse despues de `08_obs_basico.ipynb` y `08_observabilidad_pipeline_kafka_spark.ipynb`, porque usa las mismas evidencias de latencia, throughput y lag del topic `orden-eventos`.
 
 La idea no es elegir un proveedor cloud, sino justificar capacidad usando unidades técnicas: vCPU, memoria, almacenamiento, red, particiones Kafka, ejecutores Spark, retención y réplicas.
 
@@ -193,3 +195,5 @@ Adjunta:
 - tabla de escenarios pequeño, medio y alto;
 - lista de riesgos y mitigaciones;
 - conclusión técnica de escalado.
+
+

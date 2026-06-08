@@ -21,10 +21,13 @@ docker compose -f pyspark/compose.yml up --build
 Con Kafka:
 
 ```powershell
-docker compose -f pyspark/compose.yml -f pyspark/compose.kafka.yml up --build
+docker compose -f kafka/compose.yml up -d
+docker compose -f pyspark/compose.yml -f pyspark/compose.kafka.yml up -d --build
 ```
 
-En modo Kafka, el broker interno queda disponible como:
+En modo Kafka, el override `pyspark/compose.kafka.yml` conecta PySpark a la red
+de Kafka. El conector Spark-Kafka se declara en la `SparkSession` de los
+notebooks que leen Kafka. El broker interno queda disponible como:
 
 ```text
 kafka:9092

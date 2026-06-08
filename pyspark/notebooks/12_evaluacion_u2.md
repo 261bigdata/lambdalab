@@ -14,7 +14,7 @@ La Unidad 2 evalúa las sesiones 6 a 11:
 
 - Sesión 6: Ingesta en tiempo real (Kafka).
 - Sesión 7: Procesamiento en Streaming con Spark.
-- Sesión 8: Observabilidad (Grafana) y Costos.
+- Sesión 8: Observabilidad (Grafana) y Costos: previo básico, práctica principal y estimación de escalado.
 - Sesión 9: ML distribuido: regresión con MLlib.
 - Sesión 10: Series de tiempo e inferencia en streaming.
 - Sesión 11: Tuning y experimentación distribuida.
@@ -28,7 +28,7 @@ Completa la plantilla con evidencias técnicas del pipeline:
 - notebook o script de procesamiento streaming con Spark;
 - métricas de latencia, throughput, errores y lag;
 - propuesta de dashboard, alertas y umbrales;
-- estimación de recursos, costos y estrategia de escalado.
+- estimación de recursos, costos y estrategia de escalado;
 - dataset analítico, modelo predictivo, métricas del modelo y evidencias de inferencia.
 
 Entrega el informe con capturas, logs, fragmentos de código y tablas de resultados que permitan verificar la ejecución.
