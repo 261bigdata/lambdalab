@@ -700,6 +700,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#11-teoria-usada-en-esta-practica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Teoria usada en esta practica
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#1-idea-general" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -792,6 +803,17 @@
     <span class="md-ellipsis">
       
         9. Guardar predicciones batch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#101-teoria-inferencia-streaming-en-micro-batches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Teoria: inferencia streaming en micro-batches
       
     </span>
   </a>
@@ -1045,6 +1067,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#11-teoria-usada-en-esta-practica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Teoria usada en esta practica
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#1-idea-general" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1137,6 +1170,17 @@
     <span class="md-ellipsis">
       
         9. Guardar predicciones batch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#101-teoria-inferencia-streaming-en-micro-batches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Teoria: inferencia streaming en micro-batches
       
     </span>
   </a>
@@ -1260,28 +1304,51 @@
 
 
 <h1 id="sesion-10-series-de-tiempo-e-inferencia-en-streaming-con-spark">Sesion 10 - Series de tiempo e inferencia en streaming con Spark<a class="headerlink" href="#sesion-10-series-de-tiempo-e-inferencia-en-streaming-con-spark" title="Permanent link">&para;</a></h1>
-<p><strong>Producto:</strong> aplicacion del modelo guardado sobre datos batch y, opcionalmente, sobre un stream Kafka.</p>
+<p><strong>Producto:</strong> aplicacion del modelo guardado en la sesion 09 sobre datos batch y, opcionalmente, sobre un stream Kafka.</p>
 <h2 id="proposito-de-la-sesion">Proposito de la sesion<a class="headerlink" href="#proposito-de-la-sesion" title="Permanent link">&para;</a></h2>
-<p>Aplicar un modelo de regresion ya entrenado sobre una serie temporal de latencia, primero en modo batch y luego como opcion sobre datos que llegan desde Kafka con Spark Structured Streaming.</p>
+<p>Continuar el flujo iniciado en la sesion 08 y formalizado en la sesion 09: usar la evidencia de observabilidad del pipeline Kafka + Spark, cargar el <code>PipelineModel</code> entrenado con Spark MLlib y generar predicciones de latencia sin volver a entrenar.</p>
 <h2 id="resultado-esperado">Resultado esperado<a class="headerlink" href="#resultado-esperado" title="Permanent link">&para;</a></h2>
-<p>Al finalizar, el estudiante debe tener predicciones de latencia generadas con el modelo guardado, evidencia batch persistida en Parquet y una ruta funcional para ejecutar inferencia streaming sobre eventos Kafka.</p>
-<p>En la sesion 9 entrenamos un <code>PipelineModel</code> de Spark MLlib para estimar la latencia promedio de la siguiente ventana temporal. En esta sesion lo usamos como artefacto reutilizable: cargamos el modelo, reconstruimos las mismas features y generamos predicciones sin volver a disenar el pipeline de ML.</p>
+<p>Al finalizar, el estudiante debe tener predicciones de latencia generadas con el modelo guardado por la sesion 09, evidencia batch persistida en Parquet y una ruta opcional para ejecutar inferencia streaming sobre eventos Kafka.</p>
+<p>La cadena completa queda asi:</p>
+<div class="highlight"><pre><span></span><code>Sesion 08: Kafka + Spark observabilidad -&gt; Parquet con latencyMs
+Sesion 09: Parquet -&gt; serie temporal -&gt; entrenamiento MLlib -&gt; modelo guardado
+Sesion 10: modelo guardado -&gt; inferencia batch y streaming opcional
+</code></pre></div>
+<h2 id="11-teoria-usada-en-esta-practica">1.1 Teoria usada en esta practica<a class="headerlink" href="#11-teoria-usada-en-esta-practica" title="Permanent link">&para;</a></h2>
+<p>La teoria de entrenamiento, features, label y Pipeline queda en la sesion 09. En esta sesion usamos solo la teoria necesaria para inferencia:</p>
+<ul>
+<li><strong>Inferencia</strong>: aplicar un modelo ya entrenado sobre datos nuevos. No se recalculan coeficientes ni se vuelve a ajustar el modelo.</li>
+<li><strong>Contrato de features</strong>: el modelo espera las mismas columnas usadas en la sesion 09. Si falta una columna o cambia su significado, la prediccion deja de ser confiable.</li>
+<li><strong>PipelineModel</strong>: artefacto guardado que contiene tanto las transformaciones como el modelo final. Spark ejecuta transform() para agregar la columna prediction.</li>
+<li><strong>Inferencia batch</strong>: lee datos historicos en Parquet, reconstruye ventanas y genera predicciones reproducibles.</li>
+<li><strong>Inferencia streaming</strong>: lee eventos nuevos desde Kafka, agrega por ventanas y aplica el mismo modelo dentro de micro-batches.</li>
+<li><strong>Evaluacion offline</strong>: en batch podemos construir una etiqueta futura con lead() para comparar prediccion vs realidad. En streaming real, esa etiqueta aun no existe al momento de predecir.</li>
+</ul>
+<p>Resumen de responsabilidades:</p>
+<div class="highlight"><pre><span></span><code>Sesion 09: aprende el modelo
+Sesion 10: reutiliza el modelo
+</code></pre></div>
 <h2 id="1-idea-general">1. Idea general<a class="headerlink" href="#1-idea-general" title="Permanent link">&para;</a></h2>
 <p>El flujo de inferencia mantiene tres reglas:</p>
 <ol>
-<li>Usar el mismo modelo guardado en <code>../artifacts/models/ml_latency_pipeline_lr</code>.</li>
-<li>Construir exactamente las mismas columnas de entrada usadas por la sesion 9.</li>
+<li>Cargar el mismo modelo guardado por la sesion 09 en <code>../artifacts/models/ml_latency_pipeline_lr</code>.</li>
+<li>Reconstruir exactamente las mismas columnas de entrada usadas al entrenar: <code>eventCount</code>, <code>avgLatencyMs</code>, <code>minLatencyMs</code>, <code>maxLatencyMs</code>, <code>stdLatencyMs</code>, <code>latencyRangeMs</code>, <code>hourOfDay</code> y <code>minuteOfHour</code>.</li>
 <li>Separar la inferencia batch de la inferencia streaming para observar como cambia la ejecucion.</li>
 </ol>
 <p>La prediccion significa: <strong>dada la ventana actual, estimar la latencia promedio de la siguiente ventana</strong>.</p>
 <h2 id="2-crear-sparksession">2. Crear SparkSession<a class="headerlink" href="#2-crear-sparksession" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
 
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
-    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;s10-series-tiempo-inferencia-spark&quot;</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[*]&quot;</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.shuffle.partitions&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">)</span> \
+<span class="n">KAFKA_CONNECTOR_PACKAGE</span> <span class="o">=</span> <span class="s2">&quot;org.apache.spark:spark-sql-kafka-0-10_2.13:4.1.2&quot;</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span>
+    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;s10-series-tiempo-inferencia-spark&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[*]&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.shuffle.partitions&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.jars.packages&quot;</span><span class="p">,</span> <span class="n">KAFKA_CONNECTOR_PACKAGE</span><span class="p">)</span>
     <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="p">)</span>
 
 <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">setLogLevel</span><span class="p">(</span><span class="s2">&quot;WARN&quot;</span><span class="p">)</span>
 
@@ -1307,12 +1374,10 @@
 <span class="n">PREDICTIONS_STREAM_PATH</span> <span class="o">=</span> <span class="s2">&quot;../artifacts/output/ml_latency_predictions_stream&quot;</span>
 <span class="n">CHECKPOINT_STREAM_PATH</span> <span class="o">=</span> <span class="s2">&quot;../artifacts/checkpoint/ml-latency-inference-stream&quot;</span>
 
-<span class="n">KAFKA_BOOTSTRAP_SERVERS</span> <span class="o">=</span> <span class="s2">&quot;ec-kafka:9092&quot;</span>
+<span class="c1"># En el stack Kafka actual de LambdaLab, el broker interno se llama kafka:9092.</span>
+<span class="c1"># Si ejecutas este notebook dentro del contenedor PySpark, ese contenedor debe estar unido a lambdalab-kafka-net.</span>
+<span class="n">KAFKA_BOOTSTRAP_SERVERS</span> <span class="o">=</span> <span class="s2">&quot;kafka:9092&quot;</span>
 <span class="n">TOPIC_ORDENES</span> <span class="o">=</span> <span class="s2">&quot;orden-eventos&quot;</span>
-
-<span class="c1"># Si el modelo aun no existe porque no se ejecuto la sesion 9 completa,</span>
-<span class="c1"># esta bandera permite crear un modelo compatible para que la practica siga corriendo.</span>
-<span class="n">BOOTSTRAP_MODEL_IF_MISSING</span> <span class="o">=</span> <span class="kc">True</span>
 </code></pre></div>
 <h2 id="4-helpers-datos-serie-temporal-y-features">4. Helpers: datos, serie temporal y features<a class="headerlink" href="#4-helpers-datos-serie-temporal-y-features" title="Permanent link">&para;</a></h2>
 <p>Estas funciones son deliberadamente parecidas a la sesion 9. En inferencia, cambiar el contrato de features es una de las formas mas comunes de romper un modelo ya entrenado.</p>
@@ -1391,10 +1456,12 @@
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ventanas disponibles:&quot;</span><span class="p">,</span> <span class="n">features_batch</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
 </code></pre></div>
 <h2 id="6-cargar-el-modelo-guardado">6. Cargar el modelo guardado<a class="headerlink" href="#6-cargar-el-modelo-guardado" title="Permanent link">&para;</a></h2>
-<p>El camino ideal es que el modelo exista porque se ejecuto la sesion 9. Si no existe, la siguiente celda puede crear un modelo compatible usando los datos disponibles. Esto evita que el laboratorio se bloquee por orden de ejecucion, pero en un flujo real el entrenamiento y la inferencia se separan.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span><span class="p">,</span> <span class="n">PipelineModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.feature</span><span class="w"> </span><span class="kn">import</span> <span class="n">VectorAssembler</span><span class="p">,</span> <span class="n">StandardScaler</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.regression</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
+<p>Esta sesion depende del modelo entrenado y guardado en la sesion 09. Si el modelo no existe, no entrenamos uno nuevo aqui: se debe volver a la sesion 09 y ejecutar hasta la celda <code>Guardar y cargar el modelo</code>.</p>
+<p>Esto mantiene separadas las responsabilidades:</p>
+<div class="highlight"><pre><span></span><code>Sesion 09 = entrenamiento
+Sesion 10 = inferencia
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml</span><span class="w"> </span><span class="kn">import</span> <span class="n">PipelineModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.window</span><span class="w"> </span><span class="kn">import</span> <span class="n">Window</span>
 
 <span class="n">feature_cols</span> <span class="o">=</span> <span class="p">[</span>
@@ -1410,34 +1477,12 @@
 
 <span class="n">model_path</span> <span class="o">=</span> <span class="n">first_existing_path</span><span class="p">(</span><span class="n">MODEL_PATHS</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="n">model_path</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">BOOTSTRAP_MODEL_IF_MISSING</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Modelo no encontrado. Entrenando modelo compatible con la logica de la sesion 9...&quot;</span><span class="p">)</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span>
-    <span class="n">training_df</span> <span class="o">=</span> <span class="n">features_batch</span> \
-        <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">lead</span><span class="p">(</span><span class="s2">&quot;avgLatencyMs&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> \
-        <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">feature_cols</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">drop</span><span class="p">()</span>
-
-    <span class="n">assembler</span> <span class="o">=</span> <span class="n">VectorAssembler</span><span class="p">(</span><span class="n">inputCols</span><span class="o">=</span><span class="n">feature_cols</span><span class="p">,</span> <span class="n">outputCol</span><span class="o">=</span><span class="s2">&quot;rawFeatures&quot;</span><span class="p">,</span> <span class="n">handleInvalid</span><span class="o">=</span><span class="s2">&quot;keep&quot;</span><span class="p">)</span>
-    <span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">(</span><span class="n">inputCol</span><span class="o">=</span><span class="s2">&quot;rawFeatures&quot;</span><span class="p">,</span> <span class="n">outputCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">,</span> <span class="n">withStd</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">withMean</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">lr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">(</span>
-        <span class="n">featuresCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">,</span>
-        <span class="n">labelCol</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span>
-        <span class="n">predictionCol</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span>
-        <span class="n">maxIter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-        <span class="n">regParam</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
-        <span class="n">elasticNetParam</span><span class="o">=</span><span class="mf">0.0</span>
-    <span class="p">)</span>
-    <span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">stages</span><span class="o">=</span><span class="p">[</span><span class="n">assembler</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">lr</span><span class="p">])</span>
-    <span class="n">pipeline_model</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">training_df</span><span class="p">)</span>
-
-    <span class="n">target_model_path</span> <span class="o">=</span> <span class="n">MODEL_PATHS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">pipeline_model</span><span class="o">.</span><span class="n">write</span><span class="p">()</span><span class="o">.</span><span class="n">overwrite</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">target_model_path</span><span class="p">)</span>
-    <span class="n">model_path</span> <span class="o">=</span> <span class="n">target_model_path</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Modelo bootstrap guardado en: </span><span class="si">{</span><span class="n">model_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
 <span class="k">if</span> <span class="n">model_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;No se encontro el modelo. Ejecuta la sesion 9 hasta la celda de guardado.&quot;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+        <span class="s2">&quot;No se encontro el modelo de la sesion 09. &quot;</span>
+        <span class="s2">&quot;Ejecuta 09_ml_distribuido_regresion_mllib.ipynb hasta guardar &quot;</span>
+        <span class="s2">&quot;../artifacts/models/ml_latency_pipeline_lr.&quot;</span>
+    <span class="p">)</span>
 
 <span class="n">loaded_model</span> <span class="o">=</span> <span class="n">PipelineModel</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Modelo cargado desde: </span><span class="si">{</span><span class="n">model_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1510,12 +1555,25 @@
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicciones batch guardadas en: </span><span class="si">{</span><span class="n">PREDICTIONS_BATCH_PATH</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">PREDICTIONS_BATCH_PATH</span><span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;windowStart&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
+<h2 id="101-teoria-inferencia-streaming-en-micro-batches">10.1 Teoria: inferencia streaming en micro-batches<a class="headerlink" href="#101-teoria-inferencia-streaming-en-micro-batches" title="Permanent link">&para;</a></h2>
+<p>Spark Structured Streaming procesa el flujo como una secuencia de micro-batches. Cada micro-batch contiene eventos disponibles en un intervalo corto y se transforma con operaciones de DataFrame.</p>
+<p>En esta practica:</p>
+<ul>
+<li>Kafka entrega eventos de orden-eventos.</li>
+<li>Spark calcula latencyMs y agrega por ventanas de tiempo.</li>
+<li>El PipelineModel aplica transform() sobre cada conjunto de ventanas.</li>
+<li>foreachBatch permite tratar cada micro-batch como un DataFrame batch para guardar predicciones en Parquet.</li>
+</ul>
+<p>La diferencia importante es que el modelo no cambia. Cambia la fuente de datos: historica en batch, viva en Kafka streaming.</p>
 <h2 id="10-preparar-lectura-kafka-streaming-opcional">10. Preparar lectura Kafka streaming opcional<a class="headerlink" href="#10-preparar-lectura-kafka-streaming-opcional" title="Permanent link">&para;</a></h2>
-<p>Ejecuta esta parte solo si levantaste el laboratorio con Kafka:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>C:<span class="se">\2</span>61bigdata<span class="se">\b</span>igdata-lab<span class="se">\d</span>ocker
-docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.kafka.yml<span class="w"> </span>up<span class="w"> </span>--build
+<p>Ejecuta esta parte solo si quieres aplicar el modelo sobre eventos nuevos que llegan por Kafka. La inferencia batch de los pasos anteriores es el flujo principal de la sesion.</p>
+<p>Para que Spark pueda leer Kafka se necesitan dos cosas: el contenedor PySpark debe estar en la red de Kafka y la SparkSession debe declarar el paquete spark-sql-kafka. El paquete ya esta declarado al inicio del notebook.</p>
+<p>Desde la raiz de lambdalab:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">kafka</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">up</span> <span class="n">-d</span>
+<span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">pyspark</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="o">-f</span> <span class="n">pyspark</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">kafka</span><span class="p">.</span><span class="n">yml</span> <span class="n">up</span> <span class="n">-d</span> <span class="p">-</span><span class="n">-build</span>
 </code></pre></div>
-<p>El topic esperado es <code>orden-eventos</code>, el mismo usado en sesiones anteriores.</p>
+<p>El override conecta el contenedor a lambdalab-kafka-net. Si abriste Jupyter solo con pyspark/compose.yml, reinicia el contenedor con el comando anterior y vuelve a crear la SparkSession antes de ejecutar esta parte.</p>
+<p>El topic esperado es orden-eventos, el mismo usado desde la sesion 08.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">LongType</span><span class="p">,</span> <span class="n">DoubleType</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">from_json</span><span class="p">,</span> <span class="n">current_timestamp</span><span class="p">,</span> <span class="n">unix_millis</span>
 
@@ -1680,7 +1738,7 @@ docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> 
 <h2 id="17-cierre">17. Cierre<a class="headerlink" href="#17-cierre" title="Permanent link">&para;</a></h2>
 <p>Al terminar esta sesion debes tener:</p>
 <ul>
-<li>Modelo cargado desde <code>../artifacts/models/ml_latency_pipeline_lr</code>.</li>
+<li>Modelo cargado desde <code>../artifacts/models/ml_latency_pipeline_lr</code>, creado en la sesion 09.</li>
 <li>Predicciones batch guardadas en <code>../artifacts/output/ml_latency_predictions_batch</code>.</li>
 <li>Ruta opcional para predicciones streaming en <code>../artifacts/output/ml_latency_predictions_stream</code>.</li>
 </ul>

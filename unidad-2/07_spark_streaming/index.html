@@ -1319,15 +1319,20 @@ con un esquema comÃºn que funcione tanto si el productor fue hecho en <strong>
 </ol>
 <h2 id="datos-del-entorno">Datos del entorno<a class="headerlink" href="#datos-del-entorno" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Kafka broker interno: <code>ec-kafka:9092</code></li>
+<li>Kafka broker interno: <code>kafka:9092</code></li>
 <li>Topic: <code>orden-eventos</code></li>
 <li>Spark: conector Kafka disponible desde el entorno</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
 
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
-    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;KafkaSparkOrdenes&quot;</span><span class="p">)</span> \
+<span class="n">KAFKA_CONNECTOR_PACKAGE</span> <span class="o">=</span> <span class="s2">&quot;org.apache.spark:spark-sql-kafka-0-10_2.13:4.1.2&quot;</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span>
+    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;KafkaSparkOrdenes&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.jars.packages&quot;</span><span class="p">,</span> <span class="n">KAFKA_CONNECTOR_PACKAGE</span><span class="p">)</span>
     <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="p">)</span>
 
 <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">setLogLevel</span><span class="p">(</span><span class="s2">&quot;WARN&quot;</span><span class="p">)</span>
 </code></pre></div>
@@ -1338,7 +1343,7 @@ con un esquema comÃºn que funcione tanto si el productor fue hecho en <strong>
 <p>AquÃ­ todavÃ­a no parseamos el JSON. Solo leemos los mensajes crudos del topic.</p>
 <div class="highlight"><pre><span></span><code><span class="n">df_kafka</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span> \
     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;kafka&quot;</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;kafka.bootstrap.servers&quot;</span><span class="p">,</span> <span class="s2">&quot;ec-kafka:9092&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;kafka.bootstrap.servers&quot;</span><span class="p">,</span> <span class="s2">&quot;kafka:9092&quot;</span><span class="p">)</span> \
     <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;subscribe&quot;</span><span class="p">,</span> <span class="s2">&quot;orden-eventos&quot;</span><span class="p">)</span> \
     <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;startingOffsets&quot;</span><span class="p">,</span> <span class="s2">&quot;earliest&quot;</span><span class="p">)</span> \
     <span class="o">.</span><span class="n">load</span><span class="p">()</span>
@@ -1442,7 +1447,7 @@ con un esquema comÃºn que funcione tanto si el productor fue hecho en <strong>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span>
 
 <span class="n">producer</span> <span class="o">=</span> <span class="n">KafkaProducer</span><span class="p">(</span>
-    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="s1">&#39;ec-kafka:9092&#39;</span><span class="p">,</span>
+    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="s1">&#39;kafka:9092&#39;</span><span class="p">,</span>
     <span class="n">value_serializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 <span class="p">)</span>
 
@@ -1496,10 +1501,15 @@ con un esquema comÃºn que funcione tanto si el productor fue hecho en <strong>
 <li>levantar Kafka desde <code>kafka/</code>;</li>
 <li>verificar que exista el topic <code>orden-eventos</code>;</li>
 <li>generar eventos desde <code>uso-rapido/ec-orden-py</code> o <code>uso-ms-sb/ec-orden-ms</code>;</li>
-<li>levantar Spark/Jupyter con el override de Kafka.</li>
+<li>levantar Spark/Jupyter con el override Kafka.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">pyspark</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="o">-f</span> <span class="n">pyspark</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">kafka</span><span class="p">.</span><span class="n">yml</span> <span class="n">up</span> <span class="p">-</span><span class="n">-build</span>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">kafka</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">up</span> <span class="n">-d</span>
+<span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">pyspark</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="o">-f</span> <span class="n">pyspark</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">kafka</span><span class="p">.</span><span class="n">yml</span> <span class="n">up</span> <span class="n">-d</span> <span class="p">-</span><span class="n">-build</span>
 </code></pre></div>
+<p>Dentro de Docker, Spark debe usar el broker <code>kafka:9092</code>. Desde Windows/host,
+el broker expuesto es <code>localhost:49092</code>.</p>
+<p>El override <code>pyspark/compose.kafka.yml</code> conecta PySpark a la red de Kafka. El
+conector <code>spark-sql-kafka</code> se declara en la <code>SparkSession</code> del notebook.</p>
 <h2 id="evento-esperado_1">Evento esperado<a class="headerlink" href="#evento-esperado_1" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;tipoEvento&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orden.creada&quot;</span><span class="p">,</span>
@@ -1525,7 +1535,7 @@ con un esquema comÃºn que funcione tanto si el productor fue hecho en <strong>
 <h2 id="practica">Practica<a class="headerlink" href="#practica" title="Permanent link">&para;</a></h2>
 <p>En el notebook:</p>
 <ol>
-<li>Crea una <code>SparkSession</code> con el conector Kafka.</li>
+<li>Crea una <code>SparkSession</code>.</li>
 <li>Lee desde <code>orden-eventos</code> usando <code>.format("kafka")</code>.</li>
 <li>Convierte <code>value</code> de binario a texto.</li>
 <li>Parsea el JSON con un esquema explicito.</li>

@@ -650,6 +650,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#11-teoria-usada-en-esta-practica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Teoria usada en esta practica
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#1-idea-general" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -720,6 +731,17 @@
     <span class="md-ellipsis">
       
         7. Crear Pipeline de Spark ML
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#71-teoria-por-que-usamos-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Teoria: por que usamos Pipeline
       
     </span>
   </a>
@@ -979,6 +1001,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#11-teoria-usada-en-esta-practica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Teoria usada en esta practica
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#1-idea-general" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1049,6 +1082,17 @@
     <span class="md-ellipsis">
       
         7. Crear Pipeline de Spark ML
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#71-teoria-por-que-usamos-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Teoria: por que usamos Pipeline
       
     </span>
   </a>
@@ -1178,6 +1222,21 @@
 <div class="highlight"><pre><span></span><code>Ahora puedo construir un pipeline ML distribuido, entrenarlo, evaluarlo y reutilizarlo.
 </code></pre></div>
 <p>Usaremos Spark MLlib, no Pandas ni scikit-learn.</p>
+<h2 id="11-teoria-usada-en-esta-practica">1.1 Teoria usada en esta practica<a class="headerlink" href="#11-teoria-usada-en-esta-practica" title="Permanent link">&para;</a></h2>
+<p>Esta sesion concentra la teoria de entrenamiento para que la sesion 10 pueda enfocarse en inferencia. La practica usa estos conceptos:</p>
+<ul>
+<li><strong>Spark MLlib</strong>: libreria de machine learning distribuido de Spark. Trabaja con DataFrames y permite entrenar transformadores/modelos sin sacar los datos del cluster.</li>
+<li><strong>Serie temporal agregada</strong>: no modelamos cada evento individual; agrupamos eventos por ventanas de tiempo para obtener una secuencia ordenada de metricas de latencia.</li>
+<li><strong>Features</strong>: columnas predictoras calculadas por ventana, por ejemplo eventCount, avgLatencyMs, minLatencyMs, maxLatencyMs, stdLatencyMs, latencyRangeMs, hourOfDay y minuteOfHour.</li>
+<li><strong>Label</strong>: valor que el modelo intenta predecir. Aqui usamos la latencia promedio de la siguiente ventana, construida con lead(avgLatencyMs).</li>
+<li><strong>Regresion</strong>: problema supervisado donde la salida esperada es numerica. En esta practica la salida es una latencia estimada en milisegundos.</li>
+<li><strong>Separacion cronologica</strong>: en series de tiempo no mezclamos filas al azar; entrenamos con ventanas antiguas y evaluamos con ventanas posteriores.</li>
+<li><strong>Pipeline ML</strong>: encadena preparacion y modelo. Guardar el PipelineModel conserva el ensamblado de features, el escalado y la regresion entrenada.</li>
+</ul>
+<p>La idea central es transformar observabilidad operacional en un dataset ML:</p>
+<div class="highlight"><pre><span></span><code>text
+eventos Kafka -&gt; Spark -&gt; Parquet -&gt; ventanas de latencia -&gt; features + label -&gt; PipelineModel
+</code></pre></div>
 <h2 id="1-idea-general">1. Idea general<a class="headerlink" href="#1-idea-general" title="Permanent link">&para;</a></h2>
 <p>Queremos predecir la latencia promedio del siguiente minuto usando metricas del minuto actual.</p>
 <p>Ejemplo conceptual:</p>
@@ -1347,6 +1406,17 @@
 <li><code>StandardScaler</code> escala las variables para que tengan magnitudes comparables.</li>
 <li><code>LinearRegression</code> entrena el modelo de regresion distribuido.</li>
 </ul>
+<h2 id="71-teoria-por-que-usamos-pipeline">7.1 Teoria: por que usamos Pipeline<a class="headerlink" href="#71-teoria-por-que-usamos-pipeline" title="Permanent link">&para;</a></h2>
+<p>Un Pipeline evita que el entrenamiento y la inferencia usen preparaciones distintas. En Spark ML, el flujo tipico es:</p>
+<div class="highlight"><pre><span></span><code>text
+columnas numericas -&gt; VectorAssembler -&gt; StandardScaler -&gt; LinearRegression
+</code></pre></div>
+<ul>
+<li>VectorAssembler junta varias columnas en una sola columna vectorial llamada features.</li>
+<li>StandardScaler normaliza las variables para que diferencias de escala no dominen el modelo.</li>
+<li>LinearRegression aprende una relacion numerica entre features y label.</li>
+</ul>
+<p>Cuando guardamos el PipelineModel, guardamos todo el contrato de transformacion. Por eso la sesion 10 solo debe cargarlo y entregarle las mismas columnas de entrada.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.feature</span><span class="w"> </span><span class="kn">import</span> <span class="n">VectorAssembler</span><span class="p">,</span> <span class="n">StandardScaler</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.regression</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>

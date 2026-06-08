@@ -1582,9 +1582,9 @@
 
 
 <h1 id="observabilidad-de-pipeline-kafka-spark">Observabilidad de pipeline Kafka + Spark<a class="headerlink" href="#observabilidad-de-pipeline-kafka-spark" title="Permanent link">&para;</a></h1>
-<p>Notebook P1 para medir disponibilidad, latencia, throughput, logging estructurado y alertas propuestas sobre el pipeline:</p>
+<p>Notebook principal de la sesion 08 para medir disponibilidad, latencia, throughput, logging estructurado y alertas propuestas sobre el pipeline:</p>
 <p><code>Producer -&gt; Kafka -&gt; Spark Structured Streaming -&gt; evidencias</code></p>
-<p>Este notebook empieza desde cero y no reemplaza al <code>07_spark_streaming_consumer_ordenes.ipynb</code>; lo usa como base conceptual, pero aqui se trabaja la observabilidad de la sesion P1.</p>
+<p>Este notebook empieza desde cero y no reemplaza al <code>07_spark_streaming_consumer_ordenes.ipynb</code> ni al previo <code>08_obs_basico.ipynb</code>; los usa como base conceptual, pero aqui se trabaja la observabilidad principal de la sesion 08.</p>
 <h2 id="objetivo">Objetivo<a class="headerlink" href="#objetivo" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Leer eventos desde Kafka.</li>
@@ -1597,7 +1597,7 @@
 </ol>
 <h2 id="datos-del-entorno">Datos del entorno<a class="headerlink" href="#datos-del-entorno" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Kafka broker interno: <code>ec-kafka:9092</code></li>
+<li>Kafka broker interno: <code>kafka:9092</code></li>
 <li>Topic: <code>orden-eventos</code></li>
 <li>Prometheus: <code>http://localhost:49090</code></li>
 <li>Grafana: <code>http://localhost:43000</code></li>
@@ -1608,16 +1608,21 @@
 <p>Se crea la <code>SparkSession</code>. El conector Kafka ya debe estar disponible en el entorno Spark.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
 
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
-    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;observabilidad-pipeline-kafka-spark&quot;</span><span class="p">)</span> \
+<span class="n">KAFKA_CONNECTOR_PACKAGE</span> <span class="o">=</span> <span class="s2">&quot;org.apache.spark:spark-sql-kafka-0-10_2.13:4.1.2&quot;</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span>
+    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;observabilidad-pipeline-kafka-spark&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.jars.packages&quot;</span><span class="p">,</span> <span class="n">KAFKA_CONNECTOR_PACKAGE</span><span class="p">)</span>
     <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="p">)</span>
 
 <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">setLogLevel</span><span class="p">(</span><span class="s2">&quot;WARN&quot;</span><span class="p">)</span>
 <span class="n">spark</span>
 </code></pre></div>
 <h2 id="paso-2-definir-parametros-y-helper-de-streams">Paso 2. Definir parametros y helper de streams<a class="headerlink" href="#paso-2-definir-parametros-y-helper-de-streams" title="Permanent link">&para;</a></h2>
 <p>El helper evita dejar queries activas cuando una celda se ejecuta mas de una vez.</p>
-<div class="highlight"><pre><span></span><code><span class="n">KAFKA_BOOTSTRAP_SERVERS</span> <span class="o">=</span> <span class="s2">&quot;ec-kafka:9092&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="n">KAFKA_BOOTSTRAP_SERVERS</span> <span class="o">=</span> <span class="s2">&quot;kafka:9092&quot;</span>
 <span class="n">TOPIC_ORDENES</span> <span class="o">=</span> <span class="s2">&quot;orden-eventos&quot;</span>
 <span class="n">OUTPUT_PATH</span> <span class="o">=</span> <span class="s2">&quot;/opt/artifacts/output/orden_eventos_observabilidad_p1&quot;</span>
 <span class="n">CHECKPOINT_PATH</span> <span class="o">=</span> <span class="s2">&quot;/opt/artifacts/checkpoint/orden-eventos-observabilidad-p1&quot;</span>
@@ -2035,11 +2040,12 @@
 <p>Al terminar la practica, detiene las queries activas para evitar conflictos con checkpoints o salidas Parquet.</p>
 <div class="highlight"><pre><span></span><code><span class="n">stop_active_streams</span><span class="p">()</span>
 </code></pre></div>
-<p>﻿# Costos y escalado de pipelines streaming</p>
+<p>﻿# Sesion 08 - Costos y escalado de pipelines streaming</p>
 <h2 id="proposito">Propósito<a class="headerlink" href="#proposito" title="Permanent link">&para;</a></h2>
-<p>Esta sección completa la sesion de observabilidad con una estimación cloud-agnostic de recursos, costos y escalado para el pipeline:</p>
+<p>Esta segunda parte completa la sesion 08 de observabilidad con una estimación cloud-agnostic de recursos, costos y escalado para el pipeline:</p>
 <div class="highlight"><pre><span></span><code>Producer -&gt; Kafka -&gt; Spark Structured Streaming
 </code></pre></div>
+<p>Debe trabajarse despues de <code>08_obs_basico.ipynb</code> y <code>08_observabilidad_pipeline_kafka_spark.ipynb</code>, porque usa las mismas evidencias de latencia, throughput y lag del topic <code>orden-eventos</code>.</p>
 <p>La idea no es elegir un proveedor cloud, sino justificar capacidad usando unidades técnicas: vCPU, memoria, almacenamiento, red, particiones Kafka, ejecutores Spark, retención y réplicas.</p>
 <h2 id="resultado-esperado">Resultado esperado<a class="headerlink" href="#resultado-esperado" title="Permanent link">&para;</a></h2>
 <p>Entrega una propuesta técnica que incluya:</p>
