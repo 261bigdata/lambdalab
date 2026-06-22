@@ -57,4 +57,8 @@ nav:
       - 10. Series de tiempo e inferencia: unidad-2/10_series_tiempo_inferencia_spark.md
       - 11. Tuning y experimentación distribuida: unidad-2/11_tuning_experimentacion_distribuida.md
       - 12. Evaluación U2: unidad-2/12_evaluacion_u2.md
+  - U3 Integración y producto final:
+      - 13. Integración del sistema: unidad-3/13_integracion_sistema.md
+      - 14. Revisión técnica final: unidad-3/14_revision_tecnica_final.md
+      - 15. Evaluación U3 / producto del curso: unidad-3/15_evaluacion_u3.md
   - Sílabo 2026-2: propuesta_silabo_2026_2.md

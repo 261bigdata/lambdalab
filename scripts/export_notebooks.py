@@ -27,10 +27,15 @@ NOTEBOOKS = {
 
 STATIC_PAGES = {
     "index.md": None,
-    "unidad-1/05_evaluacion_u1.md": "# Evaluación U1\n\nProducto: pipeline batch en Spark con dataset listo para BI/ML.\n",
+    "unidad-1/05_evaluacion_u1.md": "05_evaluacion_u1.md",
+    "unidad-1/05_plantilla_entregable_u1.md": "05_plantilla_entregable_u1.md",
     "unidad-2/06_ingesta_kafka.md": "06_ingesta_kafka.md",
     "unidad-2/12_evaluacion_u2.md": "12_evaluacion_u2.md",
     "unidad-2/12_plantilla_entregable_u2.md": "12_plantilla_entregable_u2.md",
+    "unidad-3/13_integracion_sistema.md": "13_integracion_sistema.md",
+    "unidad-3/14_revision_tecnica_final.md": "14_revision_tecnica_final.md",
+    "unidad-3/15_evaluacion_u3.md": "15_evaluacion_u3.md",
+    "unidad-3/15_plantilla_entregable_u3.md": "15_plantilla_entregable_u3.md",
     "propuesta_silabo_2026_2.md": "propuesta_silabo_2026_2.md",
 }
 

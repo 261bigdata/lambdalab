@@ -67,21 +67,21 @@ configuraciones mediante experimentación distribuida.
 - Sesión 11: Tuning y experimentación distribuida (mejor modelo seleccionado con validación distribuida).
 - Sesión 12: Evaluación U2.
 
-### U3: Integración, DataOps y despliegue del sistema final
+### U3: Integración y sustentación del producto final
 
 Producto U3 / producto del curso: sistema Big Data distribuido end-to-end que
-integra procesamiento batch, procesamiento streaming, analítica/ML,
-observabilidad y visualización BI para la toma de decisiones.
+integra procesamiento batch, procesamiento streaming y analítica/ML con series
+de tiempo e inferencia.
 
 Resultado esperado U3: el estudiante integra los componentes desarrollados en
-las unidades anteriores, despliega o empaqueta el sistema mediante prácticas de
-DataOps/DevOps, prepara una demo end-to-end, documenta la operación del sistema,
-valida resultados técnicos, analíticos y operacionales, y sustenta una solución
-final orientada a la toma de decisiones.
+las unidades anteriores, prepara una demo end-to-end, valida resultados
+técnicos y analíticos, y sustenta una solución final orientada a la toma de
+decisiones. Por el alcance real trabajado, DataOps y BI quedan como proyección
+o mejora futura, no como componentes obligatorios de evaluación.
 
-- Sesión 13: Integración del sistema, DataOps y BI.
+- Sesión 13: Integración del sistema.
 - Sesión 14: Revisión técnica final y hardening.
-- Sesión 15: Sustentación final con demo end-to-end.
+- Sesión 15: Evaluación U3 / sustentación final con demo end-to-end.
 - Sesión 16: Evaluación final.
 
 ## Arquitectura LambdaLab v2026-1
