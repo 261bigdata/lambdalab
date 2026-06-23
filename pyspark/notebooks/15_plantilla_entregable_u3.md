@@ -39,7 +39,11 @@ limitaciones de tiempo.
 | S13 | Integración del sistema | Unificar entregables U1 y U2 en una arquitectura final. | Diagrama, flujo integrado y relación entre componentes. |
 | S14 | Revisión técnica final | Validar ejecución, estructura, artefactos y consistencia del producto. | Evidencias de pruebas, revisión de notebooks/scripts y resultados. |
 | S15 | Sustentación final | Presentar demo end-to-end o recorrido técnico del sistema. | Demo, capturas, resultados y explicación técnica. |
-| S16 | Evaluación final | Consolidar el informe final del producto del curso. | Informe completo, rúbrica y conclusiones. |
+| S16 | Evaluación final de recuperación | Corregir y volver a presentar los aspectos no logrados en la evaluación regular. Aplica únicamente a estudiantes con calificación baja o que no alcanzaron el nivel esperado. | Producto corregido, evidencias complementarias y nueva sustentación de los criterios pendientes. |
+
+La Sesión 15 corresponde a la evaluación regular del producto final. La Sesión
+16 es una oportunidad de recuperación y no aplica a quienes ya alcanzaron el
+nivel esperado.
 
 ---
 

@@ -82,7 +82,8 @@ o mejora futura, no como componentes obligatorios de evaluación.
 - Sesión 13: Integración del sistema.
 - Sesión 14: Revisión técnica final y hardening.
 - Sesión 15: Evaluación U3 / sustentación final con demo end-to-end.
-- Sesión 16: Evaluación final.
+- Sesión 16: Evaluación final de recuperación para estudiantes que no alcanzaron
+  el nivel esperado o quedaron con calificación baja.
 
 ## Arquitectura LambdaLab v2026-1
 

@@ -32,7 +32,13 @@ principal evaluado en la etapa final es **ML con series de tiempo e inferencia**
 - Sesión 13: Integración del sistema, DataOps y BI.
 - Sesión 14: Revisión técnica final.
 - Sesión 15: Sustentación final con demo end-to-end.
-- Sesión 16: Evaluación final.
+- Sesión 16: Evaluación final de recuperación, únicamente para estudiantes que
+  no alcanzaron el nivel esperado o quedaron con calificación baja en la
+  evaluación regular.
+
+La evaluación regular del producto del curso se realiza en la **Sesión 15**.
+La **Sesión 16** funciona como oportunidad final de recuperación y no requiere
+una nueva evaluación para quienes ya alcanzaron el logro esperado.
 
 ## Indicación para el estudiante
 
