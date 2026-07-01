@@ -108,18 +108,20 @@ Componentes mínimos:
 
 ## 6. Evaluación
 
-| Criterio | Qué se observa |
-|---|---|
-| Problema y arquitectura | El proyecto responde a una necesidad de datos y define una arquitectura distribuida coherente. |
-| Procesamiento batch | El pipeline Spark transforma, valida y almacena datos de forma reproducible, con notebooks, salidas o métricas verificables. |
-| Almacenamiento analítico | Las salidas están organizadas en formatos adecuados para análisis posterior y cuentan con evidencia revisable. |
-| Streaming | El sistema consume, procesa y produce resultados útiles a partir de eventos, con pruebas o capturas de ejecución. |
-| Observabilidad | Existen métricas, logs o paneles que permiten entender el comportamiento del sistema y diagnosticar su ejecución. |
-| BI/ML distribuido | El proyecto genera análisis, inferencia, modelo o salida BI con valor para decisiones. |
-| Reproducibilidad | El entorno, comandos, notebooks y evidencias permiten volver a ejecutar la solución. |
-| Integración | Batch, streaming, observabilidad y analítica forman un flujo común, no piezas aisladas. |
-| Sustentación técnica | El equipo explica el problema, arquitectura, flujo batch/streaming, decisiones técnicas, validaciones, resultados, limitaciones y evidencias generadas. |
-| Sustentación profesional | El equipo demuestra el sistema, defiende decisiones técnicas, evidencia aporte individual y presenta el repositorio académico disponible desde la primera presentación con los topics mínimos configurados correctamente y evidencia el cumplimiento de estándares básicos de programación, organización del repositorio, documentación y reproducibilidad. |
+Los criterios se organizan según una matriz común de evaluación de proyectos académicos: problema, arquitectura, implementación, datos, integración, calidad, validación y sustentación. Cada criterio se adapta al enfoque de Big Data y se verifica mediante evidencias del producto, el repositorio y la demostración.
+
+| Dimensión común | Criterio del PS | Qué se observa |
+|---|---|---|
+| Problema y alcance | Problema y alcance de datos | El proyecto responde a una necesidad de datos clara, viable y bien delimitada. |
+| Requerimientos o funcionalidad esperada | Resultados analíticos esperados | El producto define salidas batch, streaming, BI o ML que responden al problema planteado. |
+| Diseño, modelo o arquitectura | Arquitectura Big Data | La solución define una arquitectura distribuida coherente para ingesta, procesamiento, almacenamiento y consumo. |
+| Implementación técnica | Procesamiento batch y streaming | El pipeline Spark transforma, valida y almacena datos, y el flujo streaming consume, procesa y produce resultados útiles con evidencias verificables. |
+| Datos, persistencia o procesamiento | Almacenamiento analítico | Las salidas están organizadas en formatos adecuados para análisis posterior y cuentan con evidencia revisable. |
+| Integración del producto | Integración analítica | Batch, streaming, observabilidad y analítica forman un flujo común, no piezas aisladas. |
+| Calidad técnica | Reproducibilidad y observabilidad | El entorno, comandos, notebooks, métricas, logs o paneles permiten volver a ejecutar y diagnosticar la solución. |
+| Validación, pruebas o resultados | BI/ML distribuido | El proyecto genera análisis, inferencia, modelo o salida BI con valor para decisiones y resultados verificables. |
+| Sustentación técnica | Sustentación técnica | El equipo explica el problema, arquitectura, flujo batch/streaming, decisiones técnicas, validaciones, resultados, limitaciones y evidencias generadas. |
+| Sustentación profesional | Sustentación profesional | El equipo demuestra el sistema, defiende decisiones técnicas, evidencia aporte individual y presenta el repositorio académico disponible desde la primera presentación con los topics mínimos configurados correctamente y evidencia el cumplimiento de estándares básicos de programación, organización del repositorio, documentación y reproducibilidad. |
 
 ## 7. Sustentación
 
