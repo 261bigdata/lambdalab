@@ -39,6 +39,7 @@ STATIC_PAGES = {
     "silabo_bigdata_2026_1.md": "silabo_bigdata_2026_1.md",
     "silabo_bigdata_2026_2.md": "silabo_bigdata_2026_2.md",
     "propuesta_silabo_2026_2.md": "propuesta_silabo_2026_2.md",
+    "proyecto-sello/index.md": "proyecto-sello.md",
 }
 
 APPEND_PAGES = {
