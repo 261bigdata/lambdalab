@@ -1,0 +1,2366 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Curso de Big Data con Spark, Kafka, streaming y ML distribuido.">
+      
+      
+        <meta name="author" content="UPeU">
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../silabo_bigdata_2026_2/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Sílabo 2026-1 - LambdaLab</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#silabo-big-data" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href=".." title="LambdaLab" class="md-header__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LambdaLab
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sílabo 2026-1
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="amber"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="LambdaLab" class="md-nav__button md-logo" aria-label="LambdaLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LambdaLab
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sílabos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sílabos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sílabo 2026-1
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sílabo 2026-1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-informacion-general-de-asignatura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I. Informacion General de Asignatura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-sumilla" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. Sumilla
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-competencia-del-perfil-de-egreso-en-relacion-a-la-asignatura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III. Competencia del perfil de egreso en relacion a la asignatura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iv-resultado-de-aprendizaje-de-la-asignatura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV. Resultado de aprendizaje de la asignatura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v-unidades-de-aprendizaje" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V. Unidades de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unidad-1-arquitecturas-big-data-y-etl-distribuido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unidad 1: Arquitecturas Big Data y ETL distribuido
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unidad 1: Arquitecturas Big Data y ETL distribuido">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sesiones-de-aprendizaje" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sesiones de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unidad-2-streaming-observabilidad-y-operacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unidad 2: Streaming, observabilidad y operacion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unidad 2: Streaming, observabilidad y operacion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sesiones-de-aprendizaje_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sesiones de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unidad-3-ml-a-escala-regresion-y-series-de-tiempo-distribuidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unidad 3: ML a escala, regresion y series de tiempo distribuidos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unidad 3: ML a escala, regresion y series de tiempo distribuidos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sesiones-de-aprendizaje_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sesiones de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unidad-4-proyecto-perfil-de-egreso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unidad 4: Proyecto perfil de egreso
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unidad 4: Proyecto perfil de egreso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sesiones-de-aprendizaje_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sesiones de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vi-estrategias-metodologicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VI. Estrategias metodologicas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vii-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VII. Evaluacion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VII. Evaluacion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#componentes-de-evaluacion-y-ponderacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Componentes de evaluacion y ponderacion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#programacion-de-evaluaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Programacion de evaluaciones
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viii-recursos-medios-y-materiales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VIII. Recursos, medios y materiales
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ix-referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IX. Referencias
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IX. Referencias">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basica-fuentes-primarias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basica (Fuentes primarias)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complementaria-fuentes-secundarias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complementaria (Fuentes secundarias)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#libros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Libros
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enlaces-de-internet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enlaces de internet
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../silabo_bigdata_2026_2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sílabo 2026-2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U1 Arquitecturas Big Data y ETL distribuido
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-1/01_arquitecturas_big_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Arquitectura Big Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-1/02_fundamentos_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Fundamentos Apache Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-1/03_etl_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. ETL distribuido en batch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-1/04_hdfs_formatos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. HDFS y formatos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-1/05_evaluacion_u1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Evaluación U1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U2 Sistema Big Data en tiempo real
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U2 Sistema Big Data en tiempo real
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-2/06_ingesta_kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Ingesta en tiempo real (Kafka)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-2/07_spark_streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Procesamiento en Streaming con Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-2/08_observabilidad_costos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Observabilidad (Grafana) y Costos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-2/09_ml_distribuido_regresion_mllib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9. ML distribuido con MLlib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-2/10_series_tiempo_inferencia_spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Series de tiempo e inferencia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-2/11_tuning_experimentacion_distribuida/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11. Tuning y experimentación distribuida
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-2/12_evaluacion_u2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12. Evaluación U2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    U3 Integración y producto final
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    U3 Integración y producto final
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-3/13_integracion_sistema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13. Integración del sistema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-3/14_revision_tecnica_final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14. Revisión técnica final
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unidad-3/15_evaluacion_u3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15. Evaluación U3 / producto del curso
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-informacion-general-de-asignatura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I. Informacion General de Asignatura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-sumilla" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. Sumilla
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-competencia-del-perfil-de-egreso-en-relacion-a-la-asignatura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III. Competencia del perfil de egreso en relacion a la asignatura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iv-resultado-de-aprendizaje-de-la-asignatura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV. Resultado de aprendizaje de la asignatura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v-unidades-de-aprendizaje" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V. Unidades de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unidad-1-arquitecturas-big-data-y-etl-distribuido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unidad 1: Arquitecturas Big Data y ETL distribuido
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unidad 1: Arquitecturas Big Data y ETL distribuido">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sesiones-de-aprendizaje" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sesiones de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unidad-2-streaming-observabilidad-y-operacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unidad 2: Streaming, observabilidad y operacion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unidad 2: Streaming, observabilidad y operacion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sesiones-de-aprendizaje_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sesiones de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unidad-3-ml-a-escala-regresion-y-series-de-tiempo-distribuidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unidad 3: ML a escala, regresion y series de tiempo distribuidos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unidad 3: ML a escala, regresion y series de tiempo distribuidos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sesiones-de-aprendizaje_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sesiones de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unidad-4-proyecto-perfil-de-egreso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unidad 4: Proyecto perfil de egreso
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unidad 4: Proyecto perfil de egreso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sesiones-de-aprendizaje_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sesiones de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vi-estrategias-metodologicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VI. Estrategias metodologicas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vii-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VII. Evaluacion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VII. Evaluacion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#componentes-de-evaluacion-y-ponderacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Componentes de evaluacion y ponderacion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#programacion-de-evaluaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Programacion de evaluaciones
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viii-recursos-medios-y-materiales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VIII. Recursos, medios y materiales
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ix-referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IX. Referencias
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IX. Referencias">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basica-fuentes-primarias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basica (Fuentes primarias)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complementaria-fuentes-secundarias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complementaria (Fuentes secundarias)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#libros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Libros
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enlaces-de-internet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enlaces de internet
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<!-- Transcripcion fiel generada desde: bigdata2026-1.docx -->
+
+<p>Universidad Peruana Union<br />
+Carret. Central km. 19.5 Nana. Telf. 01-6186300 Casilla 3564 Lima 1, Peru</p>
+<h1 id="silabo-big-data">Silabo: Big Data<a class="headerlink" href="#silabo-big-data" title="Permanent link">&para;</a></h1>
+<h2 id="i-informacion-general-de-asignatura">I. Informacion General de Asignatura<a class="headerlink" href="#i-informacion-general-de-asignatura" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>N.</th>
+<th>Campo</th>
+<th>Informacion</th>
+<th>N.</th>
+<th>Campo</th>
+<th>Informacion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>Facultad/EGP</td>
+<td>Facultad de Ingenieria y Arquitectura</td>
+<td>09</td>
+<td>Ano de plan de estudio</td>
+<td>2022-1</td>
+</tr>
+<tr>
+<td>02</td>
+<td>Programa de estudio</td>
+<td>EP Ingenieria de Sistemas</td>
+<td>10</td>
+<td>Ciclo de estudio</td>
+<td>9</td>
+</tr>
+<tr>
+<td>03</td>
+<td>Tipo de estudio</td>
+<td>General</td>
+<td>11</td>
+<td>Codigo de asignatura</td>
+<td></td>
+</tr>
+<tr>
+<td>04</td>
+<td>Nombre de asignatura</td>
+<td>Big Data</td>
+<td>12</td>
+<td>Numero de creditos</td>
+<td>3</td>
+</tr>
+<tr>
+<td>05</td>
+<td>Duracion</td>
+<td></td>
+<td>13</td>
+<td>Nota minima probatoria</td>
+<td>13</td>
+</tr>
+<tr>
+<td>06</td>
+<td>Horas de la asignatura</td>
+<td>H. Te. Pract: 32 / H. Prc. Pres: 32</td>
+<td>14</td>
+<td>Ano y semestre academico</td>
+<td>2026-1</td>
+</tr>
+<tr>
+<td>07</td>
+<td>Docente</td>
+<td>Sullon Macalupu Abel Angel</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>08</td>
+<td>Pre requisito</td>
+<td>Mineria de datos</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="ii-sumilla">II. Sumilla<a class="headerlink" href="#ii-sumilla" title="Permanent link">&para;</a></h2>
+<p>Disena e implementa soluciones Big Data integrando arquitecturas batch y streaming, construyendo pipelines distribuidos con Spark y Kafka, instrumentandolos con observabilidad y buenas practicas operativas, y ejecutando experimentos de analitica/ML a escala para generar resultados reproducibles y orientados a decision.</p>
+<h2 id="iii-competencia-del-perfil-de-egreso-en-relacion-a-la-asignatura">III. Competencia del perfil de egreso en relacion a la asignatura<a class="headerlink" href="#iii-competencia-del-perfil-de-egreso-en-relacion-a-la-asignatura" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Competencia</th>
+<th>Nivel / dimensiones</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>General</td>
+<td><strong>INVESTIGACION E INNOVACION:</strong> Desarrolla y aplica habilidades de investigacion cientifica y formativa, asi como la capacidad de innovar de manera etica y basada en principios biblico-cristianos, para contribuir al avance del conocimiento y la solucion de problemas en la sociedad.</td>
+<td>N. 1.1: Problematizacion, Diseno de Investigacion.</td>
+</tr>
+<tr>
+<td>Especifica</td>
+<td><strong>CIENCIA DE DATOS E INTELIGENCIA ARTIFICIAL:</strong> Disena y gestiona sistemas inteligentes basandose en metodologias, estandares y herramientas a fin de lograr estrategias de mejora para la organizacion.</td>
+<td>N. 1.1: Analista de negocios, ingenieria de datos, cientifico de datos, analista de datos.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="iv-resultado-de-aprendizaje-de-la-asignatura">IV. Resultado de aprendizaje de la asignatura<a class="headerlink" href="#iv-resultado-de-aprendizaje-de-la-asignatura" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Resultado de aprendizaje</th>
+<th>Producto Academico</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disena e implementa soluciones Big Data integrando arquitecturas batch y streaming, construyendo pipelines distribuidos con Spark y Kafka, instrumentandolos con observabilidad y buenas practicas operativas, y ejecutando experimentos de analitica/ML a escala para generar resultados reproducibles y orientados a decision.</td>
+<td><strong>Nombre:</strong> Demo de arquitectura integrada (batch + streaming).</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Descripcion:</strong> Solucion Big Data que integra un pipeline batch (ETL distribuido con Spark) y un pipeline streaming (Kafka + Spark Structured Streaming) con observabilidad (metricas, logging, alertas) y documentacion operativa. Incluye un caso aplicado a regresion o series de tiempo a escala con reporte de metricas y guia de ejecucion/reproduccion.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="v-unidades-de-aprendizaje">V. Unidades de aprendizaje<a class="headerlink" href="#v-unidades-de-aprendizaje" title="Permanent link">&para;</a></h2>
+<h2 id="unidad-1-arquitecturas-big-data-y-etl-distribuido">Unidad 1: Arquitecturas Big Data y ETL distribuido<a class="headerlink" href="#unidad-1-arquitecturas-big-data-y-etl-distribuido" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Resultado de aprendizaje</th>
+<th>Producto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Analiza arquitecturas Big Data y construye un pipeline batch distribuido con Spark, desde la ingesta hasta la salida verificada, usando almacenamiento y formatos optimizados.</td>
+<td><strong>Nombre:</strong> Pipeline batch en Spark: ingesta -&gt; transformacion -&gt; salida verificada.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Criterios de evaluacion del producto</th>
+<th>Descripcion del producto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Distingue arquitecturas Lambda/Kappa y selecciona enfoque batch/streaming segun el caso. Configura almacenamiento distribuido y elige formatos (Parquet/Avro/ORC) con particionado adecuado. Implementa transformaciones distribuidas en Spark usando DataFrames y evidencia lazy evaluation/planes. Aplica joins y funciones ventana considerando particionado y performance. Verifica la salida con controles de calidad y evidencia de ejecucion reproducible.</td>
+<td>Pipeline batch implementado con Spark que ingesta datos, transforma con operaciones distribuidas (joins/ventanas) y publica una salida verificada (controles de calidad, particionado y formato columnar).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sesiones-de-aprendizaje">Sesiones de aprendizaje<a class="headerlink" href="#sesiones-de-aprendizaje" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>N.</th>
+<th>Fecha</th>
+<th>Contenido</th>
+<th>HT</th>
+<th>HP</th>
+<th>Actividad practica</th>
+<th>Actividad autonoma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>15/03/2026 - 21/03/2026</td>
+<td>Arquitecturas Big Data: ecosistema Big Data, arquitecturas Lambda/Kappa, batch vs. streaming, casos reales.</td>
+<td>2</td>
+<td>2</td>
+<td>Analizar un caso real y decidir arquitectura (Lambda/Kappa) justificando batch vs. streaming y componentes del ecosistema.</td>
+<td>Completar una ficha de arquitectura (diagrama, decisiones, supuestos y riesgos) para el caso elegido.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>22/03/2026 - 28/03/2026</td>
+<td>Almacenamiento distribuido: HDFS, formatos Parquet/Avro/ORC, particionado.</td>
+<td>2</td>
+<td>2</td>
+<td>Disenar layout de almacenamiento (carpetas/particiones) y convertir un dataset a formato columnar con particionado.</td>
+<td>Documentar decision de formato y particionado (criterios de consulta, volumen, cardinalidad) con evidencias de lectura/tamano.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>29/03/2026 - 04/04/2026</td>
+<td>Fundamentos de Spark: modelo de ejecucion, DataFrames API, lazy evaluation, planes (logical/physical).</td>
+<td>2</td>
+<td>2</td>
+<td>Ejecutar transformaciones/acciones en Spark e inspeccionar el plan con explain(), identificando optimizaciones basicas.</td>
+<td>Responder guia breve: que se observa en el plan y como impacta en performance (capturas y comentario).</td>
+</tr>
+<tr>
+<td>4</td>
+<td>05/04/2026 - 11/04/2026</td>
+<td>ETL escalable con Spark: transformaciones, joins distribuidos, funciones ventana.</td>
+<td>2</td>
+<td>2</td>
+<td>Construir un ETL con joins distribuidos y al menos una funcion ventana, incorporando validaciones basicas.</td>
+<td>Refinar el ETL: optimizar joins (broadcast/particiones si aplica) y documentar decisiones de performance.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>12/04/2026 - 18/04/2026</td>
+<td>Producto Unidad 1: pipeline batch en Spark, ingesta -&gt; transformacion -&gt; salida verificada.</td>
+<td>2</td>
+<td>2</td>
+<td>Integrar el pipeline batch completo y presentar evidencia de ejecucion, salida verificada y particionado.</td>
+<td>Consolidar entrega final del producto U1 con documentacion (pasos, parametros, supuestos, validaciones).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="unidad-2-streaming-observabilidad-y-operacion">Unidad 2: Streaming, observabilidad y operacion<a class="headerlink" href="#unidad-2-streaming-observabilidad-y-operacion" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Resultado de aprendizaje</th>
+<th>Producto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Implementa un pipeline streaming con Kafka y Spark Structured Streaming, instrumentandolo con metricas y logs, y aplicando criterios de operacion y costos para escalar de forma cloud-agnostic.</td>
+<td><strong>Nombre:</strong> Pipeline streaming (Kafka + Spark) con metricas de rendimiento.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Criterios de evaluacion del producto</th>
+<th>Descripcion del producto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Configura Kafka (topicos, productores, consumidores) y define patrones de ingesta. Procesa streaming con ventanas y watermarking comprendiendo semantica de entrega. Implementa observabilidad (metricas, logging estructurado) para el pipeline. Define alertas y umbrales operativos para latencia, throughput y errores. Justifica decisiones de escalado y costos con buenas practicas cloud-agnostic.</td>
+<td>Pipeline en tiempo real que ingiere eventos con Kafka y procesa con Spark Structured Streaming, incorporando ventanas/watermarking y reportando metricas de latencia/throughput con logging estructurado y alertas basicas.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sesiones-de-aprendizaje_1">Sesiones de aprendizaje<a class="headerlink" href="#sesiones-de-aprendizaje_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>N.</th>
+<th>Fecha</th>
+<th>Contenido</th>
+<th>HT</th>
+<th>HP</th>
+<th>Actividad practica</th>
+<th>Actividad autonoma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>19/04/2026 - 25/04/2026</td>
+<td>Kafka para ingesta en tiempo real: Apache Kafka, topicos, productores, consumidores; patrones de ingesta en tiempo real.</td>
+<td>2</td>
+<td>2</td>
+<td>Crear un topico y ejecutar productor/consumidor; definir esquema de evento y patron de ingesta para el caso.</td>
+<td>Documentar contrato de evento (campos, tipos, ejemplos) y estrategia de particionado del topico.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>26/04/2026 - 02/05/2026</td>
+<td>Spark Structured Streaming: micro-batch, ventanas, watermarking, semantica de entrega.</td>
+<td>2</td>
+<td>2</td>
+<td>Implementar un stream con ventanas y watermarking, y medir comportamiento (latencia y throughput).</td>
+<td>Ajustar parametros (trigger, watermark) y registrar efectos en latencia/throughput (tabla).</td>
+</tr>
+<tr>
+<td>3</td>
+<td>03/05/2026 - 09/05/2026</td>
+<td>Observabilidad de pipelines: metricas latencia/throughput, logging estructurado, alertas.</td>
+<td>2</td>
+<td>2</td>
+<td>Instrumentar el pipeline con metricas (latencia/throughput/errores) y logging estructurado; definir alertas y umbrales.</td>
+<td>Proponer un tablero minimo de operacion (que medir, umbrales, frecuencia) y adjuntar evidencias.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>10/05/2026 - 16/05/2026</td>
+<td>Costos y escalado cloud-agnostic: estimacion, elasticidad, buenas practicas.</td>
+<td>2</td>
+<td>2</td>
+<td>Estimar recursos/costos del pipeline (batch/stream) y proponer estrategia de escalado (CPU/memoria/particiones).</td>
+<td>Redactar nota operativa: buenas practicas, riesgos (backpressure) y plan de escalado/optimizacion.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>17/05/2026 - 23/05/2026</td>
+<td>Producto Unidad 2: pipeline streaming (Kafka + Spark) con metricas de rendimiento.</td>
+<td>2</td>
+<td>2</td>
+<td>Integrar pipeline streaming end-to-end con metricas y evidenciar rendimiento bajo carga controlada.</td>
+<td>Consolidar documentacion operativa (metricas, alertas, parametros, pasos de ejecucion).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="unidad-3-ml-a-escala-regresion-y-series-de-tiempo-distribuidos">Unidad 3: ML a escala, regresion y series de tiempo distribuidos<a class="headerlink" href="#unidad-3-ml-a-escala-regresion-y-series-de-tiempo-distribuidos" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Resultado de aprendizaje</th>
+<th>Producto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ejecuta experimentos de ML a escala con Spark MLlib (regresion/clasificacion y/o series de tiempo), ajusta hiperparametros de forma distribuida e integra criterios de calidad y DataOps conectando resultados a BI a escala.</td>
+<td><strong>Nombre:</strong> Experimento MLlib con regresion o serie de tiempo + reporte de metricas.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Criterios de evaluacion del producto</th>
+<th>Descripcion del producto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Construye un pipeline MLlib escalable para regresion o clasificacion. Aplica regularizacion (Ridge/Lasso) y evalua con metricas pertinentes. Implementa enfoque de series de tiempo (descomposicion y modelo) en contexto Big Data. Ejecuta ajuste de hiperparametros distribuido (CrossValidator/ParamGridBuilder) y justifica seleccion. Integra controles de calidad y criterios DataOps, conectando resultados a BI a escala.</td>
+<td>Experimento en Spark MLlib aplicando regresion o series de tiempo a escala, con pipeline, ajuste de hiperparametros distribuido, metricas de evaluacion y reporte tecnico con interpretacion y recomendaciones.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sesiones-de-aprendizaje_2">Sesiones de aprendizaje<a class="headerlink" href="#sesiones-de-aprendizaje_2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>N.</th>
+<th>Fecha</th>
+<th>Contenido</th>
+<th>HT</th>
+<th>HP</th>
+<th>Actividad practica</th>
+<th>Actividad autonoma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>24/05/2026 - 30/05/2026</td>
+<td>Regresion distribuida con MLlib: pipeline de ML escalable, regresion distribuida (Ridge/Lasso a escala).</td>
+<td>2</td>
+<td>2</td>
+<td>Construir pipeline MLlib de regresion y entrenar Ridge/Lasso, reportando metricas y tiempos de ejecucion.</td>
+<td>Comparar Ridge vs Lasso (metricas + complejidad) y redactar conclusiones tecnicas breves.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>31/05/2026 - 06/06/2026</td>
+<td>Series de tiempo a escala: series de tiempo en Big Data, descomposicion, ARIMA/Prophet distribuido con Spark.</td>
+<td>2</td>
+<td>2</td>
+<td>Preparar series (resampling/estacionalidad) y ejecutar un modelo (ARIMA/Prophet) en enfoque distribuido o por particiones.</td>
+<td>Documentar supuestos del modelo y comparar al menos dos configuraciones con metricas/errores.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>07/06/2026 - 13/06/2026</td>
+<td>Hiperparametros distribuidos: clasificacion y ajuste de hiperparametros distribuido, CrossValidator, ParamGridBuilder.</td>
+<td>2</td>
+<td>2</td>
+<td>Implementar CrossValidator con ParamGridBuilder para un modelo (clasificacion o regresion) y seleccionar mejor configuracion.</td>
+<td>Completar tabla de experimentos (parametros, metricas, tiempo) y justificar la seleccion final.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>14/06/2026 - 20/06/2026</td>
+<td>DataOps y BI a escala: calidad de datos y analitica BI a escala, DataOps, conexion Power BI/Databricks.</td>
+<td>2</td>
+<td>2</td>
+<td>Definir controles de calidad y preparar dataset/modelo para consumo BI (Power BI/Databricks).</td>
+<td>Redactar mini guia DataOps: validaciones, linaje basico y versionado de artefactos.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>21/06/2026 - 27/06/2026</td>
+<td>Producto Unidad 3: experimento MLlib con regresion o serie de tiempo + reporte de metricas.</td>
+<td>2</td>
+<td>2</td>
+<td>Integrar experimento (pipeline + tuning + metricas) y presentar reporte con interpretacion y recomendaciones.</td>
+<td>Consolidar reporte final y evidencias (configuracion, metricas, reproducibilidad minima).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="unidad-4-proyecto-perfil-de-egreso">Unidad 4: Proyecto perfil de egreso<a class="headerlink" href="#unidad-4-proyecto-perfil-de-egreso" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Resultado de aprendizaje</th>
+<th>Producto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Presenta proyecto de perfil de egreso.</td>
+<td><strong>Nombre:</strong> Proyecto de perfil de egreso.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Criterios de evaluacion del producto</th>
+<th>Descripcion del producto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Evalua si el producto incorpora buenas practicas y estandares reconocidos en la gestion de servicios TI, como ITIL, COBIT o ISO 27001. Evidencia la aplicacion de conocimientos teoricos en un contexto practico y real. Analiza la claridad, precision y fundamentacion tecnica en la documentacion del plan de operacion, soporte y evaluacion de servicios TI. Evalua si el producto integra un diagnostico efectivo de la gestion de incidentes, infraestructura tecnologica y desempeno de los servicios.</td>
+<td>Un informe tecnico del Plan Integral incluye procedimientos de gestion operativa de servicios, estrategias de resolucion de incidentes, administracion de problemas y gestion de cambios; administracion de infraestructura tecnologica; monitoreo y auditoria de desempeno; propuesta de mejora continua basada en auditorias y analisis de desempeno.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sesiones-de-aprendizaje_3">Sesiones de aprendizaje<a class="headerlink" href="#sesiones-de-aprendizaje_3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>N.</th>
+<th>Fecha</th>
+<th>Contenido</th>
+<th>HT</th>
+<th>HP</th>
+<th>Actividad practica</th>
+<th>Actividad autonoma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>28/06/2026 - 04/07/2026</td>
+<td>Producto de Curso: demo de arquitectura integrada (batch + streaming) + documentacion operativa de pipeline aplicado a la regresion o series de tiempo. Presentacion final de proyectos, sustentacion de proyecto de perfil de egreso.</td>
+<td>2</td>
+<td>2</td>
+<td>Realizar demo end-to-end mostrando batch + streaming, observabilidad y el caso ML (regresion o series) con metricas y evidencia de operacion. Presentacion del producto y evaluacion con rubricas de aprendizaje.</td>
+<td>Preparar sustentacion final y documentacion operativa completa (pasos, parametros, metricas, alertas, guia de reproduccion). Organizar los entregables del producto y subirlo en la tarea de la unidad.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="vi-estrategias-metodologicas">VI. Estrategias metodologicas<a class="headerlink" href="#vi-estrategias-metodologicas" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>N.</th>
+<th>Estrategias de ensenanza y de aprendizaje que se aplicaran en la asignatura</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.1</td>
+<td>Aprendizaje Cooperativo: Fomenta habilidades colaborativas y de trabajo en equipo, cruciales en la mayoria de los entornos laborales modernos.</td>
+</tr>
+<tr>
+<td>1.2</td>
+<td>Flipped Classroom (Clase Invertida): En esta metodologia, los estudiantes revisan el material teorico fuera del aula, generalmente en linea, y utilizan el tiempo en clase para actividades practicas y discusiones.</td>
+</tr>
+<tr>
+<td>1.3</td>
+<td>Simulacion: Ofrece experiencias practicas que son esenciales para la aplicacion de teorias en situaciones del mundo real.</td>
+</tr>
+<tr>
+<td>1.4</td>
+<td>Estudios de caso: Desarrolla el pensamiento critico y la toma de decisiones al analizar situaciones complejas, preparando a los estudiantes para enfrentar problemas similares en sus futuras carreras profesionales.</td>
+</tr>
+<tr>
+<td>1.5</td>
+<td>Proyectos: Fomentan habilidades de investigacion, gestion del tiempo y trabajo en equipo, todas cruciales en el mundo profesional.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="vii-evaluacion">VII. Evaluacion<a class="headerlink" href="#vii-evaluacion" title="Permanent link">&para;</a></h2>
+<p>La evaluacion de los estudiantes se rige por el Reglamento de Estudios, disponible en: <a href="https://upeu.edu.pe/reglamentos/evaluacion/">https://upeu.edu.pe/reglamentos/evaluacion/</a>.</p>
+<p>La estructura evaluativa comprende componentes formativos y/o de procesos, de producto y genericos, reflejando un enfoque integral.</p>
+<h3 id="componentes-de-evaluacion-y-ponderacion">Componentes de evaluacion y ponderacion<a class="headerlink" href="#componentes-de-evaluacion-y-ponderacion" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Evaluacion de Sesiones (ES):</strong> Es el promedio de las evaluaciones aplicadas a los estudiantes para verificar su proceso de aprendizaje durante las sesiones de las unidades. Su contribucion a la nota final es de hasta el 20%.</li>
+<li><strong>Evaluacion de Productos (EP):</strong> Es el promedio ponderado de las evaluaciones de los productos entregados en cada unidad. Este componente representa un minimo del 70% de la nota final.</li>
+<li><strong>Evaluacion de Competencias Generales (ECG):</strong> Esta evaluacion aporta hasta un 10% al calculo de la nota final.</li>
+</ul>
+<h3 id="programacion-de-evaluaciones">Programacion de evaluaciones<a class="headerlink" href="#programacion-de-evaluaciones" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Fecha</th>
+<th>Unidad</th>
+<th>Producto</th>
+<th>Evaluacion de proceso y de resultado</th>
+<th>Pesos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>14/04/2026</td>
+<td>Unidad 1: Arquitecturas Big Data y ETL distribuido</td>
+<td>Pipeline batch en Spark: ingesta -&gt; transformacion -&gt; salida verificada.</td>
+<td>Evaluacion del producto</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>14/04/2026</td>
+<td>Unidad 1: Arquitecturas Big Data y ETL distribuido</td>
+<td>Pipeline batch en Spark: ingesta -&gt; transformacion -&gt; salida verificada.</td>
+<td>Evaluacion de sesiones</td>
+<td>5%</td>
+</tr>
+<tr>
+<td>19/05/2026</td>
+<td>Unidad 2: Streaming, observabilidad y operacion</td>
+<td>Pipeline streaming (Kafka + Spark) con metricas de rendimiento.</td>
+<td>Evaluacion de sesiones</td>
+<td>5%</td>
+</tr>
+<tr>
+<td>19/05/2026</td>
+<td>Unidad 2: Streaming, observabilidad y operacion</td>
+<td>Pipeline streaming (Kafka + Spark) con metricas de rendimiento.</td>
+<td>Evaluacion del producto</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>23/06/2026</td>
+<td>Unidad 3: ML a escala, regresion y series de tiempo distribuidos</td>
+<td>Experimento MLlib con regresion o serie de tiempo + reporte de metricas.</td>
+<td>Evaluacion de sesiones</td>
+<td>5%</td>
+</tr>
+<tr>
+<td>23/06/2026</td>
+<td>Unidad 3: ML a escala, regresion y series de tiempo distribuidos</td>
+<td>Experimento MLlib con regresion o serie de tiempo + reporte de metricas.</td>
+<td>Evaluacion del producto</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>30/06/2026</td>
+<td>Unidad 4: Proyecto perfil de egreso</td>
+<td>Proyecto de perfil de egreso.</td>
+<td>Evaluacion de sesiones</td>
+<td>5%</td>
+</tr>
+<tr>
+<td>30/06/2026</td>
+<td>Unidad 4: Proyecto perfil de egreso</td>
+<td>Proyecto de perfil de egreso.</td>
+<td>Evaluacion del producto</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>30/06/2026</td>
+<td>Competencia General</td>
+<td>INVESTIGACION E INNOVACION: Desarrolla y aplica habilidades de investigacion cientifica y formativa, asi como la capacidad de innovar de manera etica y basada en principios biblico-cristianos, para contribuir al avance del conocimiento y la solucion de problemas en la sociedad.</td>
+<td>Competencia General</td>
+<td>10%</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Componente</th>
+<th>Peso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Evaluacion de sesiones</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>Evaluacion del producto</td>
+<td>70%</td>
+</tr>
+<tr>
+<td>Evaluacion de competencia generica</td>
+<td>10%</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>100%</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="viii-recursos-medios-y-materiales">VIII. Recursos, medios y materiales<a class="headerlink" href="#viii-recursos-medios-y-materiales" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>N.</th>
+<th>Recursos, medios y materiales</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Guias y/o tutoriales</td>
+</tr>
+<tr>
+<td>2</td>
+<td>PC de Escritorio con programas de ofimatica</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Laboratorios</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Internet - Wifi</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Proyector y/o TV Smart</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ix-referencias">IX. Referencias<a class="headerlink" href="#ix-referencias" title="Permanent link">&para;</a></h2>
+<h3 id="basica-fuentes-primarias">Basica (Fuentes primarias)<a class="headerlink" href="#basica-fuentes-primarias" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Brink, H., Richards, J. and Fetherolf, M. (2016). <em>Real-World Machine Learning</em>. Manning Publications.</li>
+<li>Erl, T., Khattak, W. and Buhler, P. (2016). <em>Big Data Fundamentals: Concepts, Drivers &amp; Techniques</em>. Prentice Hall.</li>
+<li>Cielen, D., Meysman, A. and Ali, M. (2016). <em>Introducing Data Science</em>. Manning Publications.</li>
+</ul>
+<h3 id="complementaria-fuentes-secundarias">Complementaria (Fuentes secundarias)<a class="headerlink" href="#complementaria-fuentes-secundarias" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Garillot, F. and Maas, G. (2017). <em>Stream Processing with Apache Spark</em>. O'Reilly.</li>
+<li>Richert, W. and Pedro-Coelho, L. (2013). <em>Building Machine Learning Systems with Python</em>. Packt Publishing.</li>
+<li>Grus, J. (2015). <em>Data Science from Scratch</em>. O'Reilly Media Inc.</li>
+<li>Poole, D. L. and Mackworth, A. K. (2010). <em>Artificial Intelligence: Foundations of Computer Agents</em>. Cambridge University Press.</li>
+<li>Marz, N. and Warren J. (2015). <em>Big Data: Principles and Best Practices of Scalable Realtime Data Systems</em>. Manning Publications.</li>
+<li>Ryza, S., Laserson, U., Owen, S., and Wills, J. (2017). <em>Advanced Analytics with Spark</em>. 2nd ed. O'Reilly.</li>
+<li>Harrington, P. (2012). <em>Machine Learning in Action</em>. Manning.</li>
+<li>Kelleher, J. D., Mac Namee, B. and D'Arcy, A. (2015). <em>Fundamentals of Machine Learning for Predictive Data Analytics: Algorithms, Worked Examples, and Case Studies</em>. The MIT Press.</li>
+<li>Gurin, J. (2014). <em>Open Data Now</em>. McGraw-Hill.</li>
+<li>Ryza, S., Laserson, U., Owen, S., and Wills, J. (2015). <em>Advanced Analytics with Spark</em>. O'Reilly.</li>
+<li>Geron, A. (2017). <em>Hands-on Machine Learning with Scikit-Learn &amp; TensorFlow</em>. O'Reilly.</li>
+<li>Kitchin, R. (2014). <em>The Data Revolution: Big Data, Open Data, Data Infrastructures and Their Consequences</em>. SAGE Publications.</li>
+</ul>
+<h3 id="libros">Libros<a class="headerlink" href="#libros" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Pena, S. (2017). <em>Analisis de datos</em>. Fundacion universitaria. Bogota.</li>
+<li>Caballero, R., Riesco, E. (2019). <em>Big Data con Python: recoleccion, almacenamiento y proceso</em>. Alfaomega Cloud.</li>
+<li>Holmes, D. (2017). <em>Big Data, una breve introduccion</em>. Alfaomega Cloud.</li>
+</ul>
+<h3 id="enlaces-de-internet">Enlaces de internet<a class="headerlink" href="#enlaces-de-internet" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Corpus de modelos entrenados en espanol: <a href="https://github.com/roquegv/spanishNLPModelCorpus">https://github.com/roquegv/spanishNLPModelCorpus</a></li>
+<li>Pandas: <a href="https://pandas.pydata.org/">https://pandas.pydata.org/</a></li>
+<li>Beautiful Soup: <a href="https://beautiful-soup-4.readthedocs.io/en/latest/">https://beautiful-soup-4.readthedocs.io/en/latest/</a></li>
+<li>Curso Machine Learning: <a href="https://www.aprendemachinelearning.com">https://www.aprendemachinelearning.com</a></li>
+<li>Data.gov: <a href="https://www.data.gov">https://www.data.gov</a></li>
+<li>Documentacion Spark: <a href="https://spark.apache.org/docs/latest/">https://spark.apache.org/docs/latest/</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Angel Sullon @asullom - UPeU 2026
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "content.code.copy", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>
