@@ -1566,51 +1566,63 @@ grupo-&lt;numero&gt;-&lt;nombre-proyecto&gt;
 <li>Documentación técnica y demo final.</li>
 </ul>
 <h2 id="6-evaluacion">6. Evaluación<a class="headerlink" href="#6-evaluacion" title="Permanent link">&para;</a></h2>
+<p>Los criterios se organizan según una matriz común de evaluación de proyectos académicos: problema, arquitectura, implementación, datos, integración, calidad, validación y sustentación. Cada criterio se adapta al enfoque de Big Data y se verifica mediante evidencias del producto, el repositorio y la demostración.</p>
 <table>
 <thead>
 <tr>
-<th>Criterio</th>
+<th>Dimensión común</th>
+<th>Criterio del PS</th>
 <th>Qué se observa</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Problema y arquitectura</td>
-<td>El proyecto responde a una necesidad de datos y define una arquitectura distribuida coherente.</td>
+<td>Problema y alcance</td>
+<td>Problema y alcance de datos</td>
+<td>El proyecto responde a una necesidad de datos clara, viable y bien delimitada.</td>
 </tr>
 <tr>
-<td>Procesamiento batch</td>
-<td>El pipeline Spark transforma, valida y almacena datos de forma reproducible, con notebooks, salidas o métricas verificables.</td>
+<td>Requerimientos o funcionalidad esperada</td>
+<td>Resultados analíticos esperados</td>
+<td>El producto define salidas batch, streaming, BI o ML que responden al problema planteado.</td>
 </tr>
 <tr>
+<td>Diseño, modelo o arquitectura</td>
+<td>Arquitectura Big Data</td>
+<td>La solución define una arquitectura distribuida coherente para ingesta, procesamiento, almacenamiento y consumo.</td>
+</tr>
+<tr>
+<td>Implementación técnica</td>
+<td>Procesamiento batch y streaming</td>
+<td>El pipeline Spark transforma, valida y almacena datos, y el flujo streaming consume, procesa y produce resultados útiles con evidencias verificables.</td>
+</tr>
+<tr>
+<td>Datos, persistencia o procesamiento</td>
 <td>Almacenamiento analítico</td>
 <td>Las salidas están organizadas en formatos adecuados para análisis posterior y cuentan con evidencia revisable.</td>
 </tr>
 <tr>
-<td>Streaming</td>
-<td>El sistema consume, procesa y produce resultados útiles a partir de eventos, con pruebas o capturas de ejecución.</td>
-</tr>
-<tr>
-<td>Observabilidad</td>
-<td>Existen métricas, logs o paneles que permiten entender el comportamiento del sistema y diagnosticar su ejecución.</td>
-</tr>
-<tr>
-<td>BI/ML distribuido</td>
-<td>El proyecto genera análisis, inferencia, modelo o salida BI con valor para decisiones.</td>
-</tr>
-<tr>
-<td>Reproducibilidad</td>
-<td>El entorno, comandos, notebooks y evidencias permiten volver a ejecutar la solución.</td>
-</tr>
-<tr>
-<td>Integración</td>
+<td>Integración del producto</td>
+<td>Integración analítica</td>
 <td>Batch, streaming, observabilidad y analítica forman un flujo común, no piezas aisladas.</td>
 </tr>
 <tr>
+<td>Calidad técnica</td>
+<td>Reproducibilidad y observabilidad</td>
+<td>El entorno, comandos, notebooks, métricas, logs o paneles permiten volver a ejecutar y diagnosticar la solución.</td>
+</tr>
+<tr>
+<td>Validación, pruebas o resultados</td>
+<td>BI/ML distribuido</td>
+<td>El proyecto genera análisis, inferencia, modelo o salida BI con valor para decisiones y resultados verificables.</td>
+</tr>
+<tr>
+<td>Sustentación técnica</td>
 <td>Sustentación técnica</td>
 <td>El equipo explica el problema, arquitectura, flujo batch/streaming, decisiones técnicas, validaciones, resultados, limitaciones y evidencias generadas.</td>
 </tr>
 <tr>
+<td>Sustentación profesional</td>
 <td>Sustentación profesional</td>
 <td>El equipo demuestra el sistema, defiende decisiones técnicas, evidencia aporte individual y presenta el repositorio académico disponible desde la primera presentación con los topics mínimos configurados correctamente y evidencia el cumplimiento de estándares básicos de programación, organización del repositorio, documentación y reproducibilidad.</td>
 </tr>
