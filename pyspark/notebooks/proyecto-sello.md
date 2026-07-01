@@ -121,7 +121,7 @@ Los criterios se organizan según una matriz común de evaluación de proyectos 
 | Calidad técnica | Reproducibilidad y observabilidad | El entorno, comandos, notebooks, métricas, logs o paneles permiten volver a ejecutar y diagnosticar la solución. |
 | Validación, pruebas o resultados | BI/ML distribuido | El proyecto genera análisis, inferencia, modelo o salida BI con valor para decisiones y resultados verificables. |
 | Sustentación técnica | Sustentación técnica | El equipo explica el problema, arquitectura, flujo batch/streaming, decisiones técnicas, validaciones, resultados, limitaciones y evidencias generadas. |
-| Sustentación profesional | Sustentación profesional | El equipo demuestra el sistema, defiende decisiones técnicas, evidencia aporte individual y presenta el repositorio académico disponible desde la primera presentación con los topics mínimos configurados correctamente y evidencia el cumplimiento de estándares básicos de programación, organización del repositorio, documentación y reproducibilidad. |
+| Sustentación profesional | Sustentación profesional | El equipo demuestra el sistema, defiende decisiones técnicas, evidencia aporte individual y evidencia comunicación clara, puntualidad, vestimenta limpia y adecuada, cabello ordenado, higiene personal y actitud profesional; además presenta el repositorio académico disponible desde la primera presentación con los topics mínimos configurados correctamente y evidencia el cumplimiento de estándares básicos de programación, organización del repositorio, documentación y reproducibilidad. |
 
 ## 7. Sustentación
 
@@ -131,8 +131,6 @@ Los criterios se organizan según una matriz común de evaluación de proyectos 
 | Demostración end-to-end | 5 minutos | Ejecutar o evidenciar el flujo batch/streaming, salidas generadas, métricas y resultados BI/ML. |
 
 Cada integrante debe demostrar una parte verificable: arquitectura, Spark batch, Kafka, streaming, observabilidad, ML/BI, validación, documentación o pruebas. La demo debe mostrar ejecución o evidencias reproducibles, no solo explicación conceptual.
-
-Se espera comunicación clara, presentación personal adecuada, puntualidad, vestimenta limpia y actitud profesional.
 
 ## 8. Resultado Esperado
 
