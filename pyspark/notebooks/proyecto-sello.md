@@ -1,4 +1,4 @@
-?# Proyecto Sello de Big Data
+# Proyecto Sello de Big Data
 
 ## 1. Propósito
 
@@ -72,6 +72,24 @@ Este alineamiento muestra cómo el sistema Big Data crece desde procesamiento ba
 
 ## 5. Producto Final
 
+### Repositorio académico y topics
+
+Desde la primera presentación del proyecto, el repositorio debe estar creado y configurado con los topics académicos mínimos. Esta configuración es obligatoria porque permite identificar campus, semestre, línea, tipo de proyecto, curso, sección y grupo.
+
+El detalle oficial del estándar se encuentra en [Estándar transversal de topics para repositorios académicos](https://upeuoficial.github.io/planb/anexos/estandar-topics-repositorios/).
+
+Ejemplo base para Big Data:
+
+```text
+campus-juliaca
+semestre-2026-2
+linea-cdia
+tipo-ps
+bigdata
+seccion-g1
+grupo-<numero>-<nombre-proyecto>
+```
+
 Componentes mínimos:
 
 - Problema de datos delimitado.
@@ -93,15 +111,15 @@ Componentes mínimos:
 | Criterio | Qué se observa |
 |---|---|
 | Problema y arquitectura | El proyecto responde a una necesidad de datos y define una arquitectura distribuida coherente. |
-| Procesamiento batch | El pipeline Spark transforma, valida y almacena datos de forma reproducible. |
-| Almacenamiento analítico | Las salidas están organizadas en formatos adecuados para análisis posterior. |
-| Streaming | El sistema consume, procesa y produce resultados útiles a partir de eventos. |
-| Observabilidad | Existen métricas, logs o paneles que permiten entender el comportamiento del sistema. |
+| Procesamiento batch | El pipeline Spark transforma, valida y almacena datos de forma reproducible, con notebooks, salidas o métricas verificables. |
+| Almacenamiento analítico | Las salidas están organizadas en formatos adecuados para análisis posterior y cuentan con evidencia revisable. |
+| Streaming | El sistema consume, procesa y produce resultados útiles a partir de eventos, con pruebas o capturas de ejecución. |
+| Observabilidad | Existen métricas, logs o paneles que permiten entender el comportamiento del sistema y diagnosticar su ejecución. |
 | BI/ML distribuido | El proyecto genera análisis, inferencia, modelo o salida BI con valor para decisiones. |
 | Reproducibilidad | El entorno, comandos, notebooks y evidencias permiten volver a ejecutar la solución. |
 | Integración | Batch, streaming, observabilidad y analítica forman un flujo común, no piezas aisladas. |
-| Evidencias | Se presentan notebooks, salidas, métricas, capturas, artefactos y resultados verificables. |
-| Sustentación profesional | El equipo demuestra el sistema, defiende decisiones técnicas y evidencia aporte individual. |
+| Sustentación técnica | El equipo explica el problema, arquitectura, flujo batch/streaming, decisiones técnicas, validaciones, resultados, limitaciones y evidencias generadas. |
+| Sustentación profesional | El equipo demuestra el sistema, defiende decisiones técnicas, evidencia aporte individual y presenta el repositorio académico disponible desde la primera presentación con los topics mínimos configurados correctamente y evidencia el cumplimiento de estándares básicos de programación, organización del repositorio, documentación y reproducibilidad. |
 
 ## 7. Sustentación
 
@@ -121,4 +139,3 @@ Al finalizar el curso, el estudiante debe demostrar que puede construir una solu
 ```text
 Datos -> Procesamiento distribuido -> Streaming -> Observabilidad -> Analítica/ML -> Decisión -> Sustentación
 ```
-
