@@ -42,7 +42,10 @@ extra_javascript:
   - https://unpkg.com/mermaid@10/dist/mermaid.min.js
 
 nav:
-  - Sílabo 2026-1: index.md
+  - Inicio: index.md
+  - Sílabos:
+      - Sílabo 2026-1: silabo_bigdata_2026_1.md
+      - Sílabo 2026-2: silabo_bigdata_2026_2.md
   - U1 Arquitecturas Big Data y ETL distribuido:
       - 1. Arquitectura Big Data: unidad-1/01_arquitecturas_big_data.md
       - 2. Fundamentos Apache Spark: unidad-1/02_fundamentos_spark.md
@@ -61,4 +64,3 @@ nav:
       - 13. Integración del sistema: unidad-3/13_integracion_sistema.md
       - 14. Revisión técnica final: unidad-3/14_revision_tecnica_final.md
       - 15. Evaluación U3 / producto del curso: unidad-3/15_evaluacion_u3.md
-  - Sílabo 2026-2: propuesta_silabo_2026_2.md

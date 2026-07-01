@@ -36,6 +36,8 @@ STATIC_PAGES = {
     "unidad-3/14_revision_tecnica_final.md": "14_revision_tecnica_final.md",
     "unidad-3/15_evaluacion_u3.md": "15_evaluacion_u3.md",
     "unidad-3/15_plantilla_entregable_u3.md": "15_plantilla_entregable_u3.md",
+    "silabo_bigdata_2026_1.md": "silabo_bigdata_2026_1.md",
+    "silabo_bigdata_2026_2.md": "silabo_bigdata_2026_2.md",
     "propuesta_silabo_2026_2.md": "propuesta_silabo_2026_2.md",
 }
 
