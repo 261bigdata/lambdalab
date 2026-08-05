@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1839,29 +1839,29 @@ Carret. Central km. 19.5 Ñaña. Telf. 01-6186300 Casilla 3564 Lima 1, Perú</p>
 <tr>
 <td>1</td>
 <td>10/08/2026 - 15/08/2026</td>
-<td>Arquitectura Big Data.</td>
+<td>Arquitectura Big Data: arquitecturas Lambda y Kappa, batch vs. streaming.</td>
 <td>2</td>
 <td>2</td>
-<td>Analiza LambdaLab y define la arquitectura base del sistema Big Data para un caso de negocio.</td>
-<td>Elabora un diagrama de arquitectura, decisiones técnicas, supuestos y riesgos.</td>
+<td>Analiza LambdaLab y decide entre arquitectura Lambda o Kappa, justificando batch vs. streaming para un caso de negocio.</td>
+<td>Elabora un diagrama de arquitectura (Lambda o Kappa), decisiones técnicas, supuestos y riesgos.</td>
 </tr>
 <tr>
 <td>2</td>
 <td>16/08/2026 - 22/08/2026</td>
-<td>Fundamentos PySpark: extracción, transformaciones, funciones, agrupaciones, agregaciones y RDD.</td>
+<td>Fundamentos PySpark: extracción, transformaciones, funciones, agrupaciones, agregaciones, RDD y evaluación perezosa (lazy evaluation).</td>
 <td>2</td>
 <td>2</td>
-<td>Ejecuta transformaciones distribuidas con PySpark y valida resultados mediante DataFrames/RDD.</td>
-<td>Documenta transformaciones, funciones aplicadas y evidencias de ejecución.</td>
+<td>Ejecuta transformaciones distribuidas con PySpark y valida resultados mediante DataFrames/RDD, identificando el momento en que Spark ejecuta realmente el cálculo (por ejemplo, con <code>explain()</code>).</td>
+<td>Documenta transformaciones, funciones aplicadas, evidencias de ejecución y el efecto de la evaluación perezosa en el plan de ejecución.</td>
 </tr>
 <tr>
 <td>3</td>
 <td>23/08/2026 - 29/08/2026</td>
-<td>Procesamiento distribuido y carga de datos particionada en HDFS y formatos analíticos.</td>
+<td>Procesamiento distribuido y carga de datos particionada en HDFS y formatos analíticos, con validación de calidad de datos (esquema, nulos, duplicados).</td>
 <td>2</td>
 <td>2</td>
-<td>Construye una salida analítica particionada en formato columnar lista para BI/ML.</td>
-<td>Justifica formato, particionado, estructura de carpetas y criterios de consulta.</td>
+<td>Construye una salida analítica particionada en formato columnar lista para BI/ML, aplicando controles de calidad (esquema, nulos, duplicados) antes de la carga.</td>
+<td>Justifica formato, particionado, estructura de carpetas, criterios de consulta y los controles de calidad aplicados.</td>
 </tr>
 <tr>
 <td>4</td>
@@ -1875,10 +1875,10 @@ Carret. Central km. 19.5 Ñaña. Telf. 01-6186300 Casilla 3564 Lima 1, Perú</p>
 <tr>
 <td>5</td>
 <td>06/09/2026 - 12/09/2026</td>
-<td>Evaluación U1.</td>
+<td>Integración del procesamiento batch distribuido: arquitectura Big Data, PySpark, HDFS, formatos analíticos, particionamiento y ML distribuido.</td>
 <td>2</td>
 <td>2</td>
-<td>Sustenta el pipeline batch de ETL distribuido con salidas analíticas en Parquet listas para BI/ML.</td>
+<td><strong>Evaluación de la Unidad I:</strong><br>1. Resolver la evaluación teórico-práctica de los temas de la Unidad I.<br>2. Presentar y sustentar el Pipeline batch de ETL distribuido con salidas analíticas en Parquet listas para BI/ML.</td>
 <td>Corrige observaciones y consolida la documentación técnica de U1.</td>
 </tr>
 </tbody>
@@ -1947,11 +1947,11 @@ Carret. Central km. 19.5 Ñaña. Telf. 01-6186300 Casilla 3564 Lima 1, Perú</p>
 <tr>
 <td>8</td>
 <td>27/09/2026 - 03/10/2026</td>
-<td>Procesamiento en streaming con Spark.</td>
+<td>Procesamiento en streaming con Spark: ventanas, watermarking y semántica de entrega.</td>
 <td>2</td>
 <td>2</td>
-<td>Implementa procesamiento con Spark Structured Streaming usando ventanas y agregaciones.</td>
-<td>Registra efectos de parámetros de streaming, latencia y throughput.</td>
+<td>Implementa procesamiento con Spark Structured Streaming usando ventanas, agregaciones, watermarking para datos tardíos y checkpointing.</td>
+<td>Registra efectos de parámetros de streaming, watermark, latencia y throughput.</td>
 </tr>
 <tr>
 <td>9</td>
@@ -1965,28 +1965,28 @@ Carret. Central km. 19.5 Ñaña. Telf. 01-6186300 Casilla 3564 Lima 1, Perú</p>
 <tr>
 <td>10</td>
 <td>11/10/2026 - 17/10/2026</td>
-<td>BI/ML distribuido con Spark.</td>
+<td>Series de tiempo e inferencia en streaming.</td>
 <td>2</td>
 <td>2</td>
-<td>Prepara salidas analíticas y/o modelo distribuido para consumo BI/ML.</td>
-<td>Documenta datos de salida, métricas, validaciones y uso esperado en BI/ML.</td>
+<td>Aplica un modelo o inferencia de series de tiempo sobre datos batch y/o eventos streaming.</td>
+<td>Compara resultados, errores, supuestos y recomendaciones técnicas.</td>
 </tr>
 <tr>
 <td>11</td>
 <td>18/10/2026 - 24/10/2026</td>
-<td>Series de tiempo e inferencia en streaming.</td>
+<td>BI/ML distribuido con Spark: KPIs del BI y visualización de la predicción de series de tiempo en streaming.</td>
 <td>2</td>
 <td>2</td>
-<td>Aplica un modelo o inferencia sobre datos batch y/o eventos streaming.</td>
-<td>Compara resultados, errores, supuestos y recomendaciones técnicas.</td>
+<td>Prepara y visualiza en el BI los KPIs del flujo de eventos en streaming junto con la predicción de series de tiempo generada en la sesión anterior.</td>
+<td>Documenta datos de salida, KPIs, métricas, validaciones y la relación entre la predicción y su visualización en BI.</td>
 </tr>
 <tr>
 <td>12</td>
 <td>25/10/2026 - 31/10/2026</td>
-<td>Evaluación U2.</td>
+<td>Integración del procesamiento en tiempo real: Kafka, eventos empresariales e IoT, Spark Structured Streaming, observabilidad, costos y salidas BI/ML.</td>
 <td>2</td>
 <td>2</td>
-<td>Sustenta el pipeline en tiempo real con ingesta, streaming, observabilidad, costos y salidas BI/ML.</td>
+<td><strong>Evaluación de la Unidad II:</strong><br>1. Resolver la evaluación teórico-práctica de los temas de la Unidad II.<br>2. Presentar y sustentar el Pipeline en tiempo real con ingesta, streaming, observabilidad y salidas BI/ML distribuidas.</td>
 <td>Corrige observaciones y prepara la integración final del sistema.</td>
 </tr>
 </tbody>
@@ -2050,25 +2050,25 @@ Carret. Central km. 19.5 Ñaña. Telf. 01-6186300 Casilla 3564 Lima 1, Perú</p>
 <td>2</td>
 <td>2</td>
 <td>Realiza revisión técnica, estabiliza configuración, corrige fallos y mejora documentación operativa.</td>
-<td>Completa checklist de hardening, riesgos, recuperación y reproducibilidad.</td>
+<td>Completa el checklist de hardening y prepara el guion de demostración, las evidencias, las métricas y la explicación técnica del sistema.</td>
 </tr>
 <tr>
 <td>15</td>
 <td>15/11/2026 - 21/11/2026</td>
-<td>Sustentación final con demo end-to-end.</td>
+<td>Integración del sistema Big Data end-to-end: procesamiento batch y streaming, DataOps, observabilidad, BI/ML, documentación y despliegue.</td>
 <td>2</td>
 <td>2</td>
-<td>Sustenta el sistema Big Data distribuido, mostrando procesamiento batch, streaming, observabilidad, BI/ML y valor para la toma de decisiones.</td>
-<td>Consolida repositorio, evidencias finales, métricas y respuestas a observaciones.</td>
+<td><strong>Evaluación de la Unidad III:</strong><br>1. Resolver la evaluación teórico-práctica de los temas de la Unidad III.<br>2. Presentar y sustentar el Sistema Big Data distribuido end-to-end para procesamiento batch y streaming, analítica/ML y visualización BI.</td>
+<td>Registra las observaciones del docente y actualiza el repositorio, las evidencias, las métricas y la documentación final.</td>
 </tr>
 <tr>
 <td>16</td>
 <td>22/11/2026 - 28/11/2026</td>
-<td>Evaluación final de recuperación para estudiantes que no alcanzaron el nivel esperado o quedaron con calificacion baja.</td>
+<td>Integración de sistemas Big Data: arquitectura, procesamiento distribuido, batch, streaming, observabilidad, DataOps, BI/ML y despliegue.</td>
 <td>2</td>
 <td>2</td>
-<td>Desarrolla evaluación final individual y recupera competencias pendientes.</td>
-<td>Reflexiona sobre aprendizajes, limitaciones del sistema y mejoras futuras.</td>
+<td><strong>Continuación de la evaluación de la Unidad III:</strong><br>Realizar, según corresponda, la evaluación final individual o las presentaciones y sustentaciones pendientes mediante demostración, preguntas técnicas y revisión de evidencias.</td>
+<td>Actualiza la entrega final y reflexiona sobre aprendizajes, limitaciones y mejoras futuras del sistema.</td>
 </tr>
 </tbody>
 </table>
@@ -2331,7 +2331,7 @@ Carret. Central km. 19.5 Ñaña. Telf. 01-6186300 Casilla 3564 Lima 1, Perú</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "content.code.copy", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
